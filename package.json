@@ -14,7 +14,12 @@
     "next": "14.2.14",
     "next-auth": "^4.24.7",
     "react": "^18",
+    "react-bootstrap": "^2.10.5",
     "react-dom": "^18",
+    "react-flatpickr": "^3.10.13",
+    "react-hot-toast": "^2.4.1",
+    "react-js-pagination": "^3.0.3",
+    "react-select": "^5.7.5",
     "serverless-mysql": "^1.5.5",
     "speakeasy": "^2.0.0",
     "sweetalert2": "^11.12.2"

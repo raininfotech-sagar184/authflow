@@ -1,5 +1,7 @@
 import Script from "next/script";
-
+import Header from '@/components/include/Header'
+import Sidebar from '@/components/include/Sidebar'
+import Footer from "@/components/include/Footer";
 
 export const metadata = {
   title: "Create Next App",
@@ -17,11 +19,11 @@ export default function RootLayout({ children }) {
       data-assets-path="/assets/"
       data-template="vertical-menu-template"
       data-style="light">
-      <head> 
- 
+      <head>
 
-         {/* <!-- Fonts --> */}
-       <link
+
+        {/* <!-- Fonts --> */}
+        <link
           href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&ampdisplay=swap"
           rel="stylesheet" />
 
@@ -32,7 +34,7 @@ export default function RootLayout({ children }) {
 
         {/* <!-- Core CSS --> */}
 
-         <link rel="stylesheet" href="/assets/css/demo.css" />
+        <link rel="stylesheet" href="/assets/css/demo.css" />
 
         {/* <!-- Vendors CSS --> */}
         <link rel="stylesheet" href="/assets/vendor/libs/node-waves/node-waves.css" />
@@ -58,7 +60,45 @@ export default function RootLayout({ children }) {
       </head>
 
       <body>
-        {children}
+        {/* <!-- Layout wrapper --> */}
+        <div className="layout-wrapper layout-content-navbar">
+          <div className="layout-container">
+            {/* <!-- Menu --> */}
+
+            <Sidebar />
+            {/* <!-- / Menu --> */}
+
+            {/* <!-- Layout container --> */}
+            <div className="layout-page">
+              {/* <!-- Navbar --> */}
+
+              <Header />
+
+              {/* <!-- / Navbar --> */}
+
+              {/* <!-- Content wrapper --> */}
+              <div className="content-wrapper">
+                {/* <!-- Content --> */}
+                {children}
+                {/* <!-- / Content --> */}
+
+                {/* <!-- Footer --> */}
+                <Footer />
+                {/* <!-- / Footer --> */}
+
+                <div className="content-backdrop fade"></div>
+              </div>
+              {/* <!-- Content wrapper --> */}
+            </div>
+            {/* <!-- / Layout page --> */}
+          </div>
+
+          {/* <!-- Overlay --> */}
+          <div className="layout-overlay layout-menu-toggle"></div>
+
+          {/* <!-- Drag Target Area To SlideIn Menu On Small Screens --> */}
+          <div className="drag-target"></div>
+        </div>
         {/* <!-- / Layout wrapper --> */}
 
         {/* <!-- Core JS --> */}

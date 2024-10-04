@@ -2,7 +2,7 @@
 const nextConfig = {
 
     env:{
-        // ADMFLDR: process.env.ADMFLDR,
+        ADMFLDR: process.env.ADMFLDR,
         // SITENAME: process.env.SITENAME,
         PAGE: "10",
         API_ENDPOINT: process.env.API_ENDPOINT,

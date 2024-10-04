@@ -1,3 +1,5 @@
+import { Toaster } from "react-hot-toast";
+
  
 export const metadata = {
   title: "Create Next App",
@@ -46,6 +48,7 @@ export default function RootLayout({ children }) {
     </head>
   
     <body> 
+    <Toaster position="top-right" />
         {children} 
  
   </body>

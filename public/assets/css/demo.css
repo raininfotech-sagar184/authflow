@@ -127,3 +127,87 @@
   text-align: center;
   margin-top: 1rem;
 }
+.cust-form-control .flatpickr-input{
+  display: none !important;
+}
+
+
+
+.pagination-box>ul>li>a:focus {
+  outline: none !important
+}
+
+
+.pagination-box>ul>li>a>i {
+  font-size: 25px;
+  padding: 0px 11px;
+}
+
+.pagination-box>ul>li.current a {
+  color: #000000 !important;
+  border: 0 !important;
+  border-radius: 5px;
+  line-height: 31px;
+  text-align: center;
+  background: #2b75ff;
+}
+
+.pagination-box {
+  padding: 23px 0;
+}
+
+.pagination-box>ul>li>a {
+  color: #000 !important;
+  background: #ffffff;
+  border-radius: 7px;
+  padding: 9px 14px 11px;
+  margin: 0px 3px;
+  border: 1px solid #7367f0;
+}
+
+.pagination-box>ul>li.active>a {
+  color: #fff !important;
+  background: #7367f0 !important;
+  border-radius: 7px !important;
+  padding: 11px 14px !important;
+}
+
+.pagination-box>ul>li>a:hover {
+  color: #fff !important;
+  background: #7367f0 !important;
+  border-radius: 7px !important;
+  padding: 11px 14px !important;
+}
+
+.sort-icons-position {
+  position: relative !important;
+  padding-right: 10px !important;
+  padding-left: 4px;
+  padding-top: 2px;
+}
+
+.actionBox{
+  display: flex;
+  justify-content: start;
+  gap: 10px;
+  width: min-content;
+}
+/* React select*/
+
+.css-t3ipsp-control,
+.css-1nmdiq5-menu {  
+  border-color: #7367f0 !important;
+}
+
+.css-t3ipsp-control {
+  box-shadow: 0 0 0 1px #7367f0 !important
+}
+
+.css-tr4s17-option { 
+  background-color: #7367f0; 
+}
+.css-d7l1ni-option { 
+  background-color: #7367f059 !important; 
+}
+
+ 

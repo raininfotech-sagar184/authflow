@@ -8,6 +8,7 @@ export const db = mysql({
   }
 })
 export async function sql_query(query, value = [], type = 'Single') {
+
   try {
     const results = await db.query(query, value)
     await db.end()

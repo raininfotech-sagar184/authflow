@@ -62,7 +62,7 @@ const Sidebar = () => {
                     </li>
                     <li className={`menu-item ${path === '/dashboard' ? 'active' : ''}`}>
                         <Link href={`/${process.env.ADMFLDR}/dashboard`} className="menu-link">
-                            <i className="menu-icon tf-icons ti ti-mail"></i>
+                            <i className="menu-icon tf-icons ti ti-smart-home"></i>
                             <div  >Dashboard</div>
                         </Link>
                     </li>
@@ -73,7 +73,7 @@ const Sidebar = () => {
                     </li>
                     <li className={`menu-item ${path === '/user-list' ? 'active' : ''}`}>
                         <Link href={`/${process.env.ADMFLDR}/user-list`} className="menu-link">
-                            <i className="menu-icon tf-icons ti ti-mail"></i>
+                            <i className="menu-icon tf-icons ti ti-users"></i>
                             <div >User List</div>
                         </Link>
                     </li>
@@ -85,7 +85,7 @@ const Sidebar = () => {
                     </li>
                     <li className={`menu-item ${path === '/package-list' ? 'active' : ''}`}>
                         <Link href={`/${process.env.ADMFLDR}/package-list`}className="menu-link">
-                            <i className="menu-icon tf-icons ti ti-mail"></i>
+                            <i className="menu-icon ti ti-brand-codepen"></i>
                             <div >Package List</div>
                         </Link>
                     </li>

@@ -1,4 +1,4 @@
-// import crypto from "crypto";
+import crypto from "crypto";
 import moment from 'moment';
 // var ethereum_address = require("ethereum-address");
 // const decimal = require('ascii-decimal'); 

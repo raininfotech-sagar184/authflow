@@ -5,10 +5,10 @@ import { sql_query } from '../../../../utils/dbconnect';
 
 export async function POST(req, res) {
     try {
-        let adm = await check_admin_login(req)
-        if (!adm.status || !adm.data.id) {
-            return NextResponse.json({ message: "Logout" }, { status: 400 });
-        }
+        // let adm = await check_admin_login(req)
+        // if (!adm.status || !adm.data.id) {
+        //     return NextResponse.json({ message: "Logout" }, { status: 400 });
+        // }
         let { userId } = await req.json()
         if (userId) {
             const id = dec(userId, encryption_key("userId"))

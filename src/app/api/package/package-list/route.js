@@ -15,33 +15,21 @@ export async function GET(req, res) {
         let query = "", filter = [], limit = process.env.PAGE
 
         const params = Object.fromEntries(new URLSearchParams(req.nextUrl.search).entries());
-        const { page, order, orderColumn, startDate, endDate, search, status, verify } = params;
+        const { page, order, orderColumn, startDate, endDate, search } = params;
 
-        query += `SELECT userId,userName,isVerify,isActive, createdOn, parentId, email FROM tbluser WHERE parentId = ?`
-        filter.push(0)
-
+        query += `SELECT packageId,name,image,amount, createdOn, rewardType FROM tblPackage`
+ 
         if (validate_filter_numbers([startDate, endDate])) {
-            query += " AND createdOn >=? AND createdOn<= ?";
+            query += " WHERE createdOn >=? AND createdOn<= ?";
             filter.push(parseInt(startDate))
             filter.push(parseInt(endDate))
-        }
-
-        if (status != "" && status >= 0) {
-            query += " AND isActive =?"
-            filter.push(status)
-        }
-
-        if (verify != "" && verify >= 0) {
-            query += " AND isVerify =?"
-            filter.push(verify)
-        }
-
+        }  
         if (validate_filter_strings([search])) {
-            query += " AND (userName like ?)"
-            filter.push("%" + search.trim() + "%") 
+            query += " AND (name like ? OR image like ?)"
+            filter.push("%" + search.trim() + "%")
+            filter.push("%" + search.trim() + "%")
         }
-
-        let fields = ["createdOn", "userName", "email", "isActive", "isVerify", "createdOn"]
+        let fields = ["createdOn", "name", "amount", "rewardType",  "createdOn"]
         if (validate_filter_numbers([orderColumn, order])) {
             query += " order by " + fields[orderColumn] + " " + (order == 0 ? 'asc' : 'desc')
         }
@@ -59,13 +47,12 @@ export async function GET(req, res) {
             allData = userList.map((j, k) => { 
                 return {
                     num: order == 1 ? descNum-- : ++ascNum,
-                    userName: j.userName || "-",
+                    packageName: j.name || "-",
                     date: j.createdOn || 0,
-                    parentId: j.parentId || "-",
-                    varify: j.isVerify ||0,
-                    status: j.isActive ||0,
-                    email: j.email || "-",
-                    id: enc(`${j.userId}` , encryption_key("userId")) || "-",
+                    packageImg: j.image || "-",
+                    price: j.amount ||0,
+                    reward_type: j.rewardType ||0, 
+                    id: enc(`${j.packageId}` , encryption_key("ids")) || "-",
                 }
             })
         }

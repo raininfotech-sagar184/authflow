@@ -9,6 +9,7 @@ const nextConfig = {
         // TESTNET: process.env.TESTNET,
         // EXPLORER_URL: process.env.EXPLORER_URL,
         FRONT_URL: process.env.FRONT_URL,
+        IMG_URL: process.env.IMG_URL,
         FILTER_MONTH: "36",
         // IMAGE_PREVIEW: process.env.IMAGE_PREVIEW,
         // SITE_KEY: process.env.SITE_KEY,

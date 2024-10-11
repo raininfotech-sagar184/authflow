@@ -193,47 +193,45 @@ export function chk_otp(str) {
 //   return r;
 // }
 
-// export function validateFile(file, type) {
-//   if (!file) {
-//     throw `Select ${type == "images" ? "image" : type == "docs" ? "file" : type == "_docs" ? "file" : 'video'}.`;
-//   }
-//   const file_type = [["image/png", "image/jpg", "image/jpeg", "image/gif"], ["pdf", "ppt", "pptx"], ["video/mp4"]]
+export function validateFile(file, type) {
+  if (!file) {
+    throw `Select ${type == "images" ? "image" : type == "docs" ? "file" : type == "_docs" ? "file" : 'video'}.`;
+  }
+  const file_type = [["image/png", "image/jpg", "image/jpeg", "image/gif"], ["pdf", "ppt", "pptx"], ["video/mp4"]]
 
-//   if ((type == "images" && file_type[0].indexOf(file.type) < 0) || ((type == "docs" || type == "_docs") && file_type[1].indexOf(file.type.split("/")[1]) < 0) || (type == "videos" && file_type[2].indexOf(file.type) < 0)) {
-//     if (type == "images") throw "Only PNG, JPG, JPEG, and GIF files are allowed"
-//     if (type == "docs" || type == "_docs") throw "Only PPT and PDF files are allowed"
-//     if (type == "videos") throw "Only mp4 videos are allowed"
-//   }
-//   let max_file_size = 2 * 1024 * 1024;
-//   if (type == "images" || type == "docs") {
-//     const max_file_size = type == "images" ? 2 * 1024 * 1024 : 5 * 1024 * 1024;
-//     if (file.size > max_file_size) {
-//       throw `File size must not exceed ${type == "images" ? "2" : "5"} MB.`;
-//     }
-//   }
-//   max_file_size = 10 * 1024 * 1024
-//   if (type == "videos" && file.size > max_file_size) {
-//     throw "Video size must not exceed 10 MB."
-//   }
-// }
+  if ((type == "images" && file_type[0].indexOf(file.type) < 0) || ((type == "docs" || type == "_docs") && file_type[1].indexOf(file.type.split("/")[1]) < 0) || (type == "videos" && file_type[2].indexOf(file.type) < 0)) {
+    if (type == "images") throw "Only PNG, JPG, JPEG, and GIF files are allowed"
+    if (type == "docs" || type == "_docs") throw "Only PPT and PDF files are allowed"
+    if (type == "videos") throw "Only mp4 videos are allowed"
+  }
+  let max_file_size = 2 * 1024 * 1024;
+  if (type == "images" || type == "docs") {
+    const max_file_size = type == "images" ? 2 * 1024 * 1024 : 5 * 1024 * 1024;
+    if (file.size > max_file_size) {
+      throw `File size must not exceed ${type == "images" ? "2" : "5"} MB.`;
+    }
+  }
+  max_file_size = 10 * 1024 * 1024
+  if (type == "videos" && file.size > max_file_size) {
+    throw "Video size must not exceed 10 MB."
+  }
+}
 
-// export function validate_input_number(data, prefix) {
-//   if (!data) {
-//     throw "Enter " + prefix
-//   }
-//   if (Number(data) <= 0) {
-//     throw prefix + " must be greater than 0"
-//   }
-// }
-
-// export function validate_input_number_zero(data, prefix, type) {
-//   let tag = type == 0 ? 'Enter' : 'Select'
-//   if (data == "" && data != "0") {
-//     throw tag + " " + prefix
-//   } else if (data < 0) {
-//     throw tag + " " + prefix
-//   }
-// }
+export function validate_input_number(data, prefix, type = 0) {
+  const parsedValue = parseFloat(data); 
+  if (!data) {
+    let pre = type == 0 ? 'Enter ' : ' Select'
+    throw pre + prefix;
+  } else if (isNaN(parsedValue)) {
+    throw prefix + " must be number";
+  }  
+}
+ 
+export function validate_input_number_in_range(data, prefix) { 
+  if (![0,1].includes(parseInt(data))  ) {
+    throw prefix + " must be 0 or 1";
+  }  
+}
 
 // export function chk_per(num, prefix) {
 //   if (!num) {

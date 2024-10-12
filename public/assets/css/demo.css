@@ -219,3 +219,7 @@ width: 20% !important;
  .modalForm{
   gap:10px !important;
  }
+ .packageImage img{
+  width: 45px;
+  height: 45px;
+ }

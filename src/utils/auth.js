@@ -19,22 +19,26 @@ export const authOptions = {
         repchaToken: {}
       },
       async authorize(credentials) {
-        if (!credentials?.email || !credentials.password || !credentials?.otp || !credentials?.repchaToken) {
+        
+        if (!credentials?.email || !credentials.password || !credentials?.otp  ) {
           return null;
         }
-        let checkRepcha = await recaptcha(credentials?.repchaToken);
-        if (!checkRepcha) {
-          return null
-        }
-        let user = await sql_query("select password,twoOpen,email,adminId,twoFaCode from tblexAdmin where email = ?", [credentials?.email])
+        // let checkRepcha = await recaptcha(credentials?.repchaToken);
+        // if (!checkRepcha) {
+        //   return null
+        // }
+        let user = await sql_query("select password,twoOpen,email,adminId,twoFaCode from tblAdmin where email = ?", [credentials?.email])
+        console.log(`user=============================>`,user)
         if (user && credentials.password === passDec(user.password, encryption_key("passwordKey"))) {
-          // let speakeasy = require("speakeasy")
-          // let twofa = speakeasy.totp.verify({
-          //   secret: passDec(user.twoFaCode, encryption_key("twofaKey")),
-          //   encoding: "base32",
-          //   token: credentials.otp,
-          // })
-          if (true) {
+          let speakeasy = require("speakeasy")
+          let twofa = speakeasy.totp.verify({
+            secret: passDec(user.twoFaCode, encryption_key("twofaKey")),
+            encoding: "base32",
+            token: credentials.otp,
+          })
+
+          console.log(`twofa=============================>`,twofa)
+          if (twofa) {
 
             await setLoginHistory(0, 0)
             return {

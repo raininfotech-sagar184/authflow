@@ -253,6 +253,11 @@ export default function UserList() {
                                         </div>
                                     </th>
                                     <th>
+                                        <div className='d-flex'>
+                                            <div >Image</div> 
+                                        </div>
+                                    </th>
+                                    <th>
                                         <div className='d-flex cursor-pointer' onClick={() => { setOrder(order == 0 ? 1 : 0); setOrderClm(1) }}>
                                             <div  >Package Name</div>
                                             <div className="sort-icons-position" >
@@ -304,6 +309,9 @@ export default function UserList() {
                                         <tr>
                                             <td>
                                                 <span className="fw-medium">{data.num}</span>
+                                            </td>
+                                            <td>
+                                                <span className="packageImage"><img src={process.env.IMG_URL+data.packageImg} alt={data.packageName} /></span>
                                             </td>
                                             <td>
                                                 <span className="fw-medium">{data.packageName

@@ -16,7 +16,7 @@ export const AuthContextProvider = ({ children }) => {
     async function fn() {
       await signOut({ redirect: false, callbackUrl: '/' + process.env.ADMFLDR })
     }
-    if (authTkn == 'Unauthorized' || authTkn == 'Logout') {
+    if (authTkn == 'Unauthorized') {
       fn()
       // window.location.reload()
     }

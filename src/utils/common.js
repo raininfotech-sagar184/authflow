@@ -20,6 +20,7 @@ export function validate_filter_numbers(data) {
   }
   return true
 }
+ 
 
 // export function validate_numbers(data) {
 //   for (let dd in data) {
@@ -49,11 +50,11 @@ export function validate_filter_strings(data) {
 //   return /^[a-zA-Z0-9]{3,15}$/.test(a);
 // }
 
-// export function chk_email(str) {
-//   if (!(/^[a-z_0-9]+(\.[a-z0-9]+)*@[a-z0-9]+(\.[a-z0-9]+)*(\.[a-z]{2,3})$/.test(str))) {
-//     throw "Invalid Email";
-//   }
-// }
+export function chk_email(str) {
+  if (!(/^[a-z_0-9]+(\.[a-z0-9]+)*@[a-z0-9]+(\.[a-z0-9]+)*(\.[a-z]{2,3})$/.test(str))) {
+    throw "Invalid Email";
+  }
+}
 
 // export function chk_URL(str, prefix) {
 //   const urlRegex = /^(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?$/;
@@ -66,11 +67,11 @@ export function validate_filter_strings(data) {
 //   return true;
 // }
 
-// export function chk_password(str) {
-//   if (!(/^\S*(?=\S{8,30})(?=\S*[a-z])(?=\S*[A-Z])(?=\S*[\d])(?=\S*[!\\/\\\\\"#$%&'()*+,-.\\:;<=>?@[\]^_`{|}~])\S*$/.test(str))) {
-//     throw "Password should contain 8 - 32 character,contains capital, lowercase, number and special character"
-//   }
-// }
+export function chk_password(str) {
+  if (!(/^\S*(?=\S{8,30})(?=\S*[a-z])(?=\S*[A-Z])(?=\S*[\d])(?=\S*[!\\/\\\\\"#$%&'()*+,-.\\:;<=>?@[\]^_`{|}~])\S*$/.test(str))) {
+    throw "Password should contain 8 - 32 character,contains capital, lowercase, number and special character"
+  }
+}
 
 // export function chk_OTP(str) {
 //   return /^[0-9]{6}$/.test(str);
@@ -305,20 +306,20 @@ export function trunc(string, st = 5, ed = 5) {
 
 
 
-// export function passDec(encryptedMessage, secret) {
-//   var encryptionMethod = 'AES-256-CBC';
-//   var iv = secret.substr(0, 16);
-//   var decryptor = crypto.createDecipheriv(encryptionMethod, secret, iv);
-//   return decryptor.update(encryptedMessage, 'base64', 'utf8') + decryptor.final('utf8');
-// }
+export function passDec(encryptedMessage, secret) {
+  var encryptionMethod = 'AES-256-CBC';
+  var iv = secret.substr(0, 16);
+  var decryptor = crypto.createDecipheriv(encryptionMethod, secret, iv);
+  return decryptor.update(encryptedMessage, 'base64', 'utf8') + decryptor.final('utf8');
+}
 
 
-// export function passEnc(textToEncrypt, secret) {
-//   var encryptionMethod = 'AES-256-CBC';
-//   var iv = secret.substr(0, 16);
-//   var encryptor = crypto.createCipheriv(encryptionMethod, secret, iv);
-//   return encryptor.update(textToEncrypt, 'utf8', 'base64') + encryptor.final('base64');
-// }
+export function passEnc(textToEncrypt, secret) {
+  var encryptionMethod = 'AES-256-CBC';
+  var iv = secret.substr(0, 16);
+  var encryptor = crypto.createCipheriv(encryptionMethod, secret, iv);
+  return encryptor.update(textToEncrypt, 'utf8', 'base64') + encryptor.final('base64');
+}
 
 
 // export function validateURL(url, msg) {

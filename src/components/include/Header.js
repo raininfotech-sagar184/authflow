@@ -1,6 +1,14 @@
-'use client' 
-export default function Header() {
+'use client'
+import { signOut } from "next-auth/react" 
+import { useRouter } from "next/navigation"
+
  
+export default function Header() {
+  const router = useRouter()
+  const logout = async () => {
+    const data = await signOut({ redirect: false, callbackUrl: '/' + process.env.ADMFLDR })
+    router.push('/' + process.env.ADMFLDR)
+  }
 
   return (
     <>
@@ -501,10 +509,10 @@ export default function Header() {
                 </li>
                 <li>
                   <div className="d-grid px-2 pt-2 pb-1">
-                    <a className="btn btn-sm btn-danger d-flex" href="auth-login-cover.html" target="_blank">
+                    <span className="btn btn-sm btn-danger d-flex"  onClick={logout}>
                       <small className="align-middle">Logout</small>
                       <i className="ti ti-logout ms-2 ti-14px"></i>
-                    </a>
+                    </span>
                   </div>
                 </li>
               </ul>

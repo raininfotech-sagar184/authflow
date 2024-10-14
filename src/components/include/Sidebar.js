@@ -8,7 +8,7 @@ const Sidebar = () => {
     const logout = async () => {
         const data = await signOut({ redirect: false, callbackUrl: '/' + process.env.ADMFLDR })
         router.push('/' + process.env.ADMFLDR)
-    }
+    } 
     const path_ = usePathname()
     const path = path_.split('/rdadmpnl')[1];
     return (

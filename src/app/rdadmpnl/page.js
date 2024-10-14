@@ -8,6 +8,7 @@ import { chk_otp, validate_string, chk_email, chk_password } from "../../utils/c
 import { fetchApi } from "../../utils/frondend";
 import Loader from "../../components/include/Loader";
 import { useAuthContext } from "../../context/auth";
+import ReCAPTCHA from "react-google-recaptcha";
 
 export default function LoginaPage() {
 
@@ -35,8 +36,7 @@ export default function LoginaPage() {
           toast.error(e)
           return false
         }
-        setSubmitLoader(true)
-        // const repchaToken = await reRef.current.executeAsync();
+        setSubmitLoader(true) 
         const param = JSON.stringify({ email: email, password: password  })
         const response = await fetchApi("auth/login", param, "POST")
         setSubmitLoader(false)
@@ -67,21 +67,25 @@ export default function LoginaPage() {
           return false
         }
         setSubmitLoader(true)
-        // const repchaToken = await reRef.current.executeAsync();
+        const repchaToken = await reRef.current.executeAsync();
         const res = await signIn("credentials", {
           redirect: false,
           email: email,
           password: password,
           otp: otp,
-          // repchaToken: repchaToken,
+          repchaToken: repchaToken,
           callbackUrl,
         })
+        console.log(`res========`,res)
         setSubmitLoader(false)
         if (res.error == "CredentialsSignin") {
           toast.error("Google authentication failed.")
         } else {
           router.push(process.env.ADMFLDR + '/dashboard')
-          window.location.reload()
+          setTimeout(() => {
+            window.location.reload()
+          }, 500);
+          
         }
       }
     } catch (e) {
@@ -200,7 +204,12 @@ export default function LoginaPage() {
         </div>
       </div>
 
-
+      <ReCAPTCHA
+        sitekey={process.env.SITE_KEY}
+        size="invisible"
+        ref={reRef}
+        style={{ display: "none" }}
+      />
 
     </>
   );

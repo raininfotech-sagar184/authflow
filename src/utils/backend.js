@@ -1,6 +1,7 @@
 // /* Use only Common function which is relivent to databse */
 // import fs from "fs";
-// import { cookies, headers } from 'next/headers'
+import { cookies, headers } from 'next/headers'
+import { sql_query } from './dbconnect';
 // import { session } from '../utils/session';
 // import { getToken } from "next-auth/jwt"
 // import { sql_query } from "./dbconnect"
@@ -76,16 +77,16 @@
 // 	})
 // }
 
-// export async function recaptcha(token) {
-// 	return true
-// 	const secret = process.env.SECRET_KEY;
-// 	console.log("secret", secret)
-// 	const response = await fetch(`https://www.google.com/recaptcha/api/siteverify?secret=${secret}&response=${token}`, {
-// 		method: "POST",
-// 	});
-// 	const data = await response.json();
-// 	return data.success;
-// }
+export async function recaptcha(token) {
+	return true
+	const secret = process.env.SECRET_KEY;
+	console.log("secret", secret)
+	const response = await fetch(`https://www.google.com/recaptcha/api/siteverify?secret=${secret}&response=${token}`, {
+		method: "POST",
+	});
+	const data = await response.json();
+	return data.success;
+}
 
 // export async function directory_exists(directoryPath) {
 // 	try {
@@ -126,94 +127,94 @@
 // 	return ""
 // }
 
-// export async function file_get_contents(uri) {
-// 	let res = await fetch(uri)
-// 	let ress = await res.text()
-// 	return ress
-// }
+export async function file_get_contents(uri) {
+	let res = await fetch(uri)
+	let ress = await res.text()
+	return ress
+}
 
-// export async function setLoginHistory(userId, userType, isMobile = 0) {
-// 	try {
-// 		let headersList = headers()
-// 		let useragent = headersList.get('user-agent')
-// 		let clientIP = (headersList.get('x-forwarded-for') || '').split(',').shift().trim() || '-'
-// 		let browser_array = [{ name: "msie", value: "Internet Explorer" }, { name: "firefox", value: "Firefox" }, { name: "safari", value: "Safari" }, { name: "chrome", value: "Chrome" }, { name: "edge", value: "Edge" }, { name: "opera", value: "Opera" }, { name: "netscape", value: "Netscape" }, { name: "maxthon", value: "Maxthon" }, { name: "konqueror", value: "Konqueror" }, { name: "mobile", value: "Handheld Browser" },]
-// 		let browserName = ""
-// 		browser_array.map((c, k) => {
-// 			if (useragent.match(c.name) || useragent.toLowerCase().match(c.name)) {
-// 				browserName = c.value
-// 			}
-// 		})
-// 		let os_array = [{ name: "windows nt 10", value: "Windows 10" }, { name: "windows nt 6.3", value: "Windows 8.1" }, { name: "windows nt 6.2", value: "Windows 8" }, { name: "windows nt 6.1/i", value: "Windows 7" }, { name: "windows nt 6.0", value: "Windows Vista" }, { name: "windows nt 5.2", value: "Windows Server 2003/XP x64" }, { name: "windows nt 5.1", value: "Windows XP" }, { name: "windows xp", value: "Windows XP" }, { name: "windows nt 5.0", value: "Windows 2000" }, { name: "windows me", value: "Windows ME" }, { name: "win98", value: "Windows 98" }, { name: "android", value: "Android" }, { name: "blackberry", value: "BlackBerry" }, { name: "webos", value: "Mobile" }, { name: 'macintosh|mac os x', value: 'Mac OS X' }, { name: 'mac_powerpc', value: 'Mac OS 9' }, { name: 'linux', value: 'Linux' }, { name: 'ubuntu', value: 'Ubuntu' }, { name: 'iphone', value: 'iPhone' }, { name: 'ipod', value: 'iPod' }, { name: 'ipad', value: 'iPad' }]
-// 		let osName = ""
-// 		os_array.map((c, k) => {
-// 			if (useragent.match(c.name) || useragent.toLowerCase().match(c.name)) {
-// 				osName = c.value
-// 			}
-// 		})
-// 		let parentOS = ""
-// 		if (useragent.indexOf("Win") != -1) {
-// 			parentOS = "Window";
-// 		} else if (useragent.indexOf("Android") != -1) {
-// 			parentOS = "Android";
-// 		} else if (useragent.indexOf("Linux") != -1) {
-// 			parentOS = "Linux";
-// 		} else if (useragent.indexOf("Ubuntu") != -1) {
-// 			parentOS = "Ubuntu";
-// 		} else if (
-// 			useragent.indexOf("iphone") != -1 ||
-// 			useragent.indexOf("ipod") != -1 ||
-// 			useragent.indexOf("ipad") != -1
-// 		) {
-// 			parentOS = "IOS";
-// 		} else if (useragent.indexOf("Blackberry") != -1) {
-// 			parentOS = "Blackberry";
-// 		} else if (useragent.indexOf("Webos") != -1) {
-// 			parentOS = "Mobile";
-// 		} else if (useragent.indexOf("Mac") != -1) {
-// 			parentOS = "Mac";
-// 		}
-// 		let location = {}
-// 		let rs = await file_get_contents("http://ip-api.com/json/" + clientIP)
-// 		if (rs) {
-// 			let location_arr = JSON.parse(rs);
-// 			location = {
-// 				city: Object.hasOwn(location_arr, "city") ? location_arr.city : "",
-// 				regionName: Object.hasOwn(location_arr, "regionName")
-// 					? location_arr.regionName
-// 					: "",
-// 				country: Object.hasOwn(location_arr, "country")
-// 					? location_arr.country
-// 					: "",
-// 				lat: Object.hasOwn(location_arr, "lat") ? location_arr.lat : "",
-// 				lon: Object.hasOwn(location_arr, "lon") ? location_arr.lon : "",
-// 				timezone: Object.hasOwn(location_arr, "timezone")
-// 					? location_arr.timezone
-// 					: "",
-// 				zip: Object.hasOwn(location_arr, "zip") ? location_arr.zip : "",
-// 			}
-// 		}
-// 		let loc = location ? JSON.stringify(location) : {}
-// 		let time = Math.floor(Date.now() / 1000)
-// 		let data = [userId, useragent, browserName, clientIP, osName, parentOS, userType, isMobile, loc, time]
-// 		await sql_query("insert into tblloginHistory (userId,userAgent,browserName,clientIP,oSName,parentOS,userType,isMobile,location,loginDate) values (?,?,?,?,?,?,?,?,?,?)", data)
-// 	} catch (e) {
-// 		console.log("setLoginHistory===>", e.message)
-// 	}
-// }
+export async function setLoginHistory(userId, userType, isMobile = 0) {
+	try {
+		let headersList = headers()
+		let useragent = headersList.get('user-agent')
+		let clientIP = (headersList.get('x-forwarded-for') || '').split(',').shift().trim() || '-'
+		let browser_array = [{ name: "msie", value: "Internet Explorer" }, { name: "firefox", value: "Firefox" }, { name: "safari", value: "Safari" }, { name: "chrome", value: "Chrome" }, { name: "edge", value: "Edge" }, { name: "opera", value: "Opera" }, { name: "netscape", value: "Netscape" }, { name: "maxthon", value: "Maxthon" }, { name: "konqueror", value: "Konqueror" }, { name: "mobile", value: "Handheld Browser" },]
+		let browserName = ""
+		browser_array.map((c, k) => {
+			if (useragent.match(c.name) || useragent.toLowerCase().match(c.name)) {
+				browserName = c.value
+			}
+		})
+		let os_array = [{ name: "windows nt 10", value: "Windows 10" }, { name: "windows nt 6.3", value: "Windows 8.1" }, { name: "windows nt 6.2", value: "Windows 8" }, { name: "windows nt 6.1/i", value: "Windows 7" }, { name: "windows nt 6.0", value: "Windows Vista" }, { name: "windows nt 5.2", value: "Windows Server 2003/XP x64" }, { name: "windows nt 5.1", value: "Windows XP" }, { name: "windows xp", value: "Windows XP" }, { name: "windows nt 5.0", value: "Windows 2000" }, { name: "windows me", value: "Windows ME" }, { name: "win98", value: "Windows 98" }, { name: "android", value: "Android" }, { name: "blackberry", value: "BlackBerry" }, { name: "webos", value: "Mobile" }, { name: 'macintosh|mac os x', value: 'Mac OS X' }, { name: 'mac_powerpc', value: 'Mac OS 9' }, { name: 'linux', value: 'Linux' }, { name: 'ubuntu', value: 'Ubuntu' }, { name: 'iphone', value: 'iPhone' }, { name: 'ipod', value: 'iPod' }, { name: 'ipad', value: 'iPad' }]
+		let osName = ""
+		os_array.map((c, k) => {
+			if (useragent.match(c.name) || useragent.toLowerCase().match(c.name)) {
+				osName = c.value
+			}
+		})
+		let parentOS = ""
+		if (useragent.indexOf("Win") != -1) {
+			parentOS = "Window";
+		} else if (useragent.indexOf("Android") != -1) {
+			parentOS = "Android";
+		} else if (useragent.indexOf("Linux") != -1) {
+			parentOS = "Linux";
+		} else if (useragent.indexOf("Ubuntu") != -1) {
+			parentOS = "Ubuntu";
+		} else if (
+			useragent.indexOf("iphone") != -1 ||
+			useragent.indexOf("ipod") != -1 ||
+			useragent.indexOf("ipad") != -1
+		) {
+			parentOS = "IOS";
+		} else if (useragent.indexOf("Blackberry") != -1) {
+			parentOS = "Blackberry";
+		} else if (useragent.indexOf("Webos") != -1) {
+			parentOS = "Mobile";
+		} else if (useragent.indexOf("Mac") != -1) {
+			parentOS = "Mac";
+		}
+		let location = {}
+		let rs = await file_get_contents("http://ip-api.com/json/" + clientIP)
+		if (rs) {
+			let location_arr = JSON.parse(rs);
+			location = {
+				city: Object.hasOwn(location_arr, "city") ? location_arr.city : "",
+				regionName: Object.hasOwn(location_arr, "regionName")
+					? location_arr.regionName
+					: "",
+				country: Object.hasOwn(location_arr, "country")
+					? location_arr.country
+					: "",
+				lat: Object.hasOwn(location_arr, "lat") ? location_arr.lat : "",
+				lon: Object.hasOwn(location_arr, "lon") ? location_arr.lon : "",
+				timezone: Object.hasOwn(location_arr, "timezone")
+					? location_arr.timezone
+					: "",
+				zip: Object.hasOwn(location_arr, "zip") ? location_arr.zip : "",
+			}
+		}
+		let loc = location ? JSON.stringify(location) : {}
+		let time = Math.floor(Date.now() / 1000)
+		let data = [userId, useragent, browserName, clientIP, osName, parentOS, userType, isMobile, loc, time]
+		await sql_query("insert into tblloginHistory (userId,userAgent,browserName,clientIP,oSName,parentOS,userType,isMobile,location,loginDate) values (?,?,?,?,?,?,?,?,?,?)", data)
+	} catch (e) {
+		console.log("setLoginHistory===>", e.message)
+	}
+}
 
-// export async function get_price_data(tik) {
-// 	try {
-// 		let data = await sql_query("SELECT metaValue FROM tblexConfig WHERE metaKey = ?", ["USDTPrice"])
-// 		let priceData = JSON.parse(data.metaValue)
-// 		return priceData[tik];
-// 	}
-// 	catch (e) {
-// 		console.log(e)
-// 		return ""
-// 	}
+export async function get_price_data(tik) {
+	try {
+		let data = await sql_query("SELECT metaValue FROM tblexConfig WHERE metaKey = ?", ["USDTPrice"])
+		let priceData = JSON.parse(data.metaValue)
+		return priceData[tik];
+	}
+	catch (e) {
+		console.log(e)
+		return ""
+	}
 
-// }
+}
 
 // export function calculateLateFeePerc(penaltyAfter, latePayExceptDate, totalRemainInstallment) {
 // 	let time = get_timestemp()

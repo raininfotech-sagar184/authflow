@@ -12,7 +12,7 @@ const nextConfig = {
         IMG_URL: process.env.IMG_URL,
         FILTER_MONTH: "36",
         // IMAGE_PREVIEW: process.env.IMAGE_PREVIEW,
-        // SITE_KEY: process.env.SITE_KEY,
+        SITE_KEY: process.env.SITE_KEY,
         // SECRET_KEY: process.env.SECRET_KEY,
     }
 };

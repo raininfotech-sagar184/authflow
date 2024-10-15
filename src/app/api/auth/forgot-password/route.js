@@ -14,20 +14,17 @@ export async function POST(req, res) {
         let checkRepcha = await recaptcha(repchaToken);
         if (!checkRepcha) { 
             return NextResponse.json({ message: 'Something went to wrong' }, { status: 400 })
-        }
-        console.log("step 1", email)
+        } 
         try {
             email = email.toLowerCase().trim();
             validate_string(email, "email", 0);
             chk_email(email);
         } catch (e) { 
             return NextResponse.json({ message: e.message }, { status: 400 })
-        }
-        console.log("step 2")
-        const getUser = await sql_query("SELECT email, adminId, isVerify FROM tblAdmin WHERE email = ?", [email]);
-        console.log("step 3", getUser)
-        const accessTokenMail =  enc(JSON.stringify({email:getUser.email}) , encryption_key('token'))
+        } 
+        const getUser = await sql_query("SELECT email, adminId, isVerify FROM tblAdmin WHERE email = ?", [email]);  
         if (getUser) {
+            const accessTokenMail =  enc(JSON.stringify({email:getUser.email}) , encryption_key('token'))
             if (getUser.isVerify == 0) { 
                 return NextResponse.json({ isVerify: 0, accessToken: accessTokenMail, message: "success" }, { status: 200 })
              } else {

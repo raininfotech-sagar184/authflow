@@ -1,5 +1,5 @@
 import { Toaster } from "react-hot-toast";
-
+import {AuthContextProvider} from "@/context/auth";
  
 export const metadata = {
   title: "Create Next App",
@@ -37,7 +37,10 @@ export default function RootLayout({ children }) {
         href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&ampdisplay=swap"
         rel="stylesheet" />
  
-  
+ <link
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+          rel="stylesheet"
+        />
       {/* <!-- Core CSS --> */} 
 
       <link rel="stylesheet" href="/assets/css/demo.css" />
@@ -52,8 +55,9 @@ export default function RootLayout({ children }) {
   
     <body> 
     <Toaster position="top-right" />
-        {children} 
- 
+    <AuthContextProvider>
+       {children} 
+    </AuthContextProvider> 
   </body>
 </html>
   );

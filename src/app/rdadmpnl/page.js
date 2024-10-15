@@ -95,12 +95,12 @@ export default function LoginaPage() {
   return (
     <>
       <div className="authentication-wrapper authentication-cover"> 
-        <a href="index.html" className="app-brand auth-cover-brand">
+        <span className="app-brand auth-cover-brand">
           <span className="app-brand-logo demo">
              <img src="/assets/image/logo.svg" alt="logo" />
           </span>
           <span className="app-brand-text demo text-heading fw-bold">Nft Marketplace</span>
-        </a> 
+        </span> 
         <div className="authentication-inner row m-0">
           {/* <!-- /Left Text --> */}
           <div className="d-none d-lg-flex col-lg-8 p-0">

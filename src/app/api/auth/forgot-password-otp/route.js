@@ -24,7 +24,7 @@ export async function POST(req, res) {
             if (user) {
                 let forgetCode = generateNumeric(6);
                 let currentTime = get_timestemp();
-                console.log({forgetCode,encOTP:enc(forgetCode.toString(), encryption_key("otpKey")), EXPTIME: parseInt(currentTime) + 1800 })
+                console.log('temporary mail functionality id off',{otp:forgetCode  })
                 await sql_query(
                     `UPDATE tblAdmin SET otpCode = ?, otpExpireTime = ?, updatedOn = ? WHERE adminId = ?`,
                     [enc(forgetCode.toString(), encryption_key("otpKey")), parseInt(currentTime) + 1800, currentTime, user.adminId],

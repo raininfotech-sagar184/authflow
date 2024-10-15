@@ -2,15 +2,16 @@
 import { useRouter } from 'next/navigation'
 import { useRef, useState } from "react"
 import toast from 'react-hot-toast';
-import { validate_string, chk_email, chk_confirm_password, chk_otp } from "@/utils/common";
+import { validate_string,   chk_confirm_password, chk_otp } from "@/utils/common";
 import ReCAPTCHA from "react-google-recaptcha";
 import { ButtonSpinner } from "@/components/include/Loader";
 import { fetchApi } from "@/utils/frondend";
 // import { useAuthContext } from "@/context/auth";
 import $ from "jquery";
 import { getCookie } from 'cookies-next';
+import { useAuthContext } from '@/context/auth';
 export default function LoginaPage() {
-  // const { setAuthTkn, setPageLoader, lang, langData } = useAuthContext()
+  const { setAuthTkn, setPageLoader, lang, langData,pageLoader } = useAuthContext()
   const [data, setData] = useState({ password: "", rePassword: "", otp: "" })
   const [loader, setLoader] = useState({ resetpwd: false, sendOtp: false })
   const [passType, setpassType] = useState({ t1: "password", t2: "password" })
@@ -131,10 +132,9 @@ export default function LoginaPage() {
         toast.error(e)
         return
       }
-      setLoader({ ...loader, resetpwd: true })
-      // let tkn = getCookie("passfgTkn") || "" 
+      setLoader({ ...loader, resetpwd: true }) 
       const repchaToken = await reRef.current.executeAsync(); 
-      const param = JSON.stringify({ password: data.password,mlTkn:mlTkn, repassword: data.rePassword, otp: data.otp, repchaToken: repchaToken,email: `admin@solares.com` })
+      const param = JSON.stringify({ password: data.password,mlTkn:mlTkn, repassword: data.rePassword, otp: data.otp, repchaToken: repchaToken  })
       const response = await fetchApi("auth/reset-password",param)
       setLoader({ ...loader, resetpwd: false })
       if (response.statusCode === 200) {
@@ -148,7 +148,7 @@ export default function LoginaPage() {
           // setAuthTkn(response.data.message)
         } else { 
           if (response.data.email == 'invalid') {
-            router.push("/forgot-password")
+            router.push("forgot-password")
           }
           else { 
             toast.error(response.data.message)
@@ -160,12 +160,12 @@ export default function LoginaPage() {
   return (
     <>
       <div className="authentication-wrapper authentication-cover"> 
-        <a href="index.html" className="app-brand auth-cover-brand">
+        <span  className="app-brand auth-cover-brand">
         <span className="app-brand-logo demo">
              <img src="/assets/image/logo.svg" alt="logo" />
           </span>
-          <span className="app-brand-text demo text-heading fw-bold">Nft Marketplace</span>
-        </a> 
+          <span className="app-brand-text demo text-heading fw-bold" onClick={()=>console.log(pageLoader)}>Nft Marketplace</span>
+        </span> 
         <div className="authentication-inner row m-0"> 
           <div className="d-none d-lg-flex col-lg-8 p-0">
             <div className="auth-cover-bg auth-cover-bg-color d-flex justify-content-center align-items-center">
@@ -294,7 +294,7 @@ export default function LoginaPage() {
               <div className="my-8">
                 <div className="d-flex justify-content-between">
                   <span className="cursor-pointer"  >
-                  <div className="text-end mb-10 text-primary fs-18">{loader.sendOtp ? <i className="fa fa-refresh fa-spin mx-1"></i> : ""}{otpTimer.waiting == true ? <span className="text-bold text-yellow">{`Resend after`}: {otpTimer.timer}</span> : <span className="cursor-pointer text-capitalize fs-18 text-yellow" onClick={() => sendOtp()}>{`Click here to Resend OTP Code`}</span>}</div>
+                  <div className="text-end mb-10 text-primary fs-18">{loader.sendOtp ? <i className="fas fa-refresh fa-spin mx-1"></i> : ""}{otpTimer.waiting == true ? <span className="text-bold text-yellow">{`Resend after`}: {otpTimer.timer}</span> : <span className="cursor-pointer text-capitalize fs-18 text-yellow" onClick={() => sendOtp()}>{`Click here to Resend OTP Code`}</span>}</div>
                   </span>
                 </div>
                 <div className="d-flex justify-content-between">

@@ -239,3 +239,10 @@ width: 20% !important;
   justify-content: center;
   gap: 10px;
  }
+ .pass-valid{
+  font-size: 12px;
+  letter-spacing: 1px;
+ }
+ .validPassText {
+  font-family: fangsong !important;
+}

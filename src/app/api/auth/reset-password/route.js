@@ -33,8 +33,7 @@ export async function POST(req, res) {
     } else {
         const user = await sql_query("SELECT email, adminId, otpCode, otpExpireTime FROM tblAdmin WHERE email = ?", [token.email]);
         if (user) {
-            let currentTime = get_timestemp(); 
-            console.log({otp: otp, otpCode: dec(user.otpCode, encryption_key('otpKey'))})
+            let currentTime = get_timestemp();  
             if (otp != dec(user.otpCode, encryption_key('otpKey'))) {
               return NextResponse.json({ message: "Invalid OTP" }, { status: 400 }) 
             }

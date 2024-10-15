@@ -41,6 +41,7 @@ export default function RootLayout({ children }) {
       {/* <!-- Core CSS --> */} 
 
       <link rel="stylesheet" href="/assets/css/demo.css" />
+      <link rel="stylesheet" href="/assets/vendor/css/pages/page-auth.css"></link>
       <link rel="stylesheet" href="/assets/vendor/css/rtl/core.css" className="template-customizer-core-css" />
       <link rel="stylesheet" href="/assets/vendor/css/rtl/theme-default.css" className="template-customizer-theme-css" /> 
   

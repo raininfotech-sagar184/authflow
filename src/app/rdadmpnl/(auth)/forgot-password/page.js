@@ -7,7 +7,7 @@ import ReCAPTCHA from "react-google-recaptcha";
 import { ButtonSpinner } from "@/components/include/Loader";
 import { fetchApi } from "@/utils/frondend";
 import { useAuthContext } from "@/context/auth";
-
+import { setCookie } from "cookies-next";
 export default function LoginaPage() { 
   const { setAuthTkn } = useAuthContext();
   const router = useRouter() 
@@ -15,7 +15,7 @@ export default function LoginaPage() {
   const [submitLoader, setSubmitLoader] = useState(false)  
   const reRef = useRef()
 
-  const login = async () => {
+  const submit = async () => {
     try {
       toast.dismiss()
       if (!submitLoader) {
@@ -27,14 +27,19 @@ export default function LoginaPage() {
           return false
         }
         setSubmitLoader(true)
-        const param = JSON.stringify({ email: email  })
+        const repchaToken = await reRef.current.executeAsync();
+        const param = JSON.stringify({ email: email,repchaToken  })
         const response = await fetchApi("auth/forgot-password", param, "POST")
         setSubmitLoader(false)
-        if (response.statusCode === 200) { 
+        if (response.statusCode === 200) {  
+          setCookie("mltknauth", response.data.accessToken)
+          router.push("reset-password")
         } else {
+          
           if (response.data.message == "Unauthorized") {
             setAuthTkn(response.data.message)
           } else {
+            console.log("first error", response.data.message)
             toast.error(response.data.message)
           }
         }
@@ -46,39 +51,14 @@ export default function LoginaPage() {
   return (
     <>
       <div className="authentication-wrapper authentication-cover">
-        {/* <!-- Logo --> */}
+         
         <a href="index.html" className="app-brand auth-cover-brand">
-          <span className="app-brand-logo demo">
-            <svg width="32" height="22" viewBox="0 0 32 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path
-                fillRule="evenodd"
-                clipRule="evenodd"
-                d="M0.00172773 0V6.85398C0.00172773 6.85398 -0.133178 9.01207 1.98092 10.8388L13.6912 21.9964L19.7809 21.9181L18.8042 9.88248L16.4951 7.17289L9.23799 0H0.00172773Z"
-                fill="#7367F0" />
-              <path
-                opacity="0.06"
-                fillRule="evenodd"
-                clipRule="evenodd"
-                d="M7.69824 16.4364L12.5199 3.23696L16.5541 7.25596L7.69824 16.4364Z"
-                fill="#161616" />
-              <path
-                opacity="0.06"
-                fillRule="evenodd"
-                clipRule="evenodd"
-                d="M8.07751 15.9175L13.9419 4.63989L16.5849 7.28475L8.07751 15.9175Z"
-                fill="#161616" />
-              <path
-                fillRule="evenodd"
-                clipRule="evenodd"
-                d="M7.77295 16.3566L23.6563 0H32V6.88383C32 6.88383 31.8262 9.17836 30.6591 10.4057L19.7824 22H13.6938L7.77295 16.3566Z"
-                fill="#7367F0" />
-            </svg>
+        <span className="app-brand-logo demo">
+             <img src="/assets/image/logo.svg" alt="logo" />
           </span>
-          <span className="app-brand-text demo text-heading fw-bold">Vuexy</span>
-        </a>
-        {/* <!-- /Logo --> */}
-        <div className="authentication-inner row m-0">
-          {/* <!-- /Left Text --> */}
+          <span className="app-brand-text demo text-heading fw-bold">Nft Marketplace</span>
+        </a> 
+        <div className="authentication-inner row m-0"> 
           <div className="d-none d-lg-flex col-lg-8 p-0">
             <div className="auth-cover-bg auth-cover-bg-color d-flex justify-content-center align-items-center">
               <img
@@ -110,7 +90,7 @@ export default function LoginaPage() {
                       </span>
                     </div>
                   </div>
-                  <button className="btn btn-primary w-100" onClick={() => login()}>{submitLoader ? <ButtonSpinner /> : ""} <span className="ml-2">Sign in</span></button>
+                  <button className="btn btn-primary w-100" onClick={() => submit()}>{submitLoader ? <ButtonSpinner /> : ""} <span className="ml-2">Submit</span></button>
                  
                
             </div>

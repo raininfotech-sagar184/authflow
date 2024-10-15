@@ -153,7 +153,8 @@ export function encryption_key(type) {
     userNftId: "WtAqO0jTZYuEZ1T3fJ7cX9aBwjGwikhM",
     userId: "Z7u8NHiR9QKVGFQ1JKBgqTED0Vqp2HxE",
     userPasswordKey: "bvNq3vA6qm5JWUPN8NWpet7goippnio8",
-    subscriptionId: "5CwEWXZXY02fXQZEaBqRXzyi2X1iE3UB"
+    subscriptionId: "5CwEWXZXY02fXQZEaBqRXzyi2X1iE3UB",
+    token: "5CwEWXZXY02fXQZEaBqRXzyi2X1iE3UB"
   }
   return data[type]
 }
@@ -162,15 +163,15 @@ export function chk_otp(str) {
   if (!str) {
     throw "Enter 2FA OTP"
   } else if (!/^[0-9]{6}$/.test(str)) {
-    throw "Enter valid 6 digits 2FA OTP"
+    throw "Enter valid 6 digits google authentication OTP"
   }
 }
 
-// export function chk_confirm_password(pwd, cpwd) {
-//   if (pwd !== cpwd) {
-//     throw "Password and confirm password must be same"
-//   }
-// }
+export function chk_confirm_password(pwd, cpwd) {
+  if (pwd !== cpwd) {
+    throw "Password and confirm password must be same"
+  }
+}
 
 // export function chk_valid_title(str, prefix) {
 //   if (!/^[0-9A-Za-z .,]+$/.test(str)) {

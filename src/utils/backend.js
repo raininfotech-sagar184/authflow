@@ -7,10 +7,12 @@ const speakeasy = require("speakeasy");
 
 // const Mailjet = require('node-mailjet')
 const fs = require('fs');
-const jwt = require('jsonwebtoken'); 
-// const { passDec, encryption_key, get_timestemp, to_float, strGenerator } = require('../utils/Common')
-// const privateKey = fs.readFileSync('./utils/pem/private.key');
-// const publicKey = fs.readFileSync('./utils/pem/public.key');
+const jwt = require('jsonwebtoken');  
+const path = require('path'); 
+// const privateKeyPath = path.resolve(__dirname, '../utils/pem/private.key'); 
+// const privateKey = fs.readFileSync(privateKeyPath, 'utf8'); 
+// const publicKeyPath = path.resolve(__dirname, '../utils/pem/public.key'); 
+// const publicKey = fs.readFileSync(publicKeyPath, 'utf8');  
 
 
 // import { session } from '../utils/session';
@@ -88,10 +90,8 @@ const jwt = require('jsonwebtoken');
 // 	})
 // }
 
-export async function recaptcha(token) {
-	return true
-	const secret = process.env.SECRET_KEY;
-	console.log("secret", secret)
+export async function recaptcha(token) { 
+	const secret = process.env.SECRET_KEY; 
 	const response = await fetch(`https://www.google.com/recaptcha/api/siteverify?secret=${secret}&response=${token}`, {
 		method: "POST",
 	});
@@ -393,13 +393,24 @@ async function send_mail(email, subject, mailData) {
 		if (true) {
 			console.log("innnn");
 			const mailer = require('nodemailer')
-			const transporter = mailer.createTransport({
-				service: 'gmail',
+			// const transporter = mailer.createTransport({
+			// 	service: 'gmail',
+			// 	auth: {
+			// 		user: process.env.EMAIL_USER,
+			// 		pass:  process.env.EMAIL_PASSWORD,
+			// 	},
+			// })
+
+			// Looking to send emails in production? Check out our Email API/SMTP product!
+			var transporter = mailer.createTransport({
+				host: "sandbox.smtp.mailtrap.io",
+				port: 2525,
 				auth: {
-					user: process.env.EMAIL_USER,
-					pass:  process.env.EMAIL_PASSWORD,
-				},
-			})
+				user: "32d0d116e53319",
+				pass: "5daa617375e5ec"
+				}
+			});
+
 			const mailOptions = {
 				from:process.env.EMAIL_USER,
 				to:'hiheh26081@craftapk.com', //email,
@@ -566,8 +577,9 @@ export async function forgotPasswordMail(email, otp) {
 // 	return false;
 // };
 export function encodeJwtWithPem(param) {
+	console.log('privateKey',param)
 	try {
-		return true //jwt.sign(param, privateKey, { algorithm: 'RS256' });
+		return true// jwt.sign(param, privateKey, { algorithm: 'RS256' });
 	} catch (e) {
 		return ''
 	}

@@ -1,8 +1,7 @@
 import Script from "next/script";
 import Header from '@/components/include/Header'
 import Sidebar from '@/components/include/Sidebar'
-import Footer from "@/components/include/Footer";
-import { Toaster } from "react-hot-toast";
+import Footer from "@/components/include/Footer"; 
 
 export const metadata = {
   title: "Create Next App",
@@ -77,7 +76,7 @@ export default function RootLayout({ children }) {
               {/* <!-- Content wrapper --> */}
               <div className="content-wrapper">
                 {/* <!-- Content --> */}
-                <Toaster position="top-right" />
+               
                 {children}
                 {/* <!-- / Content --> */}
 

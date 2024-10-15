@@ -11,7 +11,7 @@ export async function middleware(request) {
     }
   } else {
     if (!authData?.email) {
-      if (!['forgot-password'].includes(request.nextUrl.pathname.split('/').pop())) {
+      if (!['forgot-password','reset-password'].includes(request.nextUrl.pathname.split('/').pop())) {
         return NextResponse.redirect(new URL('/' + process.env.ADMFLDR, request.url))
       } 
     }

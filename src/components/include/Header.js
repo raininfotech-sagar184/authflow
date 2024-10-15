@@ -1,9 +1,11 @@
 'use client'
 import { signOut } from "next-auth/react" 
 import { useRouter } from "next/navigation"
+import { useState } from "react"
 
  
 export default function Header() {
+  const [dropShow, setDropShow] = useState(false)
   const router = useRouter()
   const logout = async () => {
     const data = await signOut({ redirect: false, callbackUrl: '/' + process.env.ADMFLDR })
@@ -200,7 +202,7 @@ export default function Header() {
             <li className="nav-item dropdown-notifications navbar-dropdown dropdown me-3 me-xl-2">
               <a
                 className="nav-link btn btn-text-secondary btn-icon rounded-pill dropdown-toggle hide-arrow"
-                href="javascript:void(0);"
+                onClick={() => setDropShow(!dropShow)}
                 data-bs-toggle="dropdown"
                 data-bs-auto-close="outside"
                 aria-expanded="false">
@@ -209,7 +211,7 @@ export default function Header() {
                   <span className="badge rounded-pill bg-danger badge-dot badge-notifications border"></span>
                 </span>
               </a>
-              <ul className="dropdown-menu dropdown-menu-end p-0">
+              <ul className={`dropdown-menu dropdown-menu-end p-0 `}>
                 <li className="dropdown-menu-header border-bottom">
                   <div className="dropdown-header d-flex align-items-center py-3">
                     <h6 className="mb-0 me-auto">Notification</h6>
@@ -452,14 +454,16 @@ export default function Header() {
             {/* <!-- User --> */}
             <li className="nav-item navbar-dropdown dropdown-user dropdown">
               <a
-                className="nav-link dropdown-toggle hide-arrow p-0"
-                href="javascript:void(0);"
-                data-bs-toggle="dropdown">
+                className={`nav-link dropdown-toggle hide-arrow p-0  ${dropShow ? 'show' : ''}`}
+                onClick={() => setDropShow(!dropShow)}
+                data-bs-toggle="dropdown"
+                aria-expanded={dropShow?"true":"false"}
+                >
                 <div className="avatar avatar-online">
                   <img src="../../assets/img/avatars/1.png" alt className="rounded-circle" />
                 </div>
-              </a>
-              <ul className="dropdown-menu dropdown-menu-end">
+              </a> 
+              <ul className={`dropdown-menu dropdown-menu-end p-0  ${dropShow ? 'show' : ''}`} data-bs-popper="static">
                 <li>
                   <a className="dropdown-item mt-0" href="pages-account-settings-account.html">
                     <div className="d-flex align-items-center">

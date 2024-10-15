@@ -2,7 +2,8 @@
 // import fs from "fs"; 
 
 import { cookies, headers } from 'next/headers'
-import { sql_query } from './dbconnect';
+import { sql_query } from './dbconnect'; 
+import { getToken } from 'next-auth/jwt';
 const speakeasy = require("speakeasy");
 
 // const Mailjet = require('node-mailjet')
@@ -22,22 +23,23 @@ const path = require('path');
 // import web3 from 'web3'
 
 
-// export async function check_admin_login(req) {
-// 	let id = null, status = false
-// 	try {
-// 		let authData = await getToken({ req: req })
-// 		if (authData && authData.email && authData.id) {
-// 			let admin = await sql_query("select email,adminId from tblexAdmin where email = ? AND adminId = ? ", [authData.email, authData.id])
-// 			if (admin) {
-// 				id = admin.adminId
-// 				status = true
-// 			}
-// 		}
-// 	} catch (e) {
-// 		console.log("admin login==>", e)
-// 	}
-// 	return { status: status, data: { id: id } }
-// }
+export async function check_admin_login(req) { 
+	let id = null, status = false
+	try {
+		let authData = await getToken({ req: req })
+		console.log({authData})
+		if (authData && authData.email && authData.id) {
+			let admin = await sql_query("select email,adminId from tblAdmin where email = ? AND adminId = ? ", [authData.email, authData.id])
+			if (admin) {
+				id = admin.adminId
+				status = true
+			}
+		}
+	} catch (e) {
+		console.log("admin login==>", e)
+	}
+	return { status: status, data: { id: id } }
+}
 
 // export const setCookie_ = (key, data, isBackend = true) => {
 // 	cookies().set({

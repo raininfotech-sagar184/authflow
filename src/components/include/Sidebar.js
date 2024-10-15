@@ -128,9 +128,16 @@ const Sidebar = () => {
                             <div >Package List</div>
                         </Link>
                     </li>
-
-
-
+                    {/* <!-- Package --> */}
+                    <li className="menu-header small">
+                        <span className="menu-header-text">Setting</span>
+                    </li>
+                    <li className={`menu-item ${path === '/configuration' ? 'active' : ''}`}>
+                        <Link href={`/${process.env.ADMFLDR}/configuration`}className="menu-link">
+                            <i className="menu-icon ti ti-settings"></i>
+                            <div >Configuration</div>
+                        </Link>
+                    </li> 
                     {/* <!-- Setting --> */}
                     <li className="menu-header small">
                         <span className="menu-header-text">Setting</span>

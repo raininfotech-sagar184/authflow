@@ -246,3 +246,12 @@ width: 20% !important;
  .validPassText {
   font-family: fangsong !important;
 }
+
+.validationBox {
+  flex-wrap: wrap !important;
+}
+.password-validation-span {
+  display: grid;
+  grid-template-columns: 1fr 1fr; 
+  font-size: 13px;
+}

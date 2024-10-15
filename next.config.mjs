@@ -13,6 +13,10 @@ const nextConfig = {
         FILTER_MONTH: "36",
         // IMAGE_PREVIEW: process.env.IMAGE_PREVIEW,
         SITE_KEY: process.env.SITE_KEY,
+        EMAIL_USER: process.env.EMAIL_USER,
+        EMAIL_PASSWORD: process.env.EMAIL_PASSWORD,
+        EMAIL: process.env.EMAIL,
+        EMAIL_NAME: process.env.EMAIL_NAME,
         // SECRET_KEY: process.env.SECRET_KEY,
     }
 };

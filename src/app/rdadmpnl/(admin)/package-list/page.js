@@ -227,7 +227,7 @@ export default function UserList() {
                                 <input placeholder='Search...' className="form-control" value={search} onChange={(e) => setSearch(e.target.value)} />
                             </div>
                         </div>
-                        <div className='col-xl-3 col-lg-4 col-md-6 col-12 align-self-end d-flex justify-content-between   pb-3'>
+                        <div className='col-xl-3 col-lg-4 col-md-6 col-12 align-self-end buttonsGroup   pb-3'>
                             <div className="form-group text-center">
                                 <button className="btn btn-primary waves-effect  waves-light" onClick={() => { searchList() }}>{searchLdr ? <Loader /> : ""} Search</button>
                             </div>
@@ -306,7 +306,7 @@ export default function UserList() {
                             <tbody className="table-border-bottom-0">
                                 {userList && !searchLdr ? userList.map((data, index) => {
                                     return (
-                                        <tr>
+                                        <tr key={index}>
                                             <td>
                                                 <span className="fw-medium">{data.num}</span>
                                             </td>
@@ -380,16 +380,13 @@ export default function UserList() {
                             <div className="col-12">
                                 <label className="form-label">Reward Type</label>
                                 <input type="text" className="form-control" value={packageData.rewarType} placeholder="Enter location url" onChange={(e) => setPackageData({ ...packageData, rewarType: e.target.value })} />
-                            </div>
-
-                             
+                            </div> 
                             <div className="col-12">
                                 <label htmlFor="selectFile" className='cursor-pointer'>
                                     <img src={imageUrl ? imageUrl : '/assets/image/upload-image.png'} className='upload-image' />
                                 </label>
                                 <input type='file' id="selectFile" className='d-none' onChange={(e) => selectFile(e)} />
-                            </div>
-
+                            </div> 
                         </div>
                     </Modal.Body>
                     <Modal.Footer>

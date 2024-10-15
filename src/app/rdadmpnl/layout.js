@@ -28,6 +28,7 @@ export default function RootLayout({ children }) {
   
       {/* <!-- Favicon --> */}
       <link rel="icon" type="image/x-icon" href="/assets/img/favicon/favicon.ico" />
+      <link rel="stylesheet" href="/assets/vendor/fonts/tabler-icons.css" />
   
       {/* <!-- Fonts --> */}
       <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -37,8 +38,9 @@ export default function RootLayout({ children }) {
         rel="stylesheet" />
  
   
-      {/* <!-- Core CSS --> */}
-  
+      {/* <!-- Core CSS --> */} 
+
+      <link rel="stylesheet" href="/assets/css/demo.css" />
       <link rel="stylesheet" href="/assets/vendor/css/rtl/core.css" className="template-customizer-core-css" />
       <link rel="stylesheet" href="/assets/vendor/css/rtl/theme-default.css" className="template-customizer-theme-css" /> 
   

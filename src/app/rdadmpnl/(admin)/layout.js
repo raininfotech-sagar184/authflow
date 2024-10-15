@@ -29,13 +29,10 @@ export default function RootLayout({ children }) {
           rel="stylesheet" />
 
         {/* <!-- Icons --> */}
-        <link rel="stylesheet" href="/assets/vendor/fonts/fontawesome.css" />
-        <link rel="stylesheet" href="/assets/vendor/fonts/tabler-icons.css" />
+        <link rel="stylesheet" href="/assets/vendor/fonts/fontawesome.css" /> 
         <link rel="stylesheet" href="/assets/vendor/fonts/flag-icons.css" />
 
-        {/* <!-- Core CSS --> */}
-
-        <link rel="stylesheet" href="/assets/css/demo.css" />
+      
 
         {/* <!-- Vendors CSS --> */}
         <link rel="stylesheet" href="/assets/vendor/libs/node-waves/node-waves.css" />
@@ -50,14 +47,14 @@ export default function RootLayout({ children }) {
         {/* <!-- Page CSS --> */}
 
         {/* <!-- Helpers --> */}
-        <Script src="/assets/vendor/js/helpers.js"></Script>
+        {/* <Script src="/assets/vendor/js/helpers.js"></Script> */}
         {/* <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section --> */}
 
         {/* <!--? Template customizer: To hide customizer set displayCustomizer value false in config.js.  --> */}
-        <Script src="/assets/vendor/js/template-customizer.js"></Script>
+        {/* <Script src="/assets/vendor/js/template-customizer.js"></Script> */}
 
         {/* <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  --> */}
-        <Script src="/assets/js/config.js"></Script>
+        {/* <Script src="/assets/js/config.js"></Script> */}
       </head>
 
       <body>
@@ -106,7 +103,7 @@ export default function RootLayout({ children }) {
         {/* <!-- Core JS --> */}
         {/* <!-- build:js assets/vendor/js/core.js --> */}
 
-        <Script src="/assets/vendor/libs/jquery/jquery.js"></Script>
+        {/* <Script src="/assets/vendor/libs/jquery/jquery.js"></Script>
         <Script src="/assets/vendor/libs/popper/popper.js"></Script>
         <Script src="/assets/vendor/js/bootstrap.js"></Script>
         <Script src="/assets/vendor/libs/node-waves/node-waves.js"></Script>
@@ -114,19 +111,19 @@ export default function RootLayout({ children }) {
         <Script src="/assets/vendor/libs/hammer/hammer.js"></Script>
         <Script src="/assets/vendor/libs/i18n/i18n.js"></Script>
         <Script src="/assets/vendor/libs/typeahead-js/typeahead.js"></Script>
-        <Script src="/assets/vendor/js/menu.js"></Script>
+        <Script src="/assets/vendor/js/menu.js"></Script> */}
 
         {/* <!-- endbuild --> */}
 
         {/* <!-- Vendors JS --> */}
-        <Script src="/assets/vendor/libs/apex-charts/apexcharts.js"></Script>
-        <Script src="/assets/vendor/libs/datatables-bs5/datatables-bootstrap5.js"></Script>
+        {/* <Script src="/assets/vendor/libs/apex-charts/apexcharts.js"></Script>
+        <Script src="/assets/vendor/libs/datatables-bs5/datatables-bootstrap5.js"></Script> */}
 
         {/* <!-- Main JS --> */}
-        <Script src="/assets/js/main.js"></Script>
+        {/* <Script src="/assets/js/main.js"></Script> */}
 
         {/* <!-- Page JS --> */}
-        <Script src="/assets/js/app-ecommerce-dashboard.js"></Script>
+        {/* <Script src="/assets/js/app-ecommerce-dashboard.js"></Script> */}
       </body>
     </html>
   );

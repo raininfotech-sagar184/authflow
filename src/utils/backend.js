@@ -1,7 +1,18 @@
 // /* Use only Common function which is relivent to databse */
-// import fs from "fs";
+// import fs from "fs"; 
+
 import { cookies, headers } from 'next/headers'
 import { sql_query } from './dbconnect';
+const speakeasy = require("speakeasy");
+
+// const Mailjet = require('node-mailjet')
+const fs = require('fs');
+const jwt = require('jsonwebtoken'); 
+// const { passDec, encryption_key, get_timestemp, to_float, strGenerator } = require('../utils/Common')
+// const privateKey = fs.readFileSync('./utils/pem/private.key');
+// const publicKey = fs.readFileSync('./utils/pem/public.key');
+
+
 // import { session } from '../utils/session';
 // import { getToken } from "next-auth/jwt"
 // import { sql_query } from "./dbconnect"
@@ -133,75 +144,75 @@ export async function file_get_contents(uri) {
 	return ress
 }
 
-export async function setLoginHistory(userId, userType, isMobile = 0) {
-	try {
-		let headersList = headers()
-		let useragent = headersList.get('user-agent')
-		let clientIP = (headersList.get('x-forwarded-for') || '').split(',').shift().trim() || '-'
-		let browser_array = [{ name: "msie", value: "Internet Explorer" }, { name: "firefox", value: "Firefox" }, { name: "safari", value: "Safari" }, { name: "chrome", value: "Chrome" }, { name: "edge", value: "Edge" }, { name: "opera", value: "Opera" }, { name: "netscape", value: "Netscape" }, { name: "maxthon", value: "Maxthon" }, { name: "konqueror", value: "Konqueror" }, { name: "mobile", value: "Handheld Browser" },]
-		let browserName = ""
-		browser_array.map((c, k) => {
-			if (useragent.match(c.name) || useragent.toLowerCase().match(c.name)) {
-				browserName = c.value
-			}
-		})
-		let os_array = [{ name: "windows nt 10", value: "Windows 10" }, { name: "windows nt 6.3", value: "Windows 8.1" }, { name: "windows nt 6.2", value: "Windows 8" }, { name: "windows nt 6.1/i", value: "Windows 7" }, { name: "windows nt 6.0", value: "Windows Vista" }, { name: "windows nt 5.2", value: "Windows Server 2003/XP x64" }, { name: "windows nt 5.1", value: "Windows XP" }, { name: "windows xp", value: "Windows XP" }, { name: "windows nt 5.0", value: "Windows 2000" }, { name: "windows me", value: "Windows ME" }, { name: "win98", value: "Windows 98" }, { name: "android", value: "Android" }, { name: "blackberry", value: "BlackBerry" }, { name: "webos", value: "Mobile" }, { name: 'macintosh|mac os x', value: 'Mac OS X' }, { name: 'mac_powerpc', value: 'Mac OS 9' }, { name: 'linux', value: 'Linux' }, { name: 'ubuntu', value: 'Ubuntu' }, { name: 'iphone', value: 'iPhone' }, { name: 'ipod', value: 'iPod' }, { name: 'ipad', value: 'iPad' }]
-		let osName = ""
-		os_array.map((c, k) => {
-			if (useragent.match(c.name) || useragent.toLowerCase().match(c.name)) {
-				osName = c.value
-			}
-		})
-		let parentOS = ""
-		if (useragent.indexOf("Win") != -1) {
-			parentOS = "Window";
-		} else if (useragent.indexOf("Android") != -1) {
-			parentOS = "Android";
-		} else if (useragent.indexOf("Linux") != -1) {
-			parentOS = "Linux";
-		} else if (useragent.indexOf("Ubuntu") != -1) {
-			parentOS = "Ubuntu";
-		} else if (
-			useragent.indexOf("iphone") != -1 ||
-			useragent.indexOf("ipod") != -1 ||
-			useragent.indexOf("ipad") != -1
-		) {
-			parentOS = "IOS";
-		} else if (useragent.indexOf("Blackberry") != -1) {
-			parentOS = "Blackberry";
-		} else if (useragent.indexOf("Webos") != -1) {
-			parentOS = "Mobile";
-		} else if (useragent.indexOf("Mac") != -1) {
-			parentOS = "Mac";
-		}
-		let location = {}
-		let rs = await file_get_contents("http://ip-api.com/json/" + clientIP)
-		if (rs) {
-			let location_arr = JSON.parse(rs);
-			location = {
-				city: Object.hasOwn(location_arr, "city") ? location_arr.city : "",
-				regionName: Object.hasOwn(location_arr, "regionName")
-					? location_arr.regionName
-					: "",
-				country: Object.hasOwn(location_arr, "country")
-					? location_arr.country
-					: "",
-				lat: Object.hasOwn(location_arr, "lat") ? location_arr.lat : "",
-				lon: Object.hasOwn(location_arr, "lon") ? location_arr.lon : "",
-				timezone: Object.hasOwn(location_arr, "timezone")
-					? location_arr.timezone
-					: "",
-				zip: Object.hasOwn(location_arr, "zip") ? location_arr.zip : "",
-			}
-		}
-		let loc = location ? JSON.stringify(location) : {}
-		let time = Math.floor(Date.now() / 1000)
-		let data = [userId, useragent, browserName, clientIP, osName, parentOS, userType, isMobile, loc, time]
-		await sql_query("insert into tblloginHistory (userId,userAgent,browserName,clientIP,oSName,parentOS,userType,isMobile,location,loginDate) values (?,?,?,?,?,?,?,?,?,?)", data)
-	} catch (e) {
-		console.log("setLoginHistory===>", e.message)
-	}
-}
+// export async function setLoginHistory(userId, userType, isMobile = 0) {
+// 	try {
+// 		let headersList = headers()
+// 		let useragent = headersList.get('user-agent')
+// 		let clientIP = (headersList.get('x-forwarded-for') || '').split(',').shift().trim() || '-'
+// 		let browser_array = [{ name: "msie", value: "Internet Explorer" }, { name: "firefox", value: "Firefox" }, { name: "safari", value: "Safari" }, { name: "chrome", value: "Chrome" }, { name: "edge", value: "Edge" }, { name: "opera", value: "Opera" }, { name: "netscape", value: "Netscape" }, { name: "maxthon", value: "Maxthon" }, { name: "konqueror", value: "Konqueror" }, { name: "mobile", value: "Handheld Browser" },]
+// 		let browserName = ""
+// 		browser_array.map((c, k) => {
+// 			if (useragent.match(c.name) || useragent.toLowerCase().match(c.name)) {
+// 				browserName = c.value
+// 			}
+// 		})
+// 		let os_array = [{ name: "windows nt 10", value: "Windows 10" }, { name: "windows nt 6.3", value: "Windows 8.1" }, { name: "windows nt 6.2", value: "Windows 8" }, { name: "windows nt 6.1/i", value: "Windows 7" }, { name: "windows nt 6.0", value: "Windows Vista" }, { name: "windows nt 5.2", value: "Windows Server 2003/XP x64" }, { name: "windows nt 5.1", value: "Windows XP" }, { name: "windows xp", value: "Windows XP" }, { name: "windows nt 5.0", value: "Windows 2000" }, { name: "windows me", value: "Windows ME" }, { name: "win98", value: "Windows 98" }, { name: "android", value: "Android" }, { name: "blackberry", value: "BlackBerry" }, { name: "webos", value: "Mobile" }, { name: 'macintosh|mac os x', value: 'Mac OS X' }, { name: 'mac_powerpc', value: 'Mac OS 9' }, { name: 'linux', value: 'Linux' }, { name: 'ubuntu', value: 'Ubuntu' }, { name: 'iphone', value: 'iPhone' }, { name: 'ipod', value: 'iPod' }, { name: 'ipad', value: 'iPad' }]
+// 		let osName = ""
+// 		os_array.map((c, k) => {
+// 			if (useragent.match(c.name) || useragent.toLowerCase().match(c.name)) {
+// 				osName = c.value
+// 			}
+// 		})
+// 		let parentOS = ""
+// 		if (useragent.indexOf("Win") != -1) {
+// 			parentOS = "Window";
+// 		} else if (useragent.indexOf("Android") != -1) {
+// 			parentOS = "Android";
+// 		} else if (useragent.indexOf("Linux") != -1) {
+// 			parentOS = "Linux";
+// 		} else if (useragent.indexOf("Ubuntu") != -1) {
+// 			parentOS = "Ubuntu";
+// 		} else if (
+// 			useragent.indexOf("iphone") != -1 ||
+// 			useragent.indexOf("ipod") != -1 ||
+// 			useragent.indexOf("ipad") != -1
+// 		) {
+// 			parentOS = "IOS";
+// 		} else if (useragent.indexOf("Blackberry") != -1) {
+// 			parentOS = "Blackberry";
+// 		} else if (useragent.indexOf("Webos") != -1) {
+// 			parentOS = "Mobile";
+// 		} else if (useragent.indexOf("Mac") != -1) {
+// 			parentOS = "Mac";
+// 		}
+// 		let location = {}
+// 		let rs = await file_get_contents("http://ip-api.com/json/" + clientIP)
+// 		if (rs) {
+// 			let location_arr = JSON.parse(rs);
+// 			location = {
+// 				city: Object.hasOwn(location_arr, "city") ? location_arr.city : "",
+// 				regionName: Object.hasOwn(location_arr, "regionName")
+// 					? location_arr.regionName
+// 					: "",
+// 				country: Object.hasOwn(location_arr, "country")
+// 					? location_arr.country
+// 					: "",
+// 				lat: Object.hasOwn(location_arr, "lat") ? location_arr.lat : "",
+// 				lon: Object.hasOwn(location_arr, "lon") ? location_arr.lon : "",
+// 				timezone: Object.hasOwn(location_arr, "timezone")
+// 					? location_arr.timezone
+// 					: "",
+// 				zip: Object.hasOwn(location_arr, "zip") ? location_arr.zip : "",
+// 			}
+// 		}
+// 		let loc = location ? JSON.stringify(location) : {}
+// 		let time = Math.floor(Date.now() / 1000)
+// 		let data = [userId, useragent, browserName, clientIP, osName, parentOS, userType, isMobile, loc, time]
+// 		await sql_query("insert into tblloginHistory (userId,userAgent,browserName,clientIP,oSName,parentOS,userType,isMobile,location,loginDate) values (?,?,?,?,?,?,?,?,?,?)", data)
+// 	} catch (e) {
+// 		console.log("setLoginHistory===>", e.message)
+// 	}
+// }
 
 export async function get_price_data(tik) {
 	try {
@@ -360,3 +371,256 @@ export async function get_price_data(tik) {
 // 	}
 // 	return status
 // }
+
+
+ 
+
+ 
+ 
+
+async function send_mail(email, subject, mailData) { 
+	try {
+		mailData = {
+			...mailData,
+			logo: process.env.FRONT_URL + '/assets/images/logo/logo.png',
+			baseUrl: process.env.FRONT_URL,
+			image: mailData.image ? process.env.FRONT_URL + '/assets/images/mail/' + mailData.image : '',
+			sitename: process.env.SITENAME
+		}
+
+		const ejs = require('ejs')
+		const template = fs.readFileSync('mail.html', { encoding: 'utf-8' })
+		if (true) {
+			console.log("innnn");
+			const mailer = require('nodemailer')
+			const transporter = mailer.createTransport({
+				service: 'gmail',
+				auth: {
+					user: process.env.EMAIL_USER,
+					pass:  process.env.EMAIL_PASSWORD,
+				},
+			})
+			const mailOptions = {
+				from:process.env.EMAIL_USER,
+				to:'hiheh26081@craftapk.com', //email,
+				subject: subject,
+				html: ejs.render(template, mailData),
+			}
+			transporter.sendMail(mailOptions, function (error, info) {
+				if (error) {
+				} else {
+				}
+			});
+			return true
+		} else {
+			let data = {
+				From: process.env.EMAIL_USER,
+				To: email,
+				Subject: subject,
+				HtmlBody: ejs.render(template, mailData),
+				MessageStream: "outbound"
+			}
+			let mld = await fetch("https://api.postmarkapp.com/email", {
+				method: 'POST',
+				body: JSON.stringify(data),
+				headers: {
+					'Accept': 'application/json',
+					'Content-Type': 'application/json',
+					'X-Postmark-Server-Token': process.env.EMAIL_PASSWORD
+				}
+			})
+			let mlData = await mld.json()
+			console.log("send mail function--", mlData, mlData?.ErrorCode);
+			if (mlData?.ErrorCode == 0) {
+				return true
+			} else {
+				return false
+			}
+		}
+	} catch (e) {
+		console.log("send mail function--", e);
+		return false
+	}
+}
+// async function verifyemail(email, otp, st = 0) {
+// 	try {
+// 		let res = await send_mail(email, 'Email Verification', {
+// 			des: `<div>Thank you for taking the time to verify your email address with us. Your security is paramount, and this additional step helps us ensure that your account remains safe and accessible only to you.</div>
+// 			<div style="margin-top: 10px;">To complete the verification process, please enter the OTP (One-Time Password) code provided below:</div>`,
+// 			des1: `<div style="margin-top: 10px;>Once entered, you’ll gain immediate access to your account, where you can continue to enjoy our services with peace of mind. If you haven’t requested this OTP, please contact our support team immediately.</div>
+// 			<div style="margin-top: 10px;">We appreciate your attention to this matter and look forward to continuing to serve you. Should you have any questions or need further assistance, please don't hesitate to reach out</div>`,
+// 			desc1Style: "block",
+// 			title1: "Email Verification",
+// 			title: "Email Verification",
+// 			titleStyle: "block",
+// 			image: "send-otp.png",
+// 			otp: otp,
+// 			otpStyle: 'block'
+// 		})
+// 		return res
+// 	} catch (e) {
+// 	}
+// 	return false
+// }
+// export async function resendOtpMail(email, otp, title) {
+// 	try {
+// 		let res = await send_mail(email, title, {
+// 			des: `<div>Your request to resend the OTP was successful. Please find the new OTP code below to complete the verification process:</div>`,
+// 			des1: `<div style="margin-top: 10px;">If you did not request a new OTP, please contact our support team immediately.</div>`,
+// 			desc1Style: "block",
+// 			title1: title,
+// 			title: title,
+// 			titleStyle: "block",
+// 			image: "resend-otp.png",
+// 			otp: otp,
+// 			otpStyle: 'block'
+// 		})
+// 		return res
+// 	} catch (e) {
+// 	}
+// 	return false
+// }
+
+// async function sendverificationmail(email) {
+// 	try {
+// 		let res = await send_mail(email, 'Email Verified', {
+// 			des: `<div>We are delighted to inform you that your email address has been successfully verified! This additional step ensures the security of your account and allows us to keep you updated with important information.</div>
+// 			<div style="margin-top: 10px;">You can now fully enjoy all the benefits of our services. Whether you're exploring new features, receiving updates, or managing your account settings, rest assured that your verified email will serve as a secure channel for communication.</div>
+// 			<div style="margin-top: 10px;">Thank you for verifying your email address with us. Should you have any questions or need assistance, feel free to reach out to our support team. We're here to help!</div>`,
+// 			des1: "",
+// 			desc1Style: "none",
+// 			title1: "Email Verified",
+// 			title: "",
+// 			titleStyle: "none",
+// 			image: "verify-email.png",
+// 			otp: "",
+// 			otpStyle: 'none'
+// 		})
+// 		return res
+// 	} catch (e) {
+// 	}
+// 	return false
+// }
+
+
+export async function forgotPasswordMail(email, otp) {
+	try {
+		let res = await send_mail(email, 'Forgot password', {
+			des: `<span>We understand that occasionally passwords slip our minds. It’s more common than you might think, and we're here to make the process of resetting it as smooth and secure as possible.</span>
+			<div style="margin-top: 10px; margin-bottom: 10px;">Your online security is our top priority, and we're committed to ensuring you have easy access to your account whenever you need it.</div>
+			<span>Using Below OTP you can reset password.</span>`,
+			des1: "",
+			desc1Style: "none",
+			title1: "Forgot password?",
+			title: "",
+			titleStyle: "block",
+			image: "forgot-password.png",
+			otp: otp,
+			otpStyle: 'block',
+
+		})
+		return res
+	} catch (e) {
+	}
+	return false
+}
+
+
+
+// async function check_user_login(req) {
+// 	try {
+// 		let token = req.headers.authorization ? req.headers.authorization.split(' ')[1] : ''
+// 		let userdata = decodeJwtWithPem(token)
+// 		if (userdata.email && userdata.password) {
+// 			let getUserData = await sql_query(`select u.userId,password,userName,walletAddress,u.countryId FROM tbluser as u , tbluserDetailOfSolares as ud WHERE u.userId=ud.userId AND email = ? AND password = ?`, [userdata.email, userdata.password])
+// 			if (getUserData && passDec(userdata.password, encryption_key('passwordKey')) == passDec(getUserData.password, encryption_key('passwordKey'))) {
+// 				return { status: true, data: { userId: getUserData.userId, userName: getUserData.userName, walletAddress: getUserData?.walletAddress } }
+// 			}
+// 		}
+// 	} catch (e) {
+// 		console.log('check_user_login=>', e)
+// 	}
+// 	return { status: false, data: {} }
+// }
+
+// async function genrate_reffral_code() {
+// 	let generatedStr = strGenerator(8)
+// 	const randIndex = Math.floor(Math.random() * 5);
+// 	let cnt = await sql_query(`SELECT userId FROM tbluser`, [], "Count");
+// 	cnt++;
+// 	let refcode = (generatedStr.substr(0, randIndex) + cnt.toString().slice(-3) + generatedStr.substr(randIndex + (cnt.toString().slice(-3)).length)).substr(-6)
+// 	return refcode
+// }
+
+// async function validate_2fa(key, otp) {
+// 	try {
+// 		const status = speakeasy.totp.verify({
+// 			secret: key,
+// 			encoding: "base32",
+// 			token: otp,
+// 		});
+// 		return status;
+// 	} catch (e) {
+// 		console.error("Error validating 2FA:", e);
+// 	}
+// 	return false;
+// };
+export function encodeJwtWithPem(param) {
+	try {
+		return true //jwt.sign(param, privateKey, { algorithm: 'RS256' });
+	} catch (e) {
+		return ''
+	}
+}
+
+export function decodeJwtWithPem(token) {
+	try {
+		return true //jwt.verify(token, publicKey);
+	} catch (edge) {
+		return ''
+	}
+}
+
+// async function getSlrConfig(keys) {
+// 	let data = await sql_query("SELECT metaKey,metaValue from tblslr_config where metaKey IN(?)", [keys], 'Multi')
+// 	let returnData = {}
+// 	if (data.length) {
+// 		for (let a of data) {
+// 			returnData[a.metaKey] = a.metaValue
+// 		}
+// 	}
+// 	return returnData
+// }
+
+
+// async function sendMembershipVoucherMail(email, voucherData) {
+// 	let jokerContent = voucherData.hasJokerNFT
+// 		? `<div style="margin-top: 10px;">As a special gift, you have also received a <strong style="color: #4cc9f0; font-weight: 700;">${voucherData.serialName}</strong> NFT free of cost!</div>`
+// 		: "";
+
+// 	let res;
+// 	try {
+// 		res = await send_mail(email, 'Active Membership', {
+// 			des: `<span>Thank you for activating your membership!</span>
+//                   <div style="margin-top: 10px; margin-bottom: 10px;">As part of your membership, you have received a voucher code that offers a ${voucherData.discount}% discount on the purchase of ${voucherData.noOfNft} NFT from the ${process?.env?.NFT21SITE} website.</div>
+//                   <span>Your voucher code: <strong style="color: #4cc9f0; font-weight: 700;">${voucherData.voucherCode}</strong></span>
+//                   <div style="margin-top: 10px;">Please note, the voucher is valid for ${voucherData.validMonth} months from the date of this email.</div>
+//                 ${jokerContent}
+// 				<div style="margin-top: 15px;">Use this code on your next NFT purchase.</div>`,
+// 			des1: "",
+// 			desc1Style: "none",
+// 			title1: "Active Membership",
+// 			title: "",
+// 			titleStyle: "block",
+// 			image: "membership-voucher.png",
+// 			otp: voucherData.voucherCode,
+// 			otpStyle: 'none',
+// 		});
+// 		return res;
+// 	} catch (e) {
+// 		return false;
+// 	}
+// }
+
+
+ 

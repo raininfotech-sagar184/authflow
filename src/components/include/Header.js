@@ -9,16 +9,21 @@ export default function Header() {
     const data = await signOut({ redirect: false, callbackUrl: '/' + process.env.ADMFLDR })
     router.push('/' + process.env.ADMFLDR)
   }
-
+  function toggleMenuClass() {
+    const htmlTag = document.documentElement;  
+      if (!htmlTag.classList.contains('layout-menu-expanded')) {
+        htmlTag.classList.add('layout-menu-expanded');
+      } 
+    }
   return (
     <>
     <nav
         className="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme"
         id="layout-navbar">
         <div className="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
-          <a className="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)">
+          <span className="nav-item nav-link px-0 me-xl-4 cursor-pointer"  onClick={toggleMenuClass}>
             <i className="ti ti-menu-2 ti-md"></i>
-          </a>
+          </span>
         </div>
 
         <div className="navbar-nav-right d-flex align-items-center" id="navbar-collapse">

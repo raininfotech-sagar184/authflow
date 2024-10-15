@@ -145,6 +145,7 @@ export function get_timestemp() {
 export function encryption_key(type) {
   let data = {
     ids: "d8sDuFrtSIWDS23fSDEtaG6BjHfjtcmG",
+    otpKey: "d8sDuFrtSIWDS23fSDEtaG6BjHfjtcmG",
     passwordKey: "Ka8muhoHgUhB^G5eR8qq3vgI54^Mccsn",
     twofaKey: "HNdYduYLzoHB3AT3A6NvZf9DRTq9wQXu",
     stakeUserId: "KGVkfq62Lc31ShC5nqTQHeCMtNcmDZc5",
@@ -185,14 +186,14 @@ export function chk_otp(str) {
 //   }
 // }
 
-// export function generateNumeric(a = 6) {
-//   const g = "5468791302";
-//   let r = "";
-//   for (let i = 0; i < a; i++) {
-//     r += g.charAt(Math.floor(Math.random() * g.length));
-//   }
-//   return r;
-// }
+export function generateNumeric(a = 6) {
+  const g = "5468791302";
+  let r = "";
+  for (let i = 0; i < a; i++) {
+    r += g.charAt(Math.floor(Math.random() * g.length));
+  }
+  return r;
+}
 
 export function validateFile(file, type) {
   if (!file) {

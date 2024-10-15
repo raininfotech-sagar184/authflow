@@ -1,19 +1,58 @@
-'use client'
-import { signOut } from "next-auth/react"
+'use client' 
 import Link from "next/link"
-import { useRouter, usePathname } from "next/navigation"
+import {   usePathname } from "next/navigation"
+import { useState } from "react"
 
-const Sidebar = () => {
-    const router = useRouter()
-    const logout = async () => {
-        const data = await signOut({ redirect: false, callbackUrl: '/' + process.env.ADMFLDR })
-        router.push('/' + process.env.ADMFLDR)
-    } 
+const Sidebar = () => { 
+    const [sideBarOpen,setSideBarOpen] = useState(true) 
+    const [sideBarHover,setSideBarHover] = useState(false) 
+    const [subMenu,setSubMenu] = useState({}) 
     const path_ = usePathname()
     const path = path_.split('/rdadmpnl')[1];
+
+    function toggleMenuClass() {
+        const htmlTag = document.documentElement; // Select the <html> tag
+        setSideBarOpen(!sideBarOpen)
+        if (sideBarOpen) {
+          // Add the 'layout-menu-collapsed' class if it doesn't exist
+          if (!htmlTag.classList.contains('layout-menu-collapsed')) {
+            htmlTag.classList.add('layout-menu-collapsed');
+          }
+        } else    {
+          // Remove the 'layout-menu-collapsed' class if it exists
+          if (htmlTag.classList.contains('layout-menu-collapsed')) {
+            htmlTag.classList.remove('layout-menu-collapsed');
+          }
+        }  
+      }
+    function hoverMenuClass() { 
+        if (!sideBarOpen) {
+           const htmlTag = document.documentElement; // Select the <html> tag
+            setSideBarHover(!sideBarHover)
+            if (sideBarHover) { 
+            // Add the 'layout-menu-collapsed' class if it doesn't exist
+            if (!htmlTag.classList.contains('layout-menu-hover')) {
+                htmlTag.classList.add('layout-menu-hover');
+            }
+            } else    { 
+            // Remove the 'layout-menu-hover' class if it exists
+            if (htmlTag.classList.contains('layout-menu-hover')) {
+                htmlTag.classList.remove('layout-menu-hover');
+            }
+            }   
+        } 
+      }
+    function toggleMenuClass2() { 
+        const htmlTag = document.documentElement; // Select the <html> tag  
+          // Remove the 'layout-menu-expanded' class if it exists
+          if (htmlTag.classList.contains('layout-menu-expanded')) {
+            htmlTag.classList.remove('layout-menu-expanded');
+          } 
+        
+        }  
     return (
         <>
-            <aside id="layout-menu" className="layout-menu menu-vertical menu bg-menu-theme">
+            <aside id="layout-menu" className="layout-menu menu-vertical menu bg-menu-theme" onMouseEnter={hoverMenuClass} onMouseLeave={hoverMenuClass}>
                 <div className="app-brand demo">
                     <a href="index.html" className="app-brand-link">
                         <span className="app-brand-logo demo">
@@ -45,10 +84,10 @@ const Sidebar = () => {
                         <span className="app-brand-text demo menu-text fw-bold">Vuexy</span>
                     </a>
 
-                    <a href="javascript:void(0);" className="layout-menu-toggle menu-link text-large ms-auto">
-                        <i className="ti menu-toggle-icon d-none d-xl-block align-middle"></i>
-                        <i className="ti ti-x d-block d-xl-none ti-md align-middle"></i>
-                    </a>
+                    <span  className="layout-menu-toggle menu-link text-large ms-auto" >
+                        <i className="ti menu-toggle-icon d-none d-xl-block align-middle cursor-pointer" onClick={toggleMenuClass}></i>
+                        <i className="ti ti-x d-block d-xl-none ti-md align-middle cursor-pointer" onClick={toggleMenuClass2}></i>
+                    </span>
                 </div>
 
                 <div className="menu-inner-shadow"></div>
@@ -96,8 +135,8 @@ const Sidebar = () => {
                     <li className="menu-header small">
                         <span className="menu-header-text">Setting</span>
                     </li>
-                    <li className={`menu-item`}>
-                        <a href="javascript:void(0);" className="menu-link menu-toggle">
+                    <li className={`menu-item ${subMenu.setting ? 'open' : ''}`}>
+                        <a href="javascript:void(0);" className="menu-link menu-toggle" onClick={()=>setSubMenu({...subMenu,setting:!subMenu.setting})}>
                             <i className="menu-icon tf-icons ti ti-smart-home"></i>
                             <div data-i18n="Dashboards">Setting</div>
                             <div className="badge bg-danger rounded-pill ms-auto">5</div>
@@ -125,13 +164,7 @@ const Sidebar = () => {
                                 </a>
                             </li>
                         </ul>
-                    </li>
-
-
-
-
-
-
+                    </li> 
                 </ul>
             </aside>
         </>

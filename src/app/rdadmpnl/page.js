@@ -1,17 +1,15 @@
 'use client';
 import { signIn } from "next-auth/react"
 import { useRouter } from 'next/navigation'
-import { useRef, useState } from "react"
-import Link from "next/link"
+import { useRef, useState } from "react" 
 import toast from 'react-hot-toast';
 import { chk_otp, validate_string, chk_email, chk_password } from "../../utils/common";
 import { fetchApi } from "../../utils/frondend";
-import Loader from "../../components/include/Loader";
+import  { ButtonSpinner } from "../../components/include/Loader";
 import { useAuthContext } from "../../context/auth";
 import ReCAPTCHA from "react-google-recaptcha";
 
-export default function LoginaPage() {
-
+export default function LoginaPage() { 
   const { setAuthTkn } = useAuthContext();
   const router = useRouter()
   const callbackUrl = "/admsolspnl/dashboard"
@@ -36,8 +34,8 @@ export default function LoginaPage() {
           toast.error(e)
           return false
         }
-        setSubmitLoader(true) 
-        const param = JSON.stringify({ email: email, password: password  })
+        setSubmitLoader(true)
+        const param = JSON.stringify({ email: email, password: password })
         const response = await fetchApi("auth/login", param, "POST")
         setSubmitLoader(false)
         if (response.statusCode === 200) {
@@ -76,7 +74,7 @@ export default function LoginaPage() {
           repchaToken: repchaToken,
           callbackUrl,
         })
-        console.log(`res========`,res)
+        console.log(`res========`, res)
         setSubmitLoader(false)
         if (res.error == "CredentialsSignin") {
           toast.error("Google authentication failed.")
@@ -85,7 +83,7 @@ export default function LoginaPage() {
           setTimeout(() => {
             window.location.reload()
           }, 500);
-          
+
         }
       }
     } catch (e) {
@@ -152,8 +150,8 @@ export default function LoginaPage() {
           {/* <!-- Login --> */}
           <div className="d-flex col-12 col-lg-4 align-items-center authentication-bg p-sm-12 p-6">
             <div className="w-px-400 mx-auto mt-12 pt-5">
-              <h4 className="mb-1">Welcome to Vuexy! 👋</h4>
-              <p className="mb-6">Please sign-in to your account and start the adventure</p>
+              <h4 className="mb-1">Welcome to Nft Store! 👋</h4>
+              <p className="mb-6">Please {!isTwoOpen ? `sign-in to your account` : `varify google authentication and start the adventure`}</p>
               {
                 !isTwoOpen ? <>
                   <div className="mb-6">
@@ -162,21 +160,31 @@ export default function LoginaPage() {
                   </div>
                   <div className="mb-6 form-password-toggle">
                     <label className="form-label" htmlFor="password">Password</label>
-                    <div className="input-group input-group-merge">
-                      <input placeholder="Enter password" type={passwordType} className="form-control" value={password} onChange={(e) => setPassword(e.target.value)} onKeyUp={(e) => e.keyCode == 13 && login()} />
-                      <div className="input-group-append">
-                        <span className="input-group-text"><i className={`ti ti-eye${passwordType === "password" ? "" : ""}`} onClick={() => setPasswordType(passwordType === "password" ? "text" : "password")}></i></span>
-                      </div>
-                    </div>
+                    <div className="input-group input-group-merge has-validation">
+                      <input
+                        id="password"
+                        name="password"
+                        aria-describedby="password"
+                        placeholder="Enter password"
+                        type={passwordType}
+                        className="form-control"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        onKeyUp={(e) => e.keyCode == 13 && login()}
+
+                      />
+                      <span className="input-group-text cursor-pointer" onClick={() => setPasswordType(passwordType === "password" ? "text" : "password")}><i className={`ti ti-eye${passwordType == "password" ? "-off" : ""}`}></i></span>
+                    </div> 
+
                   </div>
                   <div className="my-8">
                     <div className="d-flex justify-content-between">
-                      <a href="auth-forgot-password-cover.html">
+                      <span className="cursor-pointer" onClick={()=>  router.push(process.env.ADMFLDR + '/forgot-password')}>
                         <p className="mb-0">Forgot Password?</p>
-                      </a>
+                      </span>
                     </div>
                   </div>
-                  <button className="btn btn-primary d-grid w-100" onClick={() => login()}>{submitLoader ? <Loader /> : ""} Sign in</button>
+                  <button className="btn btn-primary w-100" onClick={() => login()}>{submitLoader ? <ButtonSpinner /> : ""} <span className="ml-2">Sign in</span></button>
                   <p className="text-center">
                     <span>New on our platform?</span>
                     <a href="auth-register-cover.html">
@@ -185,19 +193,14 @@ export default function LoginaPage() {
                   </p>
                 </> : <>
 
-                  <div className="form-group">
+                  <div className="mb-6">
                     <label className="mb-1"><strong>Google authenticator OTP</strong></label>
                     <input placeholder="Enter google authenticator OTP" type="text" className="form-control" value={otp} onChange={(e) => { setOtp(e.target.value = e.target.value.replace(/[^0-9]/g, "").replace(/(\..*)\./g, "$1")) }} onKeyUp={(e) => e.keyCode == 13 && finalLogin()} maxLength={6} />
                   </div>
                   <div className="text-center">
-                    <button type="button" className="btn btn-bordered-primary waves-effect login-btn waves-light" onClick={() => finalLogin()}>{submitLoader ? `<Loader />` : ""}Verify OTP</button>
+                    <button type="button" className="btn btn-primary w-100" onClick={() => finalLogin()}>{submitLoader ? <ButtonSpinner />  : ""}Verify OTP</button>
                   </div>
-                </>}
-
-
-
-
-
+                </>}  
             </div>
           </div>
           {/* <!-- /Login --> */}
@@ -209,8 +212,7 @@ export default function LoginaPage() {
         size="invisible"
         ref={reRef}
         style={{ display: "none" }}
-      />
-
+      /> 
     </>
   );
 }

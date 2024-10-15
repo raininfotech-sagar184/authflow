@@ -16,7 +16,7 @@ import { getToken } from 'next-auth/jwt'
 const moment = require('moment')
 moment.suppressDeprecationWarnings = true
 
-export default async function UserList() { 
+export default function UserList() { 
     const { setAuthTkn, setPageLoader } = useAuthContext()
     const [order, setOrder] = useState(1)
     const [orderClm, setOrderClm] = useState(0)
@@ -150,13 +150,7 @@ export default async function UserList() {
                 }
             })
         }
-    }
-
- 
- 
- 
-
-    
+    } 
 
     return (
         <> 
@@ -294,7 +288,7 @@ export default async function UserList() {
                             <tbody className="table-border-bottom-0">
                                 {userList && !searchLdr ? userList.map((data, index) => {
                                     return (
-                                        <tr>
+                                        <tr key={index}>
                                             <td>
                                                 <span className="fw-medium">{data.num}</span>
                                             </td>
@@ -345,8 +339,7 @@ export default async function UserList() {
                             </tbody>
                         </table>
                         {userList.length > 0 && !searchLdr ? (
-                            <div className="col-12 pagination-box text-center position-relative justify-content-center d-flex ">
-
+                            <div className="col-12 pagination-box text-center position-relative justify-content-center d-flex "> 
                                 <Pagination
                                     activePage={page}
                                     itemsCountPerPage={10}

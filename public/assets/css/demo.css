@@ -223,3 +223,19 @@ width: 20% !important;
   width: 45px;
   height: 45px;
  }
+
+ /* loader */
+ .sr-only{
+  color: #7fffd400;
+ }
+ .spinner-border{
+  margin-right: 3px;
+ }
+ .btn{
+  text-wrap: nowrap !important;
+ }
+ .buttonsGroup{
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+ }

@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { sql_query } from '../../../../utils/dbconnect';
-// import { check_admin_login } from '../../../../utils/backend';
+import { check_admin_login } from '../../../../utils/backend';
 import { enc, encryption_key, validate_filter_numbers, validate_filter_strings } from '../../../../utils/common';
 import { draftMode } from 'next/headers';
 
@@ -8,16 +8,16 @@ export async function GET(req, res) {
     draftMode().enable()
 
     try {
-        // let adm = await check_admin_login(req)
-        // if (!adm.status || !adm.data.id) {
-        //     return NextResponse.json({ message: "Logout" }, { status: 400 });
-        // }
+        let adm = await check_admin_login(req)
+        if (!adm.status || !adm.data.id) {
+            return NextResponse.json({ message: "Logout" }, { status: 400 });
+        }
         let query = "", filter = [], limit = process.env.PAGE
 
         const params = Object.fromEntries(new URLSearchParams(req.nextUrl.search).entries());
         const { page, order, orderColumn, startDate, endDate, search, status, verify } = params;
 
-        query += `SELECT userId,userName,isVerify,isActive, createdOn, parentId, email FROM tbluser WHERE parentId = ?`
+        query += `SELECT userId,userName,kycStatus,isVerify,isActive, createdOn, parentId, email FROM tbluser WHERE parentId = ?`
         filter.push(0)
 
         if (validate_filter_numbers([startDate, endDate])) {
@@ -41,11 +41,11 @@ export async function GET(req, res) {
             filter.push("%" + search.trim() + "%") 
         }
 
-        let fields = ["createdOn", "userName", "email", "isActive", "isVerify", "createdOn"]
+        let fields = ["createdOn", "userName", "email", "isActive", "kycStatus","isVerify", "createdOn"]
         if (validate_filter_numbers([orderColumn, order])) {
             query += " order by " + fields[orderColumn] + " " + (order == 0 ? 'asc' : 'desc')
         }
-
+        console.log(fields[orderColumn] )
         let countData = await sql_query(query, filter, 'Count')
         query += " limit ?,?"
         filter.push(page * limit)
@@ -59,13 +59,14 @@ export async function GET(req, res) {
             allData = userList.map((j, k) => { 
                 return {
                     num: order == 1 ? descNum-- : ++ascNum,
-                    userName: j.userName || "-",
-                    date: j.createdOn || 0,
-                    parentId: j.parentId || "-",
-                    varify: j.isVerify ||0,
-                    status: j.isActive ||0,
-                    email: j.email || "-",
-                    id: enc(`${j.userId}` , encryption_key("userId")) || "-",
+                    userName: j?.userName?? "-",
+                    date: j?.createdOn?? 0,
+                    parentId: j?.parentId?? "-",
+                    varify: j?.isVerify??0,
+                    status: j?.isActive??0,
+                    kyc_status: j?.kycStatus??0,
+                    email: j?.email?? "-",
+                    id: enc(`${j?.userId}` , encryption_key("userId"))?? "-",
                 }
             })
         }

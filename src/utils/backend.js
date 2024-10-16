@@ -22,12 +22,23 @@ const path = require('path');
 // import { get_timestemp } from "./common";
 // import web3 from 'web3'
 
-
+export async function validate_2fa(key, otp) {
+	try {
+		const status = speakeasy.totp.verify({
+			secret: key,
+			encoding: "base32",
+			token: otp,
+		});
+		return status;
+	} catch (e) {
+		console.error("Error validating 2FA:", e);
+	}
+	return false;
+};
 export async function check_admin_login(req) { 
 	let id = null, status = false
 	try {
-		let authData = await getToken({ req: req })
-		console.log({authData})
+		let authData = await getToken({ req: req }) 
 		if (authData && authData.email && authData.id) {
 			let admin = await sql_query("select email,adminId from tblAdmin where email = ? AND adminId = ? ", [authData.email, authData.id])
 			if (admin) {

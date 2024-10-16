@@ -15,9 +15,9 @@ export async function GET(req, res) {
         let query = "", filter = [], limit = process.env.PAGE
 
         const params = Object.fromEntries(new URLSearchParams(req.nextUrl.search).entries());
-        const { page, order, orderColumn, startDate, endDate, search } = params;
+        const { page, order,status, orderColumn, startDate, endDate, search } = params;
 
-        query += `SELECT packageId,name,image,amount, createdOn, rewardType FROM tblPackage`
+        query += `SELECT packageId,name,status,image,amount, createdOn, rewardType FROM tblPackage`
  
         if (validate_filter_numbers([startDate, endDate])) {
             query += " WHERE createdOn >=? AND createdOn<= ?";
@@ -25,9 +25,13 @@ export async function GET(req, res) {
             filter.push(parseInt(endDate))
         }  
         if (validate_filter_strings([search])) {
-            query += " AND (name like ? OR image like ?)"
-            filter.push("%" + search.trim() + "%")
-            filter.push("%" + search.trim() + "%")
+            query += " AND name like ?"
+            filter.push("%" + search.trim() + "%") 
+        }
+
+        if (status != "" && status >= 0) {
+            query += " AND status =?"
+            filter.push(status)
         }
         let fields = ["createdOn", "name", "amount", "rewardType",  "createdOn"]
         if (validate_filter_numbers([orderColumn, order])) {
@@ -47,12 +51,13 @@ export async function GET(req, res) {
             allData = userList.map((j, k) => { 
                 return {
                     num: order == 1 ? descNum-- : ++ascNum,
-                    packageName: j.name || "-",
-                    date: j.createdOn || 0,
-                    packageImg: j.image || "-",
-                    price: j.amount ||0,
-                    reward_type: j.rewardType ||0, 
-                    id: enc(`${j.packageId}` , encryption_key("ids")) || "-",
+                    packageName: j?.name??"-",
+                    date: j?.createdOn??0,
+                    status: j?.status??0,
+                    packageImg: j?.image??"-",
+                    price: j?.amount??0,
+                    reward_type: j?.rewardType??0, 
+                    id: enc(`${j?.packageId}` , encryption_key("ids"))??"-",
                 }
             })
         }

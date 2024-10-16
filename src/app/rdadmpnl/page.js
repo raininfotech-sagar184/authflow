@@ -21,6 +21,45 @@ export default function LoginaPage() {
   const [isTwoOpen, setIstwoOpen] = useState(false)
   const reRef = useRef()
 
+  const finalLogin = async (twoOpen) => {
+    try {
+      if (!submitLoader) {
+        try {
+          if (twoOpen !==0) {
+             chk_otp(otp)
+          } 
+        } catch (e) {
+          toast.error(e)
+          return false
+        }
+        setSubmitLoader(true)
+        const repchaToken = await reRef.current.executeAsync();
+        const res = await signIn("credentials", {
+          redirect: false,
+          email: email,
+          password: password,
+          otp: otp,
+          repchaToken: repchaToken, 
+          twoOpen
+        }) 
+        setSubmitLoader(false)
+        console.log({res})
+        if (res.error == "CredentialsSignin") {
+          toast.error("Google authentication failed.")
+        } else {
+          router.push(process.env.ADMFLDR + '/dashboard')
+          // setTimeout(() => {
+          //   window.location.reload()
+          // }, 500);
+
+        }
+      }
+    } catch (e) {
+      console.log(e)
+      setSubmitLoader(false)
+    }
+  }
+
   const login = async () => {
     try {
       toast.dismiss()
@@ -42,6 +81,8 @@ export default function LoginaPage() {
         if (response.statusCode === 200) {
           if (response.data.data.twoOpen == 1) {
             setIstwoOpen(true)
+          }else{
+            finalLogin(0)
           }
         } else {
           if (response.data.message == "Unauthorized") {
@@ -56,41 +97,7 @@ export default function LoginaPage() {
     }
   }
 
-  const finalLogin = async () => {
-    try {
-      if (!submitLoader) {
-        try {
-          chk_otp(otp)
-        } catch (e) {
-          toast.error(e)
-          return false
-        }
-        setSubmitLoader(true)
-        const repchaToken = await reRef.current.executeAsync();
-        const res = await signIn("credentials", {
-          redirect: false,
-          email: email,
-          password: password,
-          otp: otp,
-          repchaToken: repchaToken,
-          callbackUrl,
-        }) 
-        setSubmitLoader(false)
-        if (res.error == "CredentialsSignin") {
-          toast.error("Google authentication failed.")
-        } else {
-          router.push(process.env.ADMFLDR + '/dashboard')
-          setTimeout(() => {
-            window.location.reload()
-          }, 500);
 
-        }
-      }
-    } catch (e) {
-      console.log(e)
-      setSubmitLoader(false)
-    }
-  }
 
   return (
     <>

@@ -11,12 +11,13 @@ import { fetchApi } from '../../../../utils/frondend'
 import {   convert_date } from '../../../../utils/common'
 import Swal from 'sweetalert2';
 import Dropdown from 'react-bootstrap/Dropdown'; 
-import Select from 'react-select'
-import { getToken } from 'next-auth/jwt'
+import Select from 'react-select' 
+import { useSession, signIn, signOut } from "next-auth/react";
 const moment = require('moment')
 moment.suppressDeprecationWarnings = true
 
 export default function UserList() { 
+    const { data: session } = useSession();
     const { setAuthTkn, setPageLoader } = useAuthContext()
     const [order, setOrder] = useState(1)
     const [orderClm, setOrderClm] = useState(0)
@@ -156,7 +157,7 @@ export default function UserList() {
         <> 
             <div className="container-xxl flex-grow-1 container-p-y">
                 <div className="card">
-                    <h5 className="card-header">User List</h5>
+                    <h5 className="card-header" onClick={() =>console.log(session)}>User List</h5>
 
                     <div className='row card-body'>
                         <div className='col-xl-3 col-lg-4 col-md-6 col-12 custom'>
@@ -181,28 +182,16 @@ export default function UserList() {
                             </div>
                         </div>
                         <div className='col-xl-3 col-lg-4 col-md-6 col-12'>
-                            <div className="form-group">
+                            <div className="form-group" onClick={() => console.log(status)}>
                                 <label>Status</label> 
 
                                 <div className='cust-input'>
                                     <Select options={verify_Options}
-                                        value={verify_Options.find(option => option.value === verify)}
+                                        value={verify_Options.find(option => option.value == status)}
                                         onChange={(selectedOption) => { setStatus(selectedOption.value); }} />
                                 </div>
                             </div>
-                        </div>
-                        {/* <div className='col-xl-3 col-lg-4 col-md-6 col-12'>
-                            <div className="form-group">
-                                <label>Verify</label>
-                                <div className="cust-input">
-                                    <select className="form-control" value={verify} onChange={(e) => setVerify(e.target.value)}>
-                                        <option value="">All</option>
-                                        <option value="1">Verify</option>
-                                        <option value="0">Not Verify</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div> */}
+                        </div> 
                          
                         <div className='col-xl-3 col-lg-4 col-md-6 col-12'>
                             <label>Username/Email</label>
@@ -260,7 +249,7 @@ export default function UserList() {
                                     </th>
                                     <th>
                                         <div className='d-flex cursor-pointer' onClick={() => { setOrder(order == 0 ? 1 : 0); setOrderClm(4)}}>
-                                            <div  >Varried</div>
+                                            <div  >KYC Status</div>
                                             <div className="sort-icons-position" >
                                                 <i className={`fa fa-sort-down position-absolute ${order === 1 && orderClm == 4 ? `text-primary` : "text-muted"} `}></i>
                                                 <i className={`fa fa-sort-up position-absolute ${order === 0 && orderClm == 4 ? `text-primary` : "text-muted"} `}></i>
@@ -269,10 +258,19 @@ export default function UserList() {
                                     </th>
                                     <th>
                                         <div className='d-flex cursor-pointer' onClick={() => { setOrder(order == 0 ? 1 : 0); setOrderClm(5)}}>
-                                            <div >Created On</div>
+                                            <div  >Varried</div>
                                             <div className="sort-icons-position" >
                                                 <i className={`fa fa-sort-down position-absolute ${order === 1 && orderClm == 5 ? `text-primary` : "text-muted"} `}></i>
                                                 <i className={`fa fa-sort-up position-absolute ${order === 0 && orderClm == 5 ? `text-primary` : "text-muted"} `}></i>
+                                            </div>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div className='d-flex cursor-pointer' onClick={() => { setOrder(order == 0 ? 1 : 0); setOrderClm(6)}}>
+                                            <div >Created On</div>
+                                            <div className="sort-icons-position" >
+                                                <i className={`fa fa-sort-down position-absolute ${order === 1 && orderClm == 6 ? `text-primary` : "text-muted"} `}></i>
+                                                <i className={`fa fa-sort-up position-absolute ${order === 0 && orderClm == 6 ? `text-primary` : "text-muted"} `}></i>
                                             </div>
                                         </div>
                                     </th>
@@ -290,21 +288,22 @@ export default function UserList() {
                                     return (
                                         <tr key={index}>
                                             <td>
-                                                <span className="fw-medium">{data.num}</span>
+                                                <span className="fw-medium">{data?.num}</span>
                                             </td>
                                             <td> 
-                                                <span className="fw-medium">{data.userName}</span>
+                                                <span className="fw-medium">{data?.userName}</span>
                                             </td>
-                                            <td>{data.email}</td>
+                                            <td>{data?.email}</td>
                                             
-                                            <td><span className={`badge bg-label-${data.status == 1 ? 'success' : data.status == 0 ? 'danger' : 'dark'} me-1`}>{data.status == 1 ? 'Active' : data.status == 0 ? 'Deactive' : 'Block'}</span></td>
-                                            <td><span className={`badge bg-label-${data.verify == 1 ? 'success' :  'danger'} me-1`}>{data.verify == 1 ? 'Yes' :   'No'}</span></td>
-                                            <td onClick={()=>console.log(data)}>{data.date>0? convert_date(data.date):"-"}</td>
+                                            <td><span className={`badge bg-label-${data?.status == 1 ? 'success' : data?.status == 0 ? 'danger' : 'dark'} me-1`}>{data?.status == 1 ? 'Active' : data?.status == 0 ? 'Deactive' : 'Block'}</span></td>
+                                            <td><span className={`badge bg-label-${data?.kyc_status == 2 ? 'success' : data?.kyc_status == 0 ? 'dark' : 'danger'} me-1`}>{data?.kyc_status == 2 ? 'Varified' : data?.kyc_status == 0 ? 'Not applied' : 'Rejected'}</span></td>
+                                            <td><span className={`badge bg-label-${data?.verify == 1 ? 'success' :  'danger'} me-1`}>{data?.verify == 1 ? 'Yes' :   'No'}</span></td>
+                                            <td >{data?.date>0? convert_date(data?.date):"-"}</td>
                                             <td>
                                                 <div className='  actionBox'>
                                                    
                                                     <Dropdown className='custom-dropdown mr-2'>
-                                                        <Dropdown.Toggle className='btn-sm' variant={data.status === 0 ? "danger " : data.status === 1 ? "success" : data.status === 2 ? "danger" : ""} id="dropdown-basic">
+                                                        <Dropdown.Toggle className='btn-sm' variant={data.status === 0 ? "danger " : data.status === 1 ? "success" : data.status === 2 ? "secondary" : ""} id="dropdown-basic">
                                                             {userIndex == index && userActivationLdr ? <Loader /> : ''}
                                                             {data.status === 0 ? "Deactive" : data.status === 1 ? "Active" : data.status === 2 ? "Block" : ""}
                                                         </Dropdown.Toggle>
@@ -331,7 +330,7 @@ export default function UserList() {
                                     </tr>
                                         : !searchLdr && !userList.length ?
                                             <tr>
-                                                <td className="text-center" colSpan={7}>
+                                                <td className="text-center" colSpan={8}>
                                                     <img src="/assets/image/not_found.svg" className='nodata-found' alt="no data" />
                                                 </td>
                                             </tr> : ''

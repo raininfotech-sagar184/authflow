@@ -16,56 +16,59 @@ export const authOptions = {
         email: {},
         password: {},
         otp: {},
+        twoOpen: {},
         repchaToken: {}
       },
       async authorize(credentials) {
         
-        if (!credentials?.email || !credentials.password || !credentials?.otp  ) {
+        if (!credentials?.email || !credentials.password || !(!credentials?.otp || credentials?.twoOpen !== 0) || !credentials?.repchaToken ) {   
           return null;
-        }
+        }   
         let checkRepcha = await recaptcha(credentials?.repchaToken); 
         if (!checkRepcha) {
           return null
         }
         let user = await sql_query("select password,twoOpen,email,adminId,twoFaCode from tblAdmin where email = ?", [credentials?.email]) 
-        if (user && credentials.password === passDec(user.password, encryption_key("passwordKey"))) {
-          let speakeasy = require("speakeasy")
+      
+        if (user && credentials.password === passDec(user.password, encryption_key("passwordKey"))) { 
+            let speakeasy = require("speakeasy")
+           
           let twofa = speakeasy.totp.verify({
-            secret: passDec(user.twoFaCode, encryption_key("twofaKey")),
+            secret: dec(user.twoFaCode, encryption_key("twofaKey")),
             encoding: "base32",
             token: credentials.otp,
-          }) 
-          if (twofa) {
-
+          })  
+          if (credentials?.twoOpen == 0 || twofa) {  
             // await setLoginHistory(0, 0)
             return {
               id: user.adminId,
               email: user.email,
+              twoOpen: user.twoOpen,
             }
-          } else {
+          } else {  
             return null
           }
         }
-        else {
+        else {  
           return null
         }
       },
     }),
   ],
   callbacks: {
-    session: ({ session, token }) => {
+    session: ({ session, token }) => { 
       return {
-        ...session,
+        ...session, 
+        twoOpen: token.twoOpen, 
         user: {
           ...session.user
         },
       };
     },
-    jwt: ({ token, user }) => {
-      if (user) {
-        // const u = user as unknown as any;
+    jwt: ({ token, user }) => { 
+      if (user) { 
         return {
-          ...token, id: user.id
+          ...token, id: user.id,twoOpen: user.twoOpen,
         };
       }
       return token;

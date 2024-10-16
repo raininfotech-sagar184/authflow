@@ -5,11 +5,9 @@ import { useState } from "react"
 
  
 export default function Header() {
-  const [dropShow, setDropShow] = useState(false)
-  const router = useRouter()
+  const [dropShow, setDropShow] = useState(false) 
   const logout = async () => {
-    const data = await signOut({ redirect: false, callbackUrl: '/' + process.env.ADMFLDR })
-    router.push('/' + process.env.ADMFLDR)
+    const data = await signOut({ redirect: true, callbackUrl: '/' + process.env.ADMFLDR }) 
   }
   function toggleMenuClass() {
     const htmlTag = document.documentElement;  

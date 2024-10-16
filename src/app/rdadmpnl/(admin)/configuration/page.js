@@ -5,20 +5,31 @@ import Swal from 'sweetalert2';
 import { fetchApi } from '../../../../utils/frondend'
 import { useAuthContext } from '../../../../context/auth'
 import { chk_otp, chk_password, validate_string } from '../../../../utils/common';
-import Loader from '../../../../components/include/Loader';
+import Loader, { ButtonSpinner } from '../../../../components/include/Loader';
 import { signOut } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import $ from "jquery";
+import CopyToClipboard from 'react-copy-to-clipboard';
 const Dashboard = () => {
     const { setAuthTkn, setPageLoader } = useAuthContext();
     const [twofaOtp2, setTwofaOtp2] = useState("");
     const [changePwdLdr, setChangePwdLdr] = useState(false);
+    const [twoFaScreen, setTwoFacScreen] = useState(false)
+    const [deactive, setDeactive] = useState(false)
+    const [twoOpen, setTwoOpen] = useState(false)
+    const [configData, setConfigData] = useState({})
+    const [authenticated, setAuthenticated] = useState(false)
+    const [qrcode, setQrCode] = useState("")
+    const [secretKey, setSecretKey] = useState("")
+    const [otp, setOtp] = useState("")
+    const [twoFaDataLoader, setTwoFaDataLoader] = useState(false)
+    const [twofaLoader, setTwofaLoader] = useState(false)
     const [showPwd, setShowPwd] = useState({
         currentPassword: "",
         newPassword: "",
-        confirmPassword: "", 
+        confirmPassword: "",
     });
-    const [fields, setFields] = useState({ 
+    const [fields, setFields] = useState({
         currentPassword: "",
         newPassword: "",
         confirmPassword: "",
@@ -79,7 +90,7 @@ const Dashboard = () => {
         return null
     }
     const handleChangePwdSubmit = () => {
-       
+
         if (!changePwdLdr) {
             try {
                 validate_string(fields.currentPassword, "current password")
@@ -122,7 +133,7 @@ const Dashboard = () => {
                     } else {
                         if (add_user.data.message == "Unauthorized") {
                             setAuthTkn(add_user.data.message);
-                        } else { 
+                        } else {
                             toast.error(add_user.data.message);
                         }
                     }
@@ -130,9 +141,96 @@ const Dashboard = () => {
             })
 
 
-        } 
-    }; 
+        }
+    };
+    const getQRCode = async (value) => { 
+        if (configData.twoOpen == false && qrcode == "") {
+            const param = { status: twoOpen ? 0 : 1 }
+            const response = await fetchApi("user/configuration/generate-twofa-secrate", JSON.stringify({ params: param }), "GET")
+            if (response.statusCode === 200) {
+                setTwoOpen(value)
+                setQrCode(response.data.data.qrcode)
+                setSecretKey(response.data.data.secretKey)
+                setTwoFacScreen(true);
+            }
+            else {
+                if (response.data.message == "Unauthorized") {
+                    setAuthTkn(response.data.message)
+                } else {
+                    toast.error(response.data.message)
+                }
+            }
+        }
+
+        else {
+            setTwoOpen(value)
+            if (configData.twoOpen == false) {
+                value == true ? setTwoFacScreen(true) : setTwoFacScreen(false)
+            } else {
+
+                value == true ? setDeactive(false) : setDeactive(true)
+            }
+        }
+    }
+
+    const setTwoFa = async () => {
+        toast.dismiss()
+        if (!twofaLoader) {
+            try {
+                chk_otp(otp)
+            } catch (e) {
+                toast.error(e)
+                return false
+            }
+            setTwofaLoader(true)
+            const param = { otp: otp, status: twoOpen ? 1 : 0 }
+            const response = await fetchApi("user/configuration/set-twofa-secrate", JSON.stringify(param))
+            setTwofaLoader(false)
+            if (response.statusCode === 200) {
+                setOtp("")
+                setDeactive(false)
+                setTwoFacScreen(false)
+                setQrCode("")
+                config()
+                toast.success(response.data.message)
+            } else {
+                if (response.data.message == "Unauthorized") {
+                    setAuthTkn(response.data.message)
+                } else {
+                    toast.error(response.data.message)
+                }
+            }
+        }
+    }
+    const config = async () => {
+        setTwoFaDataLoader(true)
+
+        try {
+            toast.dismiss()
+            const param = { a: 0 }
+            const response = await fetchApi("user/configuration/get-config-data", JSON.stringify({ params: param }), "GET")
+            if (response?.statusCode === 200) { 
+                setTwoOpen(response?.data?.twoOpen ? true : false)
+                setAuthenticated(response?.data?.twoOpen ? true : false)
+                setConfigData(response.data)
+                setPageLoader(false)
+            } else {
+                if (response.data.message == "Unauthorized") {
+                    setAuthTkn(response?.data.message)
+                } else {
+                    toast.error(response?.data.message)
+                }
+            }
+            setTwoFaDataLoader(false)
+        } catch (e) {
+            setTwoFaDataLoader(false)
+            toast.error(e)
+            return
+        }
+    }
+
     useEffect(() => {
+        config()
         setPageLoader(false)
     }, [])
     return (
@@ -144,33 +242,33 @@ const Dashboard = () => {
                         <div className="card">
                             <div className="d-flex align-items-end row">
                                 <div className="col-12">
-                                    <div className="card-body text-nowrap">
+                                    <div className="card-body text-nowrap configuration-card-body">
                                         <h3 className="card-title mb-0">Change Password</h3>
-                                        <div className="mt-4 mb-4 configuration-card"> 
+                                        <div className="mt-4 mb-4 configuration-card">
                                             <div className='d-flex flex-column '>
 
                                                 <div className="mb-2"  >
                                                     <div>
                                                         <label className="col-form-label">Current Password</label>
                                                     </div>
-                                                    <div className={`inputContainer form-group d-flex w-100`}> 
-                                                        <div className="input-group"> 
-                                                            <input 
+                                                    <div className={`inputContainer form-group d-flex w-100`}>
+                                                        <div className="input-group">
+                                                            <input
                                                                 type={showPwd["currentPassword"] ? "text" : "password"}
                                                                 name="currentPassword"
                                                                 value={fields["currentPassword"]}
                                                                 onChange={(e) => setFields({ ...fields, currentPassword: e.target.value })}
                                                                 placeholder={"Current password"}
                                                                 className="form-control"
-                                                                onKeyUp={(e) => e.keyCode == 13 && handleChangePwdSubmit()} 
-                                                            /> 
+                                                                onKeyUp={(e) => e.keyCode == 13 && handleChangePwdSubmit()}
+                                                            />
                                                             <span className="input-group-text cursor-pointer" onClick={() => ClickOnEye("currentPassword")}>
-                                                                <i className={`${`hideShow cursor-pointer ti ti-eye${showPwd["currentPassword"] ? "" : "-off"} fs-4`}`}></i> 
-                                                            </span> 
+                                                                <i className={`${`hideShow cursor-pointer ti ti-eye${showPwd["currentPassword"] ? "" : "-off"} fs-4`}`}></i>
+                                                            </span>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                
+
                                                 <div className="mb-2"  >
                                                     <div>
                                                         <label className="col-form-label">New Password</label>
@@ -187,10 +285,10 @@ const Dashboard = () => {
                                                                 placeholder={"New password"}
                                                                 className="form-control"
                                                                 onKeyUp={(e) => { checkPass(e.target.value), e.keyCode == 13 && handleChangePwdSubmit() }}
-                                                            /> 
+                                                            />
                                                             <span className="input-group-text cursor-pointer" onClick={() => ClickOnEye("newPassword")}>
-                                                            <i className={`${`hideShow  ti ti-eye${showPwd["newPassword"] ? "" : "-off"} fs-4`}`}></i> 
-                                                            </span> 
+                                                                <i className={`${`hideShow  ti ti-eye${showPwd["newPassword"] ? "" : "-off"} fs-4`}`}></i>
+                                                            </span>
 
                                                         </div>
                                                         <span className='password-validation-span mt-3' >
@@ -199,7 +297,7 @@ const Dashboard = () => {
                                                             <span><i className='fa fa-circle-xmark' id='er2'></i> 1 Lowercase</span>
                                                             <span><i className='fa fa-circle-xmark' id='er3'></i> 1 Special Character</span>
                                                             <span><i className='fa fa-circle-xmark' id='er4'></i> Min 8 - 32 Max Character</span>
-                                                        </span> 
+                                                        </span>
                                                     </div>
                                                 </div>
                                                 <div className="mb-2"  >
@@ -220,10 +318,10 @@ const Dashboard = () => {
                                                                 className="form-control"
                                                                 onKeyUp={(e) => e.keyCode == 13 && handleChangePwdSubmit()}
 
-                                                            /> 
+                                                            />
                                                             <span className="input-group-text cursor-pointer" onClick={() => ClickOnEye("confirmPassword")}>
-                                                            <i className={`${`hideShow  ti ti-eye${showPwd["confirmPassword"] ? "" : "-off"} fs-4`}`}></i>
-                                                            </span> 
+                                                                <i className={`${`hideShow  ti ti-eye${showPwd["confirmPassword"] ? "" : "-off"} fs-4`}`}></i>
+                                                            </span>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -253,53 +351,88 @@ const Dashboard = () => {
 
                     {/* <!-- Statistics --> */}
                     <div className="col-xl-7 col-md-12">
-                        <div className="card h-100">
-                            <div className="card-header d-flex justify-content-between">
-                                <h5 className="card-title mb-0">Statistics</h5>
-                                <small className="text-muted">Updated 1 month ago</small>
-                            </div>
-                            <div className="card-body d-flex align-items-end">
-                                <div className="w-100">
-                                    <div className="row gy-3">
-                                        <div className="col-md-3 col-6">
-                                            <div className="d-flex align-items-center">
-                                                <div className="badge rounded bg-label-primary me-4 p-2">
-                                                    <i className="ti ti-chart-pie-2 ti-lg"></i>
-                                                </div>
-                                                <div className="card-info">
-                                                    <h5 className="mb-0">230k</h5>
-                                                    <small>Sales</small>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="col-md-3 col-6">
-                                            <div className="d-flex align-items-center">
-                                                <div className="badge rounded bg-label-info me-4 p-2"><i className="ti ti-users ti-lg"></i></div>
-                                                <div className="card-info">
-                                                    <h5 className="mb-0">8.549k</h5>
-                                                    <small>Customers</small>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="col-md-3 col-6">
-                                            <div className="d-flex align-items-center">
-                                                <div className="badge rounded bg-label-danger me-4 p-2">
-                                                    <i className="ti ti-shopping-cart ti-lg"></i>
-                                                </div>
-                                                <div className="card-info">
-                                                    <h5 className="mb-0">1.423k</h5>
-                                                    <small>Products</small>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="col-md-3 col-6">
-                                            <div className="d-flex align-items-center">
-                                                <div className="badge rounded bg-label-success me-4 p-2">
-                                                    <i className="ti ti-currency-dollar ti-lg"></i>
-                                                </div>
-                                                <div className="card-info">
-                                                    <h5 className="mb-0">$9745</h5>
-                                                    <small>Revenue</small>
+                        <div className="card">
+                            <div className="d-flex align-items-end row">
+                                <div className="col-12">
+                                    <div className="card-body text-nowrap configuration-card-body"> 
+                                        <div className="pf-column-container"> 
+                                            <div className="pf-column-content">
+                                                <div className='pf-content'>
+                                                    <div className='pf-frame '>
+                                                    
+
+                                                        <div className='pf-frame-header d-flex justify-content-between ga-header'>
+
+                                                            <span className={`twoFaStatus ${authenticated ? "twoFaStatusOn" : "twoFaStatusOff"}`}   ><i className={`fa fa-circle me-1 ${authenticated ? "twoFaStatusOnBlink " : ""}`}></i> {authenticated ? "Activated" : 'Deactivated'}</span>
+
+                                                            <span className="pr-2">   <h3 className="card-title mb-0">Google Authentication</h3></span>
+                                                            <span>
+                                                                <span className="twofaSection">
+                                                                    {twoFaDataLoader
+                                                                        ? <ButtonSpinner show={twoFaDataLoader} />
+                                                                        : <label className={twoOpen == 1 ? "" : "togggleOff "}  >
+
+                                                                            <span className="switchery switchery-small"  ><small  ></small></span>
+                                                                            <input type="checkbox" onChange={(e) => getQRCode(twoOpen == true ? false : true)} defaultChecked={twoOpen === true ? true : false} data-plugin="switchery" data-color="#ff7aa3" className='d-none' data-switchery="true" />
+
+                                                                        </label>}
+                                                                </span>  
+                                                            </span>
+                                                            </div>
+                                                        {twoFaScreen ?
+                                                            <div className="text-center ">
+                                                                <p className="mt-2 mb-2 ">Scan this QR code in the Google Authenticator app.</p>
+                                                                <img src={qrcode} className="qrCodeImg" />
+                                                                <p className=' mt-3'> If you are unable to scan the QR code, please enter this code manually into the app.</p>
+                                                                <div className='d-flex   align-items-center'>
+
+
+
+                                                                    <div className="input-group mt-3">
+                                                                        <input
+                                                                            type={'text'}
+                                                                            name="secretKey"
+                                                                            className="form-control readOnlyInput"
+                                                                            value={secretKey}
+                                                                            readOnly
+
+                                                                        />
+                                                                        <span className="input-group-text cursor-pointer">
+                                                                            <CopyToClipboard text={secretKey} onCopy={() => { toast.success('Copied to clipboard') }}>
+                                                                                <i className='fa fa-copy'></i>
+                                                                            </CopyToClipboard>
+                                                                        </span>
+                                                                    </div>
+
+
+                                                                </div>
+                                                            </div>
+                                                            : ""
+                                                        }
+                                                        {deactive || twoFaScreen ? (
+                                                            <div  >
+
+                                                                <div className=" mt-3">
+                                                                    {!deactive ? "" : <label htmlFor="" className="form-label">Deactive Google Authentication</label>}
+
+                                                                    <input
+                                                                        name="otp"
+                                                                        placeholder={'Enter OTP'}
+                                                                        className="form-control"
+                                                                        value={otp}
+                                                                        autoComplete="false"
+                                                                        onChange={(e) => setOtp(e.target.value = e.target.value = e.target.value.replace(/[^0-9]/g, "").replace(/(\..*)\./g, "$1"))}
+                                                                        onKeyUp={(e) => e.keyCode == 13 && setTwoFa()}
+                                                                        maxLength={6}
+                                                                    />
+
+                                                                </div>
+                                                                <div className="text-end mt-2">
+                                                                    <button className="btn btn-primary" disabled={twofaLoader} onClick={() => setTwoFa()}>{twofaLoader ? <i className="fa fa-refresh fa-spin mx-1"></i> : ""} Submit</button>
+                                                                </div>
+                                                            </div>
+                                                        ) : ''}
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -307,12 +440,7 @@ const Dashboard = () => {
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    {/* <!--/ Statistics --> */}
-
-
-
-
+                    </div> 
                 </div>
             </div>
 

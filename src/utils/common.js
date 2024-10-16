@@ -9,8 +9,7 @@ export function validate_string(data, prefix, type = 0) {
   } else if (typeof data !== "string") {
     throw prefix + " is not valid";
   }
-}
-
+} 
 export function validate_filter_numbers(data) {
   for (let dd in data) {
     let d = data[dd]
@@ -73,9 +72,9 @@ export function chk_password(str) {
   }
 }
 
-// export function chk_OTP(str) {
-//   return /^[0-9]{6}$/.test(str);
-// }
+export function chk_OTP(str) {
+  return /^[0-9]{6}$/.test(str);
+}
 
 // /* END : Input validation function */
 

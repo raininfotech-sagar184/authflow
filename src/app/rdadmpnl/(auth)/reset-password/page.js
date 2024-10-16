@@ -69,51 +69,7 @@ export default function LoginaPage() {
         }
       }
     }
-  }
-
-  // const chkPassword = (pwd) => {
-  //   setvalidLine(true);
-  //   let v = pwd;
-  //   let digit = /[0-9]/;
-  //   let lower = /[a-z]/;
-  //   let cap = /[A-Z]/;
-  //   let spchar = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
-
-  //   if (v === "" || v === undefined) {
-  //     $("#er1, #er2, #er3, #er4, #er5")
-  //       .addClass("text-danger fa-times-circle")
-  //       .removeClass("text-success fa-check-circle");
-  //   } else {
-  //     let c = v.length;
-  //     $("#er1")
-  //       .addClass(v.match(digit) ? "text-success fa-check-circle" : "text-danger fa-times-circle")
-  //       .removeClass(v.match(digit) ? "text-danger fa-times-circle" : "text-success fa-check-circle");
-  //     $("#er2")
-  //       .addClass(v.match(lower) ? "text-success fa-check-circle" : "text-danger fa-times-circle")
-  //       .removeClass(v.match(lower) ? "text-danger fa-times-circle" : "text-success fa-check-circle");
-  //     $("#er3")
-  //       .addClass(v.match(spchar) ? "text-success fa-check-circle" : "text-danger fa-times-circle")
-  //       .removeClass(v.match(spchar) ? "text-danger fa-times-circle" : "text-success fa-check-circle");
-  //     $("#er4")
-  //       .addClass((c >= 8 && c <= 30) ? "text-success fa-check-circle" : "text-danger fa-times-circle")
-  //       .removeClass((c >= 8 && c <= 30) ? "text-danger fa-times-circle" : "text-success fa-check-circle");
-  //     $("#er5")
-  //       .addClass(v.match(cap) ? "text-success fa-check-circle" : "text-danger fa-times-circle")
-  //       .removeClass(v.match(cap) ? "text-danger fa-times-circle" : "text-success fa-check-circle");
-
-  //     if (
-  //       $("#er5").hasClass("text-success") &&
-  //       $("#er2").hasClass("text-success") &&
-  //       $("#er3").hasClass("text-success") &&
-  //       $("#er4").hasClass("text-success") &&
-  //       $("#er1").hasClass("text-success")
-  //     ) {
-  //       setMsg("");
-  //     } else {
-  //       setMsg("Password should contain 8 - 30 characters, with at least one uppercase, one lowercase, one number, and one special character.");
-  //     }
-  //   }
-  // }
+  } 
 
   const chkPassword = (pass) => {
     setvalidLine(true);

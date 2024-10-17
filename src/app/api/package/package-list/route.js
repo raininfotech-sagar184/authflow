@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { sql_query } from '../../../../utils/dbconnect';
-// import { check_admin_login } from '../../../../utils/backend';
+import { check_admin_login } from '../../../../utils/backend';
 import { enc, encryption_key, validate_filter_numbers, validate_filter_strings } from '../../../../utils/common';
 import { draftMode } from 'next/headers';
 
@@ -8,10 +8,10 @@ export async function GET(req, res) {
     draftMode().enable()
 
     try {
-        // let adm = await check_admin_login(req)
-        // if (!adm.status || !adm.data.id) {
-        //     return NextResponse.json({ message: "Logout" }, { status: 400 });
-        // }
+        let adm = await check_admin_login(req)
+        if (!adm.status || !adm.data.id) {
+            return NextResponse.json({ message: "Logout" }, { status: 400 });
+        }
         let query = "", filter = [], limit = process.env.PAGE
 
         const params = Object.fromEntries(new URLSearchParams(req.nextUrl.search).entries());

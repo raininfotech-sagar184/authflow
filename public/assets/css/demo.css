@@ -196,22 +196,41 @@
 
 .css-t3ipsp-control,
 .css-1nmdiq5-menu {  
-  border-color: #7367f0 !important;
+  border-color: #00000000 !important;
 }
 
 .css-t3ipsp-control {
-  box-shadow: 0 0 0 1px #7367f0 !important
+  box-shadow: 0 0 0 1px #56596f !important;
+  border: var(--bs-border-width) solid #56596f !important;
+} 
+.css-13cymwt-control{
+  border: var(--bs-border-width) solid #56596f !important;
+}
+.css-t3ipsp-control:focus-within {
+  box-shadow: none !important;
+   border: solid 2px #7367f0 !important;
+}
+.css-tr4s17-option { 
+  background-color: #00000000; 
+}
+.css-qr46ko{
+  background: #2f3349 !important;
 }
 
-.css-tr4s17-option { 
-  background-color: #7367f0; 
-}
 .css-d7l1ni-option { 
   background-color: #7367f059 !important; 
 }
-.nodata-found  {
-width: 20% !important;
+.css-1dimb5e-singleValue,
+.css-19bb58m, 
+.css-t3ipsp-control,
+.css-13cymwt-control{
+  color:#cfcde4 !important;
+  background-color: #00000000 !important;
 }
+.css-13cymwt-control:hover{
+  border-color:#9a9ab0 !important; 
+} 
+
  .upload-image{
   width: 40% !important;
  }

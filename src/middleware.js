@@ -4,7 +4,7 @@ import { getToken } from "next-auth/jwt";
 export async function middleware(request) {  
   const authData = await getToken({
     req: request
-  });   
+  });  
   if (request.nextUrl.pathname == '/' + process.env.ADMFLDR) {
     if (authData?.email) { 
       return NextResponse.redirect(new URL('/' + process.env.ADMFLDR + '/dashboard', request.url))

@@ -1,6 +1,5 @@
 "use client"
-import React, { useEffect, useState } from 'react'
-import toast, { Toaster } from 'react-hot-toast'
+import React, { useEffect, useState } from 'react' 
 import Swal from 'sweetalert2';
 import { fetchApi } from '../../../../utils/frondend'
 import { useAuthContext } from '../../../../context/auth'
@@ -10,6 +9,7 @@ import { signOut } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import $ from "jquery";
 import CopyToClipboard from 'react-copy-to-clipboard';
+import toast, { Toaster } from 'react-hot-toast';
 const Dashboard = () => {
     const { setAuthTkn, setPageLoader } = useAuthContext();
     const [twofaOtp2, setTwofaOtp2] = useState("");
@@ -23,7 +23,7 @@ const Dashboard = () => {
     const [secretKey, setSecretKey] = useState("")
     const [otp, setOtp] = useState("")
     const [twoFaDataLoader, setTwoFaDataLoader] = useState(false)
-    const [twofaLoader, setTwofaLoader] = useState(false)
+    const [twofaLoader, setTwofaLoader] = useState(false) 
     const [showPwd, setShowPwd] = useState({
         currentPassword: "",
         newPassword: "",
@@ -92,6 +92,7 @@ const Dashboard = () => {
     const handleChangePwdSubmit = () => {
 
         if (!changePwdLdr) {
+            toast.dismiss() 
             try {
                 validate_string(fields.currentPassword, "current password")
                 chk_password(fields.currentPassword)
@@ -236,6 +237,7 @@ const Dashboard = () => {
     return (
         <>
             <div className="container-xxl flex-grow-1 container-p-y">
+            <Toaster position="top-right" />
                 <div className="row g-6">
                     {/* <!-- View sales --> */}
                     <div className="col-xl-5">
@@ -243,7 +245,7 @@ const Dashboard = () => {
                             <div className="d-flex align-items-end row">
                                 <div className="col-12">
                                     <div className="card-body text-nowrap configuration-card-body">
-                                        <h3 className="card-title mb-0">Change Password</h3>
+                                        <h3 className="card-title mb-0"  >Change Password</h3>
                                         <div className="mt-4 mb-4 configuration-card">
                                             <div className='d-flex flex-column '>
 
@@ -336,7 +338,7 @@ const Dashboard = () => {
                                                 </div>
                                                 <div className='d-flex justify-content-end'>
                                                     <button type="button" className="btn btn-primary" onClick={() => handleChangePwdSubmit()}>
-                                                        {changePwdLdr && <Loader />}  Submit
+                                                        {changePwdLdr && <i className="fa fa-refresh fa-spin me-2"></i>  }  Submit
                                                     </button>
                                                 </div>
                                             </div>

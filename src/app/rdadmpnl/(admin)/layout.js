@@ -13,7 +13,7 @@ export default function RootLayout({ children }) {
 
     <html
       lang="en"
-      className="light-style layout-navbar-fixed layout-menu-fixed layout-compact"
+      className="dark-style layout-navbar-fixed layout-menu-fixed layout-compact"
       dir="ltr"
       data-theme="theme-default"
       data-assets-path="/assets/"
@@ -41,26 +41,26 @@ export default function RootLayout({ children }) {
         <link rel="stylesheet" href="/assets/vendor/libs/apex-charts/apex-charts.css" />
         <link rel="stylesheet" href="/assets/vendor/libs/datatables-bs5/datatables.bootstrap5.css" />
         <link rel="stylesheet" href="/assets/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css" />
-        <link rel="stylesheet" href="/assets/vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css" />
+        <link rel="stylesheet" href="/assets/vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css" /> 
 
       </head>
 
       <body>
         <div className="layout-wrapper layout-content-navbar">
           <div className="layout-container">
-            <Sidebar />
-            <div className="layout-page">
-              <Header />
-              <div className="content-wrapper">
-                <Toaster position="top-right" />
-                <SessionProvider >
-                  <ProgressBar height="2px" color="#2137fc" options={{ showSpinner: false }} shallowRouting />
+            <SessionProvider >
+              <Sidebar />
+              <div className="layout-page">
+                <Header />
+                <div className="content-wrapper">
+                  <Toaster position="top-right" /> 
+                  <ProgressBar height="3px" color="#ffffff" options={{ showSpinner: false }} shallowRouting />
                   {children}
-                </SessionProvider>
-                <Footer />
-                <div className="content-backdrop fade"></div>
+                  <Footer />
+                  <div className="content-backdrop fade"></div>
+                </div>
               </div>
-            </div>
+            </SessionProvider>
           </div>
           <div className="layout-overlay layout-menu-toggle"></div>
           <div className="drag-target"></div>

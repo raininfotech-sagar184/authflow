@@ -160,7 +160,7 @@ export function encryption_key(type) {
 
 export function chk_otp(str) {
   if (!str) {
-    throw "Enter 2FA OTP"
+    throw "Enter google authentication OTP"
   } else if (!/^[0-9]{6}$/.test(str)) {
     throw "Enter valid 6 digits google authentication OTP"
   }

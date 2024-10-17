@@ -28,7 +28,7 @@ export const authOptions = {
         if (!checkRepcha) {
           return null
         }
-        let user = await sql_query("select password,twoOpen,email,adminId,twoFaCode from tblAdmin where email = ?", [credentials?.email]) 
+        let user = await sql_query("select password,twoOpen,name, email,adminId,twoFaCode from tblAdmin where email = ?", [credentials?.email]) 
       
         if (user && credentials.password === passDec(user.password, encryption_key("passwordKey"))) { 
             let speakeasy = require("speakeasy")
@@ -43,6 +43,7 @@ export const authOptions = {
             return {
               id: user.adminId,
               email: user.email,
+              name: user.name,
               twoOpen: user.twoOpen,
             }
           } else {  
@@ -68,7 +69,7 @@ export const authOptions = {
     jwt: ({ token, user }) => { 
       if (user) { 
         return {
-          ...token, id: user.id,twoOpen: user.twoOpen,
+          ...token, id: user.id,twoOpen: user.twoOpen,twoOpen: user.twoOpen,name: user.name,
         };
       }
       return token;

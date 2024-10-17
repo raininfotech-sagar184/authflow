@@ -3,8 +3,7 @@ import { useRouter } from 'next/navigation'
 import { useRef, useState } from "react" 
 import toast from 'react-hot-toast';
 import {validate_string, chk_email } from "@/utils/common";  
-import ReCAPTCHA from "react-google-recaptcha";
-import { ButtonSpinner } from "@/components/include/Loader";
+import ReCAPTCHA from "react-google-recaptcha"; 
 import { fetchApi } from "@/utils/frondend";
 import { useAuthContext } from "@/context/auth";
 import { setCookie } from "cookies-next";
@@ -62,7 +61,7 @@ export default function LoginaPage() {
           <div className="d-none d-lg-flex col-lg-8 p-0">
             <div className="auth-cover-bg auth-cover-bg-color d-flex justify-content-center align-items-center">
               <img
-                src="/assets/img/illustrations/auth-login-illustration-light.png"
+                src="/assets/image/NFT-marketplace.png"
                 alt="auth-login-cover"
                 className="my-5 auth-illustration"
                 data-app-light-img="illustrations/auth-login-illustration-light.png"
@@ -90,7 +89,7 @@ export default function LoginaPage() {
                       </span>
                     </div>
                   </div>
-                  <button className="btn btn-primary w-100" onClick={() => submit()}>{submitLoader ? <ButtonSpinner /> : ""} <span className="ml-2">Submit</span></button>
+                  <button className="btn btn-primary w-100" onClick={() => submit()}>{submitLoader && <i className="fa fa-refresh fa-spin me-2"></i>} <span className="ml-2">Submit</span></button>
                  
                
             </div>

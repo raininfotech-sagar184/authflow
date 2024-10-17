@@ -17,6 +17,8 @@ const nextConfig = {
         EMAIL_PASSWORD: process.env.EMAIL_PASSWORD,
         EMAIL: process.env.EMAIL,
         EMAIL_NAME: process.env.EMAIL_NAME,
+        EMAIL_HOST: process.env.EMAIL_HOST,
+        EMAIL_PORT: process.env.EMAIL_PORT,
         // SECRET_KEY: process.env.SECRET_KEY,
     }
 };

@@ -1,4 +1,4 @@
- import {   recaptcha  } from "@/utils/backend";
+ import {   recaptcha, resendOtpMail  } from "@/utils/backend";
 import {  get_timestemp,  encryption_key, generateNumeric, enc, dec  } from "@/utils/common";
 import { sql_query } from "@/utils/dbconnect";
 

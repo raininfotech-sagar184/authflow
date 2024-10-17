@@ -3,8 +3,7 @@ import { useRouter } from 'next/navigation'
 import { useRef, useState } from "react"
 import toast from 'react-hot-toast';
 import { validate_string,   chk_confirm_password, chk_otp } from "@/utils/common";
-import ReCAPTCHA from "react-google-recaptcha";
-import { ButtonSpinner } from "@/components/include/Loader";
+import ReCAPTCHA from "react-google-recaptcha"; 
 import { fetchApi } from "@/utils/frondend";
 // import { useAuthContext } from "@/context/auth";
 import $ from "jquery";
@@ -138,6 +137,7 @@ export default function LoginaPage() {
       if (response.statusCode === 200) {
         toast.success(response.data.message)
         deleteCookie("mlTkn")
+        console.log("first")
         setTimeout(() => {
           router.push("login")
         }, 1000)
@@ -168,7 +168,7 @@ export default function LoginaPage() {
           <div className="d-none d-lg-flex col-lg-8 p-0">
             <div className="auth-cover-bg auth-cover-bg-color d-flex justify-content-center align-items-center">
               <img
-                src="/assets/img/illustrations/auth-login-illustration-light.png"
+                src="/assets/image/NFT-marketplace.png"
                 alt="auth-login-cover"
                 className="my-5 auth-illustration"
                 data-app-light-img="illustrations/auth-login-illustration-light.png"
@@ -282,7 +282,7 @@ export default function LoginaPage() {
                   </span>
                 </div>
               </div>
-              <button className="btn btn-primary w-100" onClick={() => reset_password()}>{loader.resetpwd ? <ButtonSpinner /> : ""} <span className="ml-2">Submit</span></button>
+              <button className="btn btn-primary w-100" onClick={() => reset_password()}>{loader.resetpwd && <i className="fa fa-refresh fa-spin me-2"></i>} <span className="ml-2">Submit</span></button>
             </div>
           </div>
         </div>

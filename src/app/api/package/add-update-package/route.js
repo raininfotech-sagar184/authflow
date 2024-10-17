@@ -1,6 +1,6 @@
 
 
-import { validate_string, validateFile, get_timestemp, validate_url, validate_input_number, validate_input_number_zero, validate_input_number_in_range, dec, encryption_key } from "@/utils/common"
+import { validate_string, validateFile, get_timestemp, validate_input_number, validate_input_number_in_range, dec, encryption_key } from "@/utils/common"
 import   { sql_query } from "@/utils/dbconnect" 
 import { NextResponse } from "next/server";
 import { check_admin_login } from "../../../../utils/backend"
@@ -9,10 +9,10 @@ import { writeFile } from 'fs/promises'
 
 export async function POST(request, response) {
     try {
-        // let adm = await check_admin_login(request)
-        // if (!adm.status || !adm.data._id) {
-        //     return NextResponse.json({ message: "Logout" }, { status: 400 })
-        // }
+        let adm = await check_admin_login(request)
+        if (!adm.status || !adm.data._id) {
+            return NextResponse.json({ message: "Logout" }, { status: 400 })
+        }
         let requestBody = await request.formData(), 
         body = Object.fromEntries(requestBody)
         body = JSON.parse(body.data)
@@ -34,27 +34,21 @@ export async function POST(request, response) {
         let lockerName = await generate_packageme()
         let newImageName = ""
         if (id && isImage  == 0) { 
-            newImageName = imageUrl.split('/').pop()
-            console.log('no image==================>',imageUrl.split('/').pop())
+            newImageName = imageUrl.split('/').pop() 
          }else{
-            const upload_path = `public/assets/` //process.env.UPLOAD_IMAGE;
+            const upload_path = `public/assets/`  
             let bytes = await image.arrayBuffer()
             let buffer = Buffer.from(bytes) 
-            newImageName =id ? imageUrl : (lockerName).toLowerCase() + '-' + currentTime + '.' + image.type.split('/')[1]
-            console.log('imageUrl==================>',imageUrl)
-            // newImageName = (lockerName).toLowerCase() + '-' + currentTime + '.' + image.type.split('/')[1]
+            newImageName =id ? imageUrl : (lockerName).toLowerCase() + '-' + currentTime + '.' + image.type.split('/')[1] 
             if (id) {
                 try {
                     fs.unlinkSync(`${upload_path}upload/package-image/${imageUrl}`) 
                 } catch (error) {
                     console.log("Error=>", error);
-                }
-           
+                } 
             }
             fs.existsSync(`${upload_path}upload/package-image`) || fs.mkdirSync(`${upload_path}upload/package-image`, { recursive: true })
-            await writeFile(`${upload_path}upload/package-image/` + newImageName, buffer)
-           
-            
+            await writeFile(`${upload_path}upload/package-image/` + newImageName, buffer) 
          } 
 
         if (id) { 

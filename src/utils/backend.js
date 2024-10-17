@@ -395,9 +395,9 @@ async function send_mail(email, subject, mailData) {
 	try {
 		mailData = {
 			...mailData,
-			logo: process.env.FRONT_URL + '/assets/images/logo/logo.png',
+			logo: process.env.FRONT_URL + 'assets/image/logo.svg',
 			baseUrl: process.env.FRONT_URL,
-			image: mailData.image ? process.env.FRONT_URL + '/assets/images/mail/' + mailData.image : '',
+			image: mailData.image ? process.env.FRONT_URL + 'assets/image/' + mailData.image : '',
 			sitename: process.env.SITENAME
 		}
 
@@ -412,16 +412,14 @@ async function send_mail(email, subject, mailData) {
 			// 		user: process.env.EMAIL_USER,
 			// 		pass:  process.env.EMAIL_PASSWORD,
 			// 	},
-			// })
-
-			// Looking to send emails in production? Check out our Email API/SMTP product!
+			// }) 
 			var transporter = mailer.createTransport({
-				host: "sandbox.smtp.mailtrap.io",
-				port: 2525,
+				host: process.env.EMAIL_HOST,
+				port:process.env.EMAIL_PORT ,
 				auth: {
-				user: "32d0d116e53319",
-				pass: "5daa617375e5ec"
-				}
+					user:process.env.EMAIL_USER,
+					pass:process.env.EMAIL_PASSWORD
+				}	
 			});
 
 			const mailOptions = {
@@ -486,24 +484,24 @@ async function send_mail(email, subject, mailData) {
 // 	}
 // 	return false
 // }
-// export async function resendOtpMail(email, otp, title) {
-// 	try {
-// 		let res = await send_mail(email, title, {
-// 			des: `<div>Your request to resend the OTP was successful. Please find the new OTP code below to complete the verification process:</div>`,
-// 			des1: `<div style="margin-top: 10px;">If you did not request a new OTP, please contact our support team immediately.</div>`,
-// 			desc1Style: "block",
-// 			title1: title,
-// 			title: title,
-// 			titleStyle: "block",
-// 			image: "resend-otp.png",
-// 			otp: otp,
-// 			otpStyle: 'block'
-// 		})
-// 		return res
-// 	} catch (e) {
-// 	}
-// 	return false
-// }
+export async function resendOtpMail(email, otp, title) {
+	try {
+		let res = await send_mail(email, title, {
+			des: `<div>Your request to resend the OTP was successful. Please find the new OTP code below to complete the verification process:</div>`,
+			des1: `<div style="margin-top: 10px;">If you did not request a new OTP, please contact our support team immediately.</div>`,
+			desc1Style: "block",
+			title1: title,
+			title: title,
+			titleStyle: "block",
+			image: "resend-otp.png",
+			otp: otp,
+			otpStyle: 'block'
+		})
+		return res
+	} catch (e) {
+	}
+	return false
+}
 
 // async function sendverificationmail(email) {
 // 	try {
@@ -551,44 +549,7 @@ export async function forgotPasswordMail(email, otp) {
 
 
 
-// async function check_user_login(req) {
-// 	try {
-// 		let token = req.headers.authorization ? req.headers.authorization.split(' ')[1] : ''
-// 		let userdata = decodeJwtWithPem(token)
-// 		if (userdata.email && userdata.password) {
-// 			let getUserData = await sql_query(`select u.userId,password,userName,walletAddress,u.countryId FROM tbluser as u , tbluserDetailOfSolares as ud WHERE u.userId=ud.userId AND email = ? AND password = ?`, [userdata.email, userdata.password])
-// 			if (getUserData && passDec(userdata.password, encryption_key('passwordKey')) == passDec(getUserData.password, encryption_key('passwordKey'))) {
-// 				return { status: true, data: { userId: getUserData.userId, userName: getUserData.userName, walletAddress: getUserData?.walletAddress } }
-// 			}
-// 		}
-// 	} catch (e) {
-// 		console.log('check_user_login=>', e)
-// 	}
-// 	return { status: false, data: {} }
-// }
-
-// async function genrate_reffral_code() {
-// 	let generatedStr = strGenerator(8)
-// 	const randIndex = Math.floor(Math.random() * 5);
-// 	let cnt = await sql_query(`SELECT userId FROM tbluser`, [], "Count");
-// 	cnt++;
-// 	let refcode = (generatedStr.substr(0, randIndex) + cnt.toString().slice(-3) + generatedStr.substr(randIndex + (cnt.toString().slice(-3)).length)).substr(-6)
-// 	return refcode
-// }
-
-// async function validate_2fa(key, otp) {
-// 	try {
-// 		const status = speakeasy.totp.verify({
-// 			secret: key,
-// 			encoding: "base32",
-// 			token: otp,
-// 		});
-// 		return status;
-// 	} catch (e) {
-// 		console.error("Error validating 2FA:", e);
-// 	}
-// 	return false;
-// };
+ 
 export function encodeJwtWithPem(param) {
 	console.log('privateKey',param)
 	try {
@@ -606,46 +567,6 @@ export function decodeJwtWithPem(token) {
 	}
 }
 
-// async function getSlrConfig(keys) {
-// 	let data = await sql_query("SELECT metaKey,metaValue from tblslr_config where metaKey IN(?)", [keys], 'Multi')
-// 	let returnData = {}
-// 	if (data.length) {
-// 		for (let a of data) {
-// 			returnData[a.metaKey] = a.metaValue
-// 		}
-// 	}
-// 	return returnData
-// }
-
-
-// async function sendMembershipVoucherMail(email, voucherData) {
-// 	let jokerContent = voucherData.hasJokerNFT
-// 		? `<div style="margin-top: 10px;">As a special gift, you have also received a <strong style="color: #4cc9f0; font-weight: 700;">${voucherData.serialName}</strong> NFT free of cost!</div>`
-// 		: "";
-
-// 	let res;
-// 	try {
-// 		res = await send_mail(email, 'Active Membership', {
-// 			des: `<span>Thank you for activating your membership!</span>
-//                   <div style="margin-top: 10px; margin-bottom: 10px;">As part of your membership, you have received a voucher code that offers a ${voucherData.discount}% discount on the purchase of ${voucherData.noOfNft} NFT from the ${process?.env?.NFT21SITE} website.</div>
-//                   <span>Your voucher code: <strong style="color: #4cc9f0; font-weight: 700;">${voucherData.voucherCode}</strong></span>
-//                   <div style="margin-top: 10px;">Please note, the voucher is valid for ${voucherData.validMonth} months from the date of this email.</div>
-//                 ${jokerContent}
-// 				<div style="margin-top: 15px;">Use this code on your next NFT purchase.</div>`,
-// 			des1: "",
-// 			desc1Style: "none",
-// 			title1: "Active Membership",
-// 			title: "",
-// 			titleStyle: "block",
-// 			image: "membership-voucher.png",
-// 			otp: voucherData.voucherCode,
-// 			otpStyle: 'none',
-// 		});
-// 		return res;
-// 	} catch (e) {
-// 		return false;
-// 	}
-// }
-
+ 
 
  

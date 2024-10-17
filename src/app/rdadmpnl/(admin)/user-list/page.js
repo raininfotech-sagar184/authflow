@@ -1,6 +1,6 @@
 "use client"
 import React, {   useEffect, useState } from 'react'
-import toast  from 'react-hot-toast'
+import toast, { Toaster }  from 'react-hot-toast'
 import Flatpickr from "react-flatpickr"
 import "flatpickr/dist/flatpickr.css"
 import Pagination from "react-js-pagination";
@@ -155,6 +155,7 @@ export default function UserList() {
 
     return (
         <> 
+        <Toaster position="top-right" />
             <div className="container-xxl flex-grow-1 container-p-y">
                 <div className="card">
                     <h5 className="card-header" onClick={() =>console.log(session)}>User List</h5>

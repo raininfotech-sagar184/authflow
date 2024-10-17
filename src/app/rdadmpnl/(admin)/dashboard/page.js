@@ -4,11 +4,7 @@ import React from 'react'
 
 const Dashboard = () => {
     return (
-        <>
-
-
-
-
+        <> 
             <div className="container-xxl flex-grow-1 container-p-y">
                 <div className="row g-6">
                     {/* <!-- View sales --> */}

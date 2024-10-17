@@ -1,16 +1,15 @@
 import { NextResponse } from 'next/server';
 import { check_admin_login } from "../../../../../utils/backend";
-import { chk_otp, chk_password, encryption_key, get_timestemp, passDec, passEnc, validate_string } from "../../../../../utils/common";
+import { chk_otp, chk_password, dec, encryption_key, get_timestemp, passDec, passEnc, validate_string } from "../../../../../utils/common";
 import { sql_query } from "../../../../../utils/dbconnect";
 import speakeasy from "speakeasy"
-export async function POST(req, res) {
+export async function POST(req, res) { 
     try { 
         let adm = await check_admin_login(req)
         if (!adm.status || !adm.data.id) {
             return NextResponse.json({ message: "Unauthorized" }, { status: 400 })
         }  
-        let {  newPassword, currentPassword,otp } = await req.json()
-
+        let {  newPassword, currentPassword,otp } = await req.json() 
         try { 
             validate_string(currentPassword, "current password")
             chk_password(currentPassword) 
@@ -19,18 +18,14 @@ export async function POST(req, res) {
             chk_otp(otp)
         } catch (e) {
             return NextResponse.json({ message: e }, { status: 400 })
-        }
- 
-        let admin = await sql_query("select password, twoFaCode from tblAdmin where adminId = ? ", [adm.data.id])
-
-        console.log({admin})
+        } 
+        let admin = await sql_query("select password, twoFaCode from tblAdmin where adminId = ? ", [adm.data.id])  
         if (admin && passDec(admin.password, encryption_key("passwordKey")) === currentPassword) {
           
             const EncryptedPassword =  passEnc(newPassword, encryption_key("passwordKey")) 
-            let now = get_timestemp()  
-        
+            let now = get_timestemp()   
             let twofa = speakeasy.totp.verify({
-                secret: passDec(admin.twoFaCode, encryption_key("twofaKey")),
+                secret: dec(admin.twoFaCode, encryption_key("twofaKey")),
                 encoding: "base32",
                 token: otp
             })
@@ -42,8 +37,7 @@ export async function POST(req, res) {
             } 
         } else {   
             return NextResponse.json({ message: 'Invalid current password' }, { status: 400 })
-        } 
-
+        }  
     } catch (e) {
         console.log(e)
         return NextResponse.json({ message: 'Internal server error' }, { status: 400 })

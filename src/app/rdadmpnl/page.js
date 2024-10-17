@@ -22,7 +22,9 @@ export default function LoginaPage() {
   const reRef = useRef()
 
   const finalLogin = async (twoOpen) => {
-    try {
+   
+    try { 
+      toast.dismiss()
       if (!submitLoader) {
         try {
           if (twoOpen !==0) {
@@ -60,7 +62,7 @@ export default function LoginaPage() {
     }
   }
 
-  const login = async () => {
+  const login = async () => { 
     try {
       toast.dismiss()
       if (!submitLoader) {
@@ -113,7 +115,7 @@ export default function LoginaPage() {
           <div className="d-none d-lg-flex col-lg-8 p-0">
             <div className="auth-cover-bg auth-cover-bg-color d-flex justify-content-center align-items-center">
               <img
-                src="/assets/img/illustrations/auth-login-illustration-light.png"
+                src="/assets/image/NFT-marketplace.png"
                 alt="auth-login-cover"
                 className="my-5 auth-illustration"
                 data-app-light-img="illustrations/auth-login-illustration-light.png"
@@ -166,7 +168,7 @@ export default function LoginaPage() {
                       </span>
                     </div>
                   </div>
-                  <button className="btn btn-primary w-100" onClick={() => login()}>{submitLoader ? <ButtonSpinner /> : ""} <span className="ml-2">Sign in</span></button>
+                  <button className="btn btn-primary w-100" onClick={() => login()}>{submitLoader && <i className="fa fa-refresh fa-spin me-2"></i>} <span className="ml-2">Sign in</span></button>
                  
                 </> : <>
 
@@ -175,7 +177,7 @@ export default function LoginaPage() {
                     <input placeholder="Enter google authenticator OTP" type="text" className="form-control" value={otp} onChange={(e) => { setOtp(e.target.value = e.target.value.replace(/[^0-9]/g, "").replace(/(\..*)\./g, "$1")) }} onKeyUp={(e) => e.keyCode == 13 && finalLogin()} maxLength={6} />
                   </div>
                   <div className="text-center">
-                    <button type="button" className="btn btn-primary w-100" onClick={() => finalLogin()}>{submitLoader ? <ButtonSpinner />  : ""}Verify OTP</button>
+                    <button type="button" className="btn btn-primary w-100" onClick={() => finalLogin()}>{submitLoader && <i className="fa fa-refresh fa-spin me-2"></i>}Verify OTP</button>
                   </div>
                 </>}  
             </div>

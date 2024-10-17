@@ -40,8 +40,8 @@ export async function POST(req, res) {
             if (user.otpExpireTime < currentTime) {
               return NextResponse.json({ message: "This OTP is expired, Please click on resend OTP" }, { status: 400 }) 
             } 
-            let password = passEnc(password, encryption_key("passwordKey")); 
-            await sql_query(`UPDATE tblAdmin SET password = ?, otpCode = ?, otpExpireTime = ?, updatedOn = ? WHERE adminId = ?`, [password, 0, 0, currentTime, user.adminId], "Update");
+            let newPassword = passEnc(password, encryption_key("passwordKey")); 
+            await sql_query(`UPDATE tblAdmin SET password = ?, otpCode = ?, otpExpireTime = ?, updatedOn = ? WHERE adminId = ?`, [newPassword, 0, 0, currentTime, user.adminId], "Update");
             return NextResponse.json({message: "Your password has been reset successfully" }, { status: 200 }) 
         } else {
           return NextResponse.json({ message: 'invalid' }, { status: 400 }) 

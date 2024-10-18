@@ -100,8 +100,7 @@ export default function Header() {
                     </li>
                     <li className="nav-item mega-dropdown">
                       <span
-                        onMouseEnter={() => setDropShow(true)} 
-                        href="javascript:void(0);"
+                        onMouseEnter={() => setDropShow(true)}  
                         className={"nav-link dropdown-toggle navbar-ex-14-mega-dropdown mega-dropdown fw-medium" + (dropShow ? " show" : "")}
                         aria-expanded="true"
                         data-bs-toggle="mega-dropdown"
@@ -345,22 +344,22 @@ export default function Header() {
                 <ul className="navbar-nav flex-row align-items-center ms-auto">
                   {/* <!-- Style Switcher --> */}
                   <li className="nav-item dropdown-style-switcher dropdown me-2 me-xl-1">
-                    <a className="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
+                    <a className="nav-link dropdown-toggle hide-arrow" href="" data-bs-toggle="dropdown">
                       <i className="ti ti-lg"></i>
                     </a>
                     <ul className="dropdown-menu dropdown-menu-end dropdown-styles">
                       <li>
-                        <a className="dropdown-item" href="javascript:void(0);" data-theme="light">
+                        <a className="dropdown-item" href="" data-theme="light">
                           <span className="align-middle"><i className="ti ti-sun me-3"></i>Light</span>
                         </a>
                       </li>
                       <li>
-                        <a className="dropdown-item" href="javascript:void(0);" data-theme="dark">
+                        <a className="dropdown-item" href="" data-theme="dark">
                           <span className="align-middle"><i className="ti ti-moon-stars me-3"></i>Dark</span>
                         </a>
                       </li>
                       <li>
-                        <a className="dropdown-item" href="javascript:void(0);" data-theme="system">
+                        <a className="dropdown-item" href="" data-theme="system">
                           <span className="align-middle"><i className="ti ti-device-desktop-analytics me-3"></i>System</span>
                         </a>
                       </li>

@@ -541,7 +541,7 @@ export default function LandingPage() {
             <div className="position-relative d-inline-block pt-3 pt-md-0">
               <label className="switch switch-sm switch-primary me-0">
                 <span className="switch-label fs-6 text-body me-3">Pay Monthly</span>
-                <input type="checkbox" className="switch-input price-duration-toggler" checked />
+                <input type="checkbox" className="switch-input price-duration-toggler" />
                 <span className="switch-toggle-slider">
                   <span className="switch-on"></span>
                   <span className="switch-off"></span>

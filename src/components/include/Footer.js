@@ -108,12 +108,12 @@ const Footer = () => {
                   </div>
                   <div className="col-lg-3 col-md-4">
                     <h6 className="footer-title mb-6">Download our app</h6>
-                    <a href="javascript:void(0);" className="d-block mb-4"
+                    <span   className="d-block mb-4"
                     ><img src="/assets/img/front-pages/landing-page/apple-icon.png" alt="apple icon"
-                      /></a>
-                    <a href="javascript:void(0);" className="d-block"
+                      /></span>
+                    <span   className="d-block"
                     ><img src="/assets/img/front-pages/landing-page/google-play-icon.png" alt="google play icon"
-                      /></a>
+                      /></span>
                   </div>
                 </div>
               </div>

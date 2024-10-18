@@ -22,7 +22,7 @@ export default function Header() {
   return (
     <> 
     {/* <!-- Navbar: Start --> */}
-    <nav className="layout-navbar shadow-none py-0">
+    <nav className="layout-navbar shadow-none py-0"  onMouseLeave={() => setDropShow(false)}>
             <div className="container">
               <div className="navbar navbar-expand-lg landing-navbar px-3 px-md-8">
                 {/* <!-- Menu logo wrapper: Start --> */}
@@ -71,7 +71,7 @@ export default function Header() {
                 </div>
                 {/* <!-- Menu logo wrapper: End --> */}
                 {/* <!-- Menu wrapper: Start --> */}
-                <div className="collapse navbar-collapse landing-nav-menu" id="navbarSupportedContent">
+                <div className="collapse navbar-collapse landing-nav-menu" id="navbarSupportedContent" >
                   <button
                     className="navbar-toggler border-0 text-heading position-absolute end-0 top-0 scaleX-n1-rtl"
                     type="button"
@@ -99,15 +99,16 @@ export default function Header() {
                       <a className="nav-link fw-medium" href="landing-page.html#landingContact">Contact us</a>
                     </li>
                     <li className="nav-item mega-dropdown">
-                      <a
+                      <span
+                        onMouseEnter={() => setDropShow(true)} 
                         href="javascript:void(0);"
-                        className="nav-link dropdown-toggle navbar-ex-14-mega-dropdown mega-dropdown fw-medium"
-                        aria-expanded="false"
+                        className={"nav-link dropdown-toggle navbar-ex-14-mega-dropdown mega-dropdown fw-medium" + (dropShow ? " show" : "")}
+                        aria-expanded="true"
                         data-bs-toggle="mega-dropdown"
                         data-trigger="hover">
                         <span data-i18n="Pages">Pages</span>
-                      </a>
-                      <div className="dropdown-menu p-4 p-xl-8">
+                      </span>
+                      <div className={"dropdown-menu p-4 p-xl-8" + (dropShow ? " show" : "")}  onMouseEnter={() => setDropShow(true)}  onMouseLeave={() => setDropShow(false)}>
                         <div className="row gy-4">
                           <div className="col-12 col-lg">
                             <div className="h6 d-flex align-items-center mb-3 mb-lg-5">

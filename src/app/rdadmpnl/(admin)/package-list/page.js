@@ -23,9 +23,9 @@ export default function PackageList() {
     const [page, setPage] = useState(1)
     const [recordCount, setRecordCount] = useState(0)
     const [packageList, setPackageList] = useState([])
-    const [status, setStatus] = useState("") 
+    const [status, setStatus] = useState("")
     const [show, setShow] = useState(false);
-    const [image, setImage] = useState("") 
+    const [image, setImage] = useState("")
     const [imageUrl, setImageUrl] = useState("")
     const [submitLoader, setSubmitLoader] = useState(false)
     const [packageData, setPackageData] = useState({
@@ -34,20 +34,21 @@ export default function PackageList() {
         rewarType: "",
         locationUrl: "",
         packageId: "",
-        isUpdate: false
+        isUpdate: false,
+        status:0
     })
 
 
-    const handleClose = () =>{ 
+    const handleClose = () => {
         setShow(false)
         setPackageData({})
         setImageUrl("")
     };
     const handleShow = () => setShow(true);
     const handleUpdate = (data) => {
-        console.log(data)  
-        setPackageData({ name: data.packageName, amount: data.price, rewarType: data.reward_type,  id: data.id,isUpdate: true,imgUrlForUpdate: data.packageImg }) 
-        setImageUrl(`${process.env.IMG_URL}${data.packageImg}`) 
+        console.log(data)
+        setPackageData({ name: data.packageName, amount: data.price, rewarType: data.reward_type, id: data.id, isUpdate: true, imgUrlForUpdate: data.packageImg })
+        setImageUrl(`${process.env.IMG_URL}${data.packageImg}`)
         handleShow()
     }
     const verify_Options = [{ label: 'All', value: '' }, { label: 'Active', value: '1' }, { label: 'Deactive', value: '0' }, { label: 'Block', value: '2' }];
@@ -64,7 +65,7 @@ export default function PackageList() {
             const sponserbonusBody = JSON.stringify({
                 page: page - 1,
                 order,
-                status, 
+                status,
                 orderColumn: orderClm,
                 startDate: _dateRange[0],
                 endDate: _dateRange[1],
@@ -107,31 +108,31 @@ export default function PackageList() {
                     validate_input_number(packageData.amount, 'Package amount')
                     validate_input_number_in_range(packageData.rewarType, 'Reward type')
 
-                    
+
                     // validate_string(packageData.packageId, 'packageId') 
-                  
+
                 } catch (e) {
                     toast.error(e)
                     return
                 }
-               if (!imageUrl ) {
-                        toast.error("Upload image")
-                        return
-                    }
+                if (!imageUrl) {
+                    toast.error("Upload image")
+                    return
+                }
                 setSubmitLoader(true)
                 const formData = new FormData()
-                const bodyData = { name: packageData.name, amount: packageData.amount, rewarType: packageData.rewarType }
+                const bodyData = { name: packageData.name, amount: packageData.amount, rewarType: packageData.rewarType, status: packageData.status }
                 if (packageData.isUpdate) bodyData.id = packageData.id
-              
+
                 if (packageData.isUpdate) {
                     if (image != "") {
                         formData.append('image', image)
-                        bodyData.imageUrl = packageData.imgUrlForUpdate 
-                    }else{
+                        bodyData.imageUrl = packageData.imgUrlForUpdate
+                    } else {
                         bodyData.isImage = 0
                         bodyData.imageUrl = imageUrl
                     }
-                }else{
+                } else {
                     formData.append('image', image)
                 }
                 formData.append('data', JSON.stringify(bodyData))
@@ -180,15 +181,14 @@ export default function PackageList() {
     }
     useEffect(() => { getPackageList() }, [page, order, orderClm])
 
- 
+
     return (
         <>
-        <Toaster position="top-right" />
+            <Toaster position="top-right" />
             <div className="container-xxl flex-grow-1 container-p-y">
                 <div className="card">
                     <h5 className="card-header">Package List</h5>
-
-                    <div className='row card-body'>
+                    <div className={`row card-body`}>
                         <div className='col-xl-3 col-lg-4 col-md-6 col-12 custom pb-3'>
                             <div className="form-group">
                                 <label>Date</label>
@@ -221,7 +221,6 @@ export default function PackageList() {
                                 </div>
                             </div>
                         </div>
-
                         <div className='col-xl-3 col-lg-4 col-md-6 col-12  pb-3'>
                             <label>Package Name</label>
                             <div className='cust-input'>
@@ -236,13 +235,11 @@ export default function PackageList() {
                                 <button className="btn btn-primary waves-effect  waves-light" onClick={handleShow}>{searchLdr ? <Loader /> : ""} Add Package</button>
                             </div>
                         </div>
-
                     </div>
-
                     <div className="table-responsive text-nowrap card-body">
 
                         <table className="table">
-                            <thead>
+                            <thead className={(packageList && packageList.length > 0) && !searchLdr ? "" : "d-none"}>
                                 <tr>
                                     <th>
                                         <div className='d-flex cursor-pointer' onClick={() => { setOrder(order == 0 ? 1 : 0); setOrderClm(0) }}>
@@ -255,7 +252,7 @@ export default function PackageList() {
                                     </th>
                                     <th>
                                         <div className='d-flex'>
-                                            <div >Image</div> 
+                                            <div >Image</div>
                                         </div>
                                     </th>
                                     <th>
@@ -300,25 +297,23 @@ export default function PackageList() {
                                             <div>Actions</div>
                                         </div>
                                     </th>
-
-
                                 </tr>
                             </thead>
                             <tbody className="table-border-bottom-0">
-                                {packageList && !searchLdr ? packageList.map((data, index) => {
+                                {(packageList && packageList.length > 0) && !searchLdr ? packageList.map((data, index) => {
                                     return (
                                         <tr key={index}>
                                             <td>
                                                 <span className="fw-medium">{data.num}</span>
                                             </td>
                                             <td>
-                                                <span className="packageImage"><img src={process.env.IMG_URL+data.packageImg} alt={data.packageName} /></span>
+                                                <span className="packageImage"><img src={process.env.IMG_URL + data.packageImg} alt={data.packageName} /></span>
                                             </td>
                                             <td>
                                                 <span className="fw-medium">{data.packageName
                                                 }</span>
                                             </td>
-                                            <td>{data.price}</td>  
+                                            <td>{data.price}</td>
                                             <td><span className={`badge bg-label-${data.status == 1 ? 'success' : data.status == 0 ? 'danger' : 'dark'} me-1`}>{data.status == 1 ? 'Active' : data.status == 0 ? 'Deactive' : 'Block'}</span></td>
                                             <td>{data.date > 0 ? convert_date(data.date) : "-"}</td>
                                             <td>
@@ -326,24 +321,22 @@ export default function PackageList() {
                                                     <button className='btn btn-primary btn-sm' onClick={() => handleUpdate(data)}>Edit</button>
                                                 </div>
                                             </td>
-                                           
                                         </tr>
                                     )
-                                }) : ""}
+                                }) : <>
+                                    <tr>
+                                        {searchLdr ? <>
 
-                                {
-                                    searchLdr ? <tr>
-                                        <td colSpan={7} className="text-center table-loader">
-                                            <Table_Loader />
-                                        </td>
+                                            <td colSpan={8} className="text-center table-loader">
+                                                <Table_Loader />
+                                            </td>
+                                        </> : <>
+                                            <td className="text-center" colSpan={8}>
+                                                <img src="/assets/image/not_found.svg" className='nodata-found' alt="no data" />
+                                            </td>
+                                        </>}
                                     </tr>
-                                        : !searchLdr && !packageList.length ?
-                                            <tr>
-                                                <td className="text-center" colSpan={7}>
-                                                    <img src="/assets/image/not_found.svg" className='nodata-found' alt="no data" />
-                                                </td>
-                                            </tr> : ''
-                                }
+                                </>}
                             </tbody>
                         </table>
                         {packageList.length > 0 && !searchLdr ? (
@@ -364,7 +357,7 @@ export default function PackageList() {
                 </div>
                 <Modal show={show} onHide={handleClose} animation={false}>
                     <Modal.Header closeButton>
-                        <Modal.Title>{packageData.isUpdate ? 'Update':'Add'} Package</Modal.Title>
+                        <Modal.Title>{packageData.isUpdate ? 'Update' : 'Add'} Package</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                         <div className="row modalForm">
@@ -381,13 +374,21 @@ export default function PackageList() {
                             <div className="col-12">
                                 <label className="form-label">Reward Type</label>
                                 <input type="text" className="form-control" value={packageData.rewarType} placeholder="Enter location url" onChange={(e) => setPackageData({ ...packageData, rewarType: e.target.value })} />
-                            </div> 
+                            </div>
+                            <div className="col-12">
+                                <label className="form-label">Status</label>
+                                <div className="statusRadioGroup">
+                                    <span> <input onClick={()=>packageList({...packageList, status: 1})} checked={packageData.status == 1} className="form-check-input mt-0" type="radio" value="" aria-label="Radio button for following text input" /> Active </span>
+                                    <span> <input onClick={()=>packageList({...packageList, status: 0})} checked={packageData.status == 0} className="form-check-input mt-0" type="radio" value="" aria-label="Radio button for following text input" /> Deactive </span>
+                                </div>
+
+                            </div>
                             <div className="col-12">
                                 <label htmlFor="selectFile" className='cursor-pointer'>
                                     <img src={imageUrl ? imageUrl : '/assets/image/upload-image.png'} className='upload-image' />
                                 </label>
                                 <input type='file' id="selectFile" className='d-none' onChange={(e) => selectFile(e)} />
-                            </div> 
+                            </div>
                         </div>
                     </Modal.Body>
                     <Modal.Footer>

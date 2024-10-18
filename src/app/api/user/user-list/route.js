@@ -62,7 +62,7 @@ export async function GET(req, res) {
                     userName: j?.userName?? "-",
                     date: j?.createdOn?? 0,
                     parentId: j?.parentId?? "-",
-                    varify: j?.isVerify??0,
+                    verify: j?.isVerify??0,
                     status: j?.isActive??0,
                     kyc_status: j?.kycStatus??0,
                     email: j?.email?? "-",

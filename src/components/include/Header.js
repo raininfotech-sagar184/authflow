@@ -37,10 +37,10 @@ export default function Header() {
           {/* <!-- Search --> */}
           <div className="navbar-nav align-items-center">
             <div className="nav-item navbar-search-wrapper mb-0">
-              <a className="nav-item nav-link search-toggler d-flex align-items-center px-0" href="javascript:void(0);">
+              <span className="nav-item nav-link search-toggler d-flex align-items-center px-0"  >
                 <i className="ti ti-search ti-md me-2 me-lg-4 ti-lg"></i>
                 <span className="d-none d-md-inline-block text-muted fw-normal">Search (Ctrl+/)</span>
-              </a>
+              </span>
             </div>
           </div>
           {/* <!-- /Search --> */}
@@ -48,23 +48,23 @@ export default function Header() {
           <ul className="navbar-nav flex-row align-items-center ms-auto"> 
             {/* <!-- User --> */}
             <li className="nav-item navbar-dropdown dropdown-user dropdown">
-              <a
+              <span
                 className={`nav-link dropdown-toggle hide-arrow p-0  ${dropShow ? 'show' : ''}`}
                 onClick={() => setDropShow(!dropShow)}
                 data-bs-toggle="dropdown"
                 aria-expanded={dropShow?"true":"false"}
                 >
                 <div className="avatar avatar-online">
-                  <img src="../../assets/img/avatars/1.png" alt className="rounded-circle" />
+                  <img src="../../assets/img/avatars/1.png" alt = "true" className="rounded-circle" />
                 </div>
-              </a> 
+              </span> 
               <ul className={`dropdown-menu dropdown-menu-end p-0  ${dropShow ? 'show' : ''}`} data-bs-popper="static">
                 <li>
-                  <a className="dropdown-item mt-0" href="pages-account-settings-account.html">
+                  <span className="dropdown-item mt-0" href="pages-account-settings-account.html">
                     <div className="d-flex align-items-center">
                       <div className="flex-shrink-0 me-2">
                         <div className="avatar avatar-online">
-                          <img src="../../assets/img/avatars/1.png" alt className="rounded-circle" />
+                          <img src="../../assets/img/avatars/1.png" alt = "true" className="rounded-circle" />
                         </div>
                       </div>
                       <div className="flex-grow-1">
@@ -72,13 +72,13 @@ export default function Header() {
                         <small className="text-muted">Admin</small>
                       </div>
                     </div>
-                  </a>
+                  </span>
                 </li> 
                 <Link href="configuration"> 
                 <li>
-                  <a className="dropdown-item" href="pages-account-settings-account.html">
+                  <span className="dropdown-item" href="pages-account-settings-account.html">
                     <i className="ti ti-settings me-3 ti-md"></i><span className="align-middle">Settings</span>
-                  </a>
+                  </span>
                 </li>
                </Link>
                 <li>

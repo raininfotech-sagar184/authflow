@@ -8,7 +8,7 @@ const Footer = () => {
                   <div className="text-body">
                     ©
                     <script>
-                      document.write(new Date().getFullYear());
+                      2024
                     </script>
                     , made with ❤️ by <a href="https://pixinvent.com" target="_blank" className="footer-link">Pixinvent</a>
                   </div>

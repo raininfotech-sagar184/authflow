@@ -371,3 +371,15 @@
     background-color: #ffffff00;
   }
 }
+ 
+.custom-dropdown #dropdown-basic{
+  padding: 3px 5px !important;
+}
+.nodata-found{
+  width: 20% !important;
+}
+
+ .statusRadioGroup{
+  display: flex;
+  gap: 10px; 
+ }

@@ -16,7 +16,7 @@ const Dashboard = () => {
                                         <h5 className="card-title mb-0">Congratulations John! 🎉</h5>
                                         <p className="mb-2">Best seller of the month</p>
                                         <h4 className="text-primary mb-1">$48.9k</h4>
-                                        <a href="javascript:;" className="btn btn-primary">View Sales</a>
+                                        <a href="" className="btn btn-primary">View Sales</a>
                                     </div>
                                 </div>
                                 <div className="col-5 text-center text-sm-left">
@@ -161,48 +161,7 @@ const Dashboard = () => {
                                         </div>
                                         <div id="totalRevenueChart" className="mt-n1"></div>
                                     </div>
-                                    <div className="col-md-4 p-4">
-                                        <div className="text-center mt-5">
-                                            <div className="dropdown">
-                                                <button
-                                                    className="btn btn-sm btn-label-primary dropdown-toggle"
-                                                    type="button"
-                                                    id="budgetId"
-                                                    data-bs-toggle="dropdown"
-                                                    aria-haspopup="true"
-                                                    aria-expanded="false">
-                                                    <script>
-                                                        document.write(new Date().getFullYear());
-                                                    </script>
-                                                </button>
-                                                <div className="dropdown-menu dropdown-menu-end" aria-labelledby="budgetId">
-                                                    <a className="dropdown-item prev-year1" href="javascript:void(0);">
-                                                        <script>
-                                                            document.write(new Date().getFullYear() - 1);
-                                                        </script>
-                                                    </a>
-                                                    <a className="dropdown-item prev-year2" href="javascript:void(0);">
-                                                        <script>
-                                                            document.write(new Date().getFullYear() - 2);
-                                                        </script>
-                                                    </a>
-                                                    <a className="dropdown-item prev-year3" href="javascript:void(0);">
-                                                        <script>
-                                                            document.write(new Date().getFullYear() - 3);
-                                                        </script>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <h3 className="text-center pt-8 mb-0">$25,825</h3>
-                                        <p className="mb-8 text-center"><span className="fw-medium text-heading">Budget: </span>56,800</p>
-                                        <div className="px-3">
-                                            <div id="budgetChart"></div>
-                                        </div>
-                                        <div className="text-center mt-8">
-                                            <button type="button" className="btn btn-primary">Increase Button</button>
-                                        </div>
-                                    </div>
+                                  
                                 </div>
                             </div>
                         </div>
@@ -228,9 +187,9 @@ const Dashboard = () => {
                                         <i className="ti ti-dots-vertical ti-md text-muted"></i>
                                     </button>
                                     <div className="dropdown-menu dropdown-menu-end" aria-labelledby="earningReports">
-                                        <a className="dropdown-item" href="javascript:void(0);">Download</a>
-                                        <a className="dropdown-item" href="javascript:void(0);">Refresh</a>
-                                        <a className="dropdown-item" href="javascript:void(0);">Share</a>
+                                        <a className="dropdown-item" href="">Download</a>
+                                        <a className="dropdown-item" href="">Refresh</a>
+                                        <a className="dropdown-item" href="">Share</a>
                                     </div>
                                 </div>
                             </div>
@@ -322,9 +281,9 @@ const Dashboard = () => {
                                         <i className="ti ti-dots-vertical ti-md text-muted"></i>
                                     </button>
                                     <div className="dropdown-menu dropdown-menu-end" aria-labelledby="popularProduct">
-                                        <a className="dropdown-item" href="javascript:void(0);">Last 28 Days</a>
-                                        <a className="dropdown-item" href="javascript:void(0);">Last Month</a>
-                                        <a className="dropdown-item" href="javascript:void(0);">Last Year</a>
+                                        <a className="dropdown-item" href="">Last 28 Days</a>
+                                        <a className="dropdown-item" href="">Last Month</a>
+                                        <a className="dropdown-item" href="">Last Year</a>
                                     </div>
                                 </div>
                             </div>
@@ -455,9 +414,9 @@ const Dashboard = () => {
                                         <i className="ti ti-dots-vertical ti-md text-muted"></i>
                                     </button>
                                     <div className="dropdown-menu dropdown-menu-end" aria-labelledby="salesByCountryTabs">
-                                        <a className="dropdown-item" href="javascript:void(0);">Select All</a>
-                                        <a className="dropdown-item" href="javascript:void(0);">Refresh</a>
-                                        <a className="dropdown-item" href="javascript:void(0);">Share</a>
+                                        <a className="dropdown-item" href="">Select All</a>
+                                        <a className="dropdown-item" href="">Refresh</a>
+                                        <a className="dropdown-item" href="">Share</a>
                                     </div>
                                 </div>
                             </div>
@@ -705,9 +664,9 @@ const Dashboard = () => {
                                         <i className="ti ti-dots-vertical ti-md text-muted"></i>
                                     </button>
                                     <div className="dropdown-menu dropdown-menu-end" aria-labelledby="transactionID">
-                                        <a className="dropdown-item" href="javascript:void(0);">Last 28 Days</a>
-                                        <a className="dropdown-item" href="javascript:void(0);">Last Month</a>
-                                        <a className="dropdown-item" href="javascript:void(0);">Last Year</a>
+                                        <a className="dropdown-item" href="">Last 28 Days</a>
+                                        <a className="dropdown-item" href="">Last Month</a>
+                                        <a className="dropdown-item" href="">Last Year</a>
                                     </div>
                                 </div>
                             </div>

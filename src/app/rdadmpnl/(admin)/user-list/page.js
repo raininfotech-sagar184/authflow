@@ -1,6 +1,6 @@
 "use client"
-import React, {   useEffect, useState } from 'react'
-import toast, { Toaster }  from 'react-hot-toast'
+import React, { useEffect, useState } from 'react'
+import toast, { Toaster } from 'react-hot-toast'
 import Flatpickr from "react-flatpickr"
 import "flatpickr/dist/flatpickr.css"
 import Pagination from "react-js-pagination";
@@ -8,15 +8,15 @@ import Loader from '../../../../components/include/Loader'
 import { useAuthContext } from '../../../../context/auth'
 import Table_Loader from '../../../../components/include/TableLoader'
 import { fetchApi } from '../../../../utils/frondend'
-import {   convert_date } from '../../../../utils/common'
+import { convert_date } from '../../../../utils/common'
 import Swal from 'sweetalert2';
-import Dropdown from 'react-bootstrap/Dropdown'; 
-import Select from 'react-select' 
+import Dropdown from 'react-bootstrap/Dropdown';
+import Select from 'react-select'
 import { useSession, signIn, signOut } from "next-auth/react";
 const moment = require('moment')
 moment.suppressDeprecationWarnings = true
 
-export default function UserList() { 
+export default function UserList() {
     const { data: session } = useSession();
     const { setAuthTkn, setPageLoader } = useAuthContext()
     const [order, setOrder] = useState(1)
@@ -27,12 +27,12 @@ export default function UserList() {
     const [recordCount, setRecordCount] = useState(0)
     const [userList, setUserList] = useState([])
     const [status, setStatus] = useState("")
-    const [verify, setVerify] = useState("") 
+    const [verify, setVerify] = useState("")
     const [userIndex, setUserIndex] = useState(-1)
     const [userActivationLdr, setUserActivationLdr] = useState(false)
     const [userVerificationIndex, setUserVerificationIndex] = useState(-1)
-    const [userVerificationLdr, setUserVerificationLdr] = useState(false) 
-    const verify_Options = [{ label: 'All', value: '' }, { label: 'Active', value: '1' }, { label: 'Deactive', value: '0' },{ label: 'Block', value: '2' }];
+    const [userVerificationLdr, setUserVerificationLdr] = useState(false)
+    const verify_Options = [{ label: 'All', value: '' }, { label: 'Active', value: '1' }, { label: 'Deactive', value: '0' }, { label: 'Block', value: '2' }];
     let date = moment(new Date()).subtract(process.env.FILTER_MONTH, "month")
     const [dateRange, setDateRange] = useState([date['_d'], date['_i']])
     let _dateRange = [
@@ -51,7 +51,7 @@ export default function UserList() {
                 endDate: _dateRange[1],
                 search,
                 status,
-                verify 
+                verify
             })
             const response = await fetchApi("user/user-list", sponserbonusBody, "GET")
             setPageLoader(false)
@@ -151,16 +151,16 @@ export default function UserList() {
                 }
             })
         }
-    } 
+    }
 
     return (
-        <> 
-        <Toaster position="top-right" />
+        <>
+            <Toaster position="top-right" />
             <div className="container-xxl flex-grow-1 container-p-y">
                 <div className="card">
-                    <h5 className="card-header" onClick={() =>console.log(session)}>User List</h5>
+                    <h5 className="card-header" onClick={() => console.log(session)}>User List</h5>
 
-                    <div className='row card-body'>
+                    <div className={`row card-body`}>
                         <div className='col-xl-3 col-lg-4 col-md-6 col-12 custom'>
                             <div className="form-group">
                                 <label>Date</label>
@@ -184,7 +184,7 @@ export default function UserList() {
                         </div>
                         <div className='col-xl-3 col-lg-4 col-md-6 col-12'>
                             <div className="form-group" onClick={() => console.log(status)}>
-                                <label>Status</label> 
+                                <label>Status</label>
 
                                 <div className='cust-input'>
                                     <Select options={verify_Options}
@@ -192,8 +192,8 @@ export default function UserList() {
                                         onChange={(selectedOption) => { setStatus(selectedOption.value); }} />
                                 </div>
                             </div>
-                        </div> 
-                         
+                        </div>
+
                         <div className='col-xl-3 col-lg-4 col-md-6 col-12'>
                             <label>Username/Email</label>
                             <div className='cust-input'>
@@ -208,21 +208,21 @@ export default function UserList() {
                     </div>
 
                     <div className="table-responsive text-nowrap card-body">
-                        
-                        <table className="table">
-                            <thead>
+
+                        <table className="table"> 
+                            <thead className={(userList && userList.length > 0) && !searchLdr ? "" : "d-none"}>
                                 <tr>
                                     <th>
-                                        <div className='d-flex cursor-pointer' onClick={() => { setOrder(order == 0 ? 1 : 0); setOrderClm(0)}}>
+                                        <div className='d-flex cursor-pointer' onClick={() => { setOrder(order == 0 ? 1 : 0); setOrderClm(0) }}>
                                             <div  >#</div>
-                                            <div className="sort-icons-position" onClick={() => { setOrder(order == 0 ? 1 : 0); setOrderClm(0)}}>
+                                            <div className="sort-icons-position" onClick={() => { setOrder(order == 0 ? 1 : 0); setOrderClm(0) }}>
                                                 <i className={`fa fa-sort-down position-absolute ${order === 1 && orderClm == 0 ? `text-primary` : "text-muted"} `}></i>
                                                 <i className={`fa fa-sort-up position-absolute ${order === 0 && orderClm == 0 ? `text-primary` : "text-muted"} `}></i>
                                             </div>
                                         </div>
                                     </th>
                                     <th>
-                                        <div className='d-flex cursor-pointer' onClick={() => { setOrder(order == 0 ? 1 : 0); setOrderClm(1)}}>
+                                        <div className='d-flex cursor-pointer' onClick={() => { setOrder(order == 0 ? 1 : 0); setOrderClm(1) }}>
                                             <div  >User Name</div>
                                             <div className="sort-icons-position" >
                                                 <i className={`fa fa-sort-down position-absolute ${order === 1 && orderClm == 1 ? `text-primary` : "text-muted"} `}></i>
@@ -231,7 +231,7 @@ export default function UserList() {
                                         </div>
                                     </th>
                                     <th>
-                                        <div className='d-flex cursor-pointer' onClick={() => { setOrder(order == 0 ? 1 : 0); setOrderClm(2)}}>
+                                        <div className='d-flex cursor-pointer' onClick={() => { setOrder(order == 0 ? 1 : 0); setOrderClm(2) }}>
                                             <div  >Email</div>
                                             <div className="sort-icons-position" >
                                                 <i className={`fa fa-sort-down position-absolute ${order === 1 && orderClm == 2 ? `text-primary` : "text-muted"} `}></i>
@@ -240,7 +240,7 @@ export default function UserList() {
                                         </div>
                                     </th>
                                     <th>
-                                        <div className='d-flex cursor-pointer' onClick={() => { setOrder(order == 0 ? 1 : 0); setOrderClm(3)}}>
+                                        <div className='d-flex cursor-pointer' onClick={() => { setOrder(order == 0 ? 1 : 0); setOrderClm(3) }}>
                                             <div  >Status</div>
                                             <div className="sort-icons-position" >
                                                 <i className={`fa fa-sort-down position-absolute ${order === 1 && orderClm == 3 ? `text-primary` : "text-muted"} `}></i>
@@ -249,7 +249,7 @@ export default function UserList() {
                                         </div>
                                     </th>
                                     <th>
-                                        <div className='d-flex cursor-pointer' onClick={() => { setOrder(order == 0 ? 1 : 0); setOrderClm(4)}}>
+                                        <div className='d-flex cursor-pointer' onClick={() => { setOrder(order == 0 ? 1 : 0); setOrderClm(4) }}>
                                             <div  >KYC Status</div>
                                             <div className="sort-icons-position" >
                                                 <i className={`fa fa-sort-down position-absolute ${order === 1 && orderClm == 4 ? `text-primary` : "text-muted"} `}></i>
@@ -258,7 +258,7 @@ export default function UserList() {
                                         </div>
                                     </th>
                                     <th>
-                                        <div className='d-flex cursor-pointer' onClick={() => { setOrder(order == 0 ? 1 : 0); setOrderClm(5)}}>
+                                        <div className='d-flex cursor-pointer' onClick={() => { setOrder(order == 0 ? 1 : 0); setOrderClm(5) }}>
                                             <div  >Varried</div>
                                             <div className="sort-icons-position" >
                                                 <i className={`fa fa-sort-down position-absolute ${order === 1 && orderClm == 5 ? `text-primary` : "text-muted"} `}></i>
@@ -267,7 +267,7 @@ export default function UserList() {
                                         </div>
                                     </th>
                                     <th>
-                                        <div className='d-flex cursor-pointer' onClick={() => { setOrder(order == 0 ? 1 : 0); setOrderClm(6)}}>
+                                        <div className='d-flex cursor-pointer' onClick={() => { setOrder(order == 0 ? 1 : 0); setOrderClm(6) }}>
                                             <div >Created On</div>
                                             <div className="sort-icons-position" >
                                                 <i className={`fa fa-sort-down position-absolute ${order === 1 && orderClm == 6 ? `text-primary` : "text-muted"} `}></i>
@@ -277,7 +277,7 @@ export default function UserList() {
                                     </th>
                                     <th  >
                                         <div  >
-                                            <div>Actions</div> 
+                                            <div>Actions</div>
                                         </div>
                                     </th>
 
@@ -285,61 +285,63 @@ export default function UserList() {
                                 </tr>
                             </thead>
                             <tbody className="table-border-bottom-0">
-                                {userList && !searchLdr ? userList.map((data, index) => {
+                                {(userList && userList.length > 0) && !searchLdr   ? userList.map((data, index) => {
                                     return (
                                         <tr key={index}>
                                             <td>
                                                 <span className="fw-medium">{data?.num}</span>
                                             </td>
-                                            <td> 
+                                            <td>
                                                 <span className="fw-medium">{data?.userName}</span>
                                             </td>
                                             <td>{data?.email}</td>
-                                            
-                                            <td><span className={`badge bg-label-${data?.status == 1 ? 'success' : data?.status == 0 ? 'danger' : 'dark'} me-1`}>{data?.status == 1 ? 'Active' : data?.status == 0 ? 'Deactive' : 'Block'}</span></td>
+                                            <td>
+                                                <Dropdown className='custom-dropdown mr-2'>
+                                                    <Dropdown.Toggle className='btn-sm' variant={data.status === 0 ? "danger " : data.status === 1 ? "success" : data.status === 2 ? "secondary" : ""} id="dropdown-basic">
+                                                        {userIndex == index && userActivationLdr ? <Loader /> : ''}
+                                                        {data.status === 0 ? "Deactive" : data.status === 1 ? "Active" : data.status === 2 ? "Block" : ""}
+                                                    </Dropdown.Toggle>
+                                                    <Dropdown.Menu>
+                                                        {data.status != 0 ? <Dropdown.Item onClick={() => { userActivation(0, data.id, data.userName, index) }}>Deactive</Dropdown.Item> : ""}
+                                                        {data.status != 1 ? <Dropdown.Item onClick={() => { userActivation(1, data.id, data.userName, index) }}>Active</Dropdown.Item> : ""}
+                                                        {data.status != 2 ? <Dropdown.Item onClick={() => { userActivation(2, data.id, data.userName, index) }}>Block</Dropdown.Item> : ""}
+                                                    </Dropdown.Menu>
+                                                </Dropdown>
+                                            </td>
+
                                             <td><span className={`badge bg-label-${data?.kyc_status == 2 ? 'success' : data?.kyc_status == 0 ? 'dark' : 'danger'} me-1`}>{data?.kyc_status == 2 ? 'Varified' : data?.kyc_status == 0 ? 'Not applied' : 'Rejected'}</span></td>
-                                            <td><span className={`badge bg-label-${data?.verify == 1 ? 'success' :  'danger'} me-1`}>{data?.verify == 1 ? 'Yes' :   'No'}</span></td>
-                                            <td >{data?.date>0? convert_date(data?.date):"-"}</td>
+                                            <td><span className={`badge bg-label-${data?.verify == 1 ? 'success' : 'danger'} me-1`}>{data?.verify == 1 ? 'Yes' : 'No'}</span></td>
+                                            <td >{data?.date > 0 ? convert_date(data?.date) : "-"}</td>
                                             <td>
                                                 <div className='  actionBox'>
-                                                   
-                                                    <Dropdown className='custom-dropdown mr-2'>
-                                                        <Dropdown.Toggle className='btn-sm' variant={data.status === 0 ? "danger " : data.status === 1 ? "success" : data.status === 2 ? "secondary" : ""} id="dropdown-basic">
-                                                            {userIndex == index && userActivationLdr ? <Loader /> : ''}
-                                                            {data.status === 0 ? "Deactive" : data.status === 1 ? "Active" : data.status === 2 ? "Block" : ""}
-                                                        </Dropdown.Toggle>
-                                                        <Dropdown.Menu>
-                                                            {data.status != 0 ? <Dropdown.Item onClick={() => { userActivation(0, data.id, data.userName, index) }}>Deactive</Dropdown.Item> : ""}
-                                                            {data.status != 1 ? <Dropdown.Item onClick={() => { userActivation(1, data.id, data.userName, index) }}>Active</Dropdown.Item> : ""}
-                                                            {data.status != 2 ? <Dropdown.Item onClick={() => { userActivation(2, data.id, data.userName, index) }}>Block</Dropdown.Item> : ""}
-                                                        </Dropdown.Menu>
-                                                    </Dropdown>
-                                                    {data.varify == 0 ?
+                                                    {data.verify == 0 ?
                                                         <button className="mr-2 btn-sm btn btn-info waves-effect  waves-light" onClick={() => { userVerificarion(data.id, data.userName, index) }}>  {userVerificationIndex == index && userVerificationLdr ? <Loader /> : ''} Verify</button>
                                                         : ""}
-                                                  </div>
+                                                </div>
                                             </td>
                                         </tr>
                                     )
-                                }) : ""}
+                                }) : <>
+                                    <tr>
+                                        {searchLdr ? <>
 
-                                {
-                                    searchLdr ? <tr>
-                                        <td colSpan={7} className="text-center table-loader">
-                                            <Table_Loader />
-                                        </td>
-                                    </tr>
-                                        : !searchLdr && !userList.length ?
-                                            <tr>
-                                                <td className="text-center" colSpan={8}>
-                                                    <img src="/assets/image/not_found.svg" className='nodata-found' alt="no data" />
-                                                </td>
-                                            </tr> : ''
-                                }
+                                            <td colSpan={8} className="text-center table-loader">
+                                                <Table_Loader />
+                                            </td>
+                                        </> : <>
+                                            <td className="text-center" colSpan={8}>
+                                                <img src="/assets/image/not_found.svg" className='nodata-found' alt="no data" />
+                                            </td>
+                                        </>}
+
+                                    </tr> 
+                                    </>}
+
+
                             </tbody>
                         </table>
                         {userList.length > 0 && !searchLdr ? (
-                            <div className="col-12 pagination-box text-center position-relative justify-content-center d-flex "> 
+                            <div className="col-12 pagination-box text-center position-relative justify-content-center d-flex ">
                                 <Pagination
                                     activePage={page}
                                     itemsCountPerPage={10}
@@ -351,7 +353,7 @@ export default function UserList() {
                             </div>
                         ) : ""}
                     </div>
-                  
+
                 </div>
 
             </div>

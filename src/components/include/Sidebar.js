@@ -138,12 +138,13 @@ const Sidebar = () => {
                             <div >Configuration</div>
                         </Link>
                     </li> 
-                    {/* <!-- Setting --> */}
-                    <li className="menu-header small">
+                    {/* <!-- Setting Demo of sub menu--> */}
+
+                    {/* <li className="menu-header small">
                         <span className="menu-header-text">Setting</span>
                     </li>
                     <li className={`menu-item ${subMenu.setting ? 'open' : ''}`}>
-                        <a href="javascript:void(0);" className="menu-link menu-toggle" onClick={()=>setSubMenu({...subMenu,setting:!subMenu.setting})}>
+                        <a href="" className="menu-link menu-toggle" onClick={()=>setSubMenu({...subMenu,setting:!subMenu.setting})}>
                             <i className="menu-icon tf-icons ti ti-smart-home"></i>
                             <div data-i18n="Dashboards">Setting</div>
                             <div className="badge bg-danger rounded-pill ms-auto">5</div>
@@ -171,7 +172,7 @@ const Sidebar = () => {
                                 </a>
                             </li>
                         </ul>
-                    </li> 
+                    </li>  */}
                 </ul>
             </aside>
         </>

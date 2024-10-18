@@ -84,7 +84,7 @@ export default function LoginaPage() {
                   </div> 
                   <div className="my-8">
                     <div className="d-flex justify-content-between">
-                    <span className="cursor-pointer" onClick={()=>  router.push(process.env.ADMFLDR + '/')}>
+                    <span className="cursor-pointer" onClick={()=>  router.push('login')}>
                         <p className="mb-0">Back To Login?</p>
                       </span>
                     </div>

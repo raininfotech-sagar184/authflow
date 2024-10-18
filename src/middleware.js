@@ -5,19 +5,18 @@ export async function middleware(request) {
   const authData = await getToken({
     req: request
   });  
-  if (request.nextUrl.pathname == '/' + process.env.ADMFLDR) {
+  if (request.nextUrl.pathname == '/' + process.env.ADMFLDR + '/login') {
     if (authData?.email) { 
-      return NextResponse.redirect(new URL('/' + process.env.ADMFLDR + '/dashboard', request.url))
+      return NextResponse.redirect(new URL('/' + process.env.ADMFLDR + '/', request.url))
     }
   } else {
     if (!authData?.email) {
       if (!['forgot-password','reset-password'].includes(request.nextUrl.pathname.split('/').pop())) {
-        return NextResponse.redirect(new URL('/' + process.env.ADMFLDR, request.url))
+        return NextResponse.redirect(new URL('/' + process.env.ADMFLDR + '/login', request.url))
       } 
     }
   }
-}
-
+} 
 export const config = {
   matcher: '/rdadmpnl/:path*',
 }

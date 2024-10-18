@@ -1,6 +1,6 @@
 import { Toaster } from "react-hot-toast";
-import { AuthContextProvider } from "@/context/auth"; 
-import "./globals.css"; // Assuming global CSS
+import { AuthContextProvider } from "@/context/auth";
+import Script from "next/script";
 
 export const metadata = {
   title: "Vuexy - Bootstrap Admin Template",
@@ -29,7 +29,7 @@ export default function RootLayout({ children }) {
 
         {/* Fonts */}
         <link rel="stylesheet" href="/assets/vendor/fonts/fontawesome.css" />
-        <link rel="stylesheet" href="/assets/vendor/fonts/flag-icons.css" /> 
+        <link rel="stylesheet" href="/assets/vendor/fonts/flag-icons.css" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
@@ -59,7 +59,7 @@ export default function RootLayout({ children }) {
         <Toaster position="top-right" />
         <AuthContextProvider>
           {children}
-        </AuthContextProvider>
+        </AuthContextProvider> 
       </body>
     </html>
   );

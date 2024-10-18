@@ -3,16 +3,15 @@ import { signIn } from "next-auth/react"
 import { useRouter } from 'next/navigation'
 import { useRef, useState } from "react" 
 import toast from 'react-hot-toast';
-import { chk_otp, validate_string, chk_email, chk_password } from "../../utils/common";
-import { fetchApi } from "../../utils/frondend";
-import  { ButtonSpinner } from "../../components/include/Loader";
-import { useAuthContext } from "../../context/auth";
+import { chk_otp, validate_string, chk_email, chk_password } from "../../../../utils/common";
+import { fetchApi } from "../../../../utils/frondend";
+import  { ButtonSpinner } from "../../../../components/include/Loader";
+import { useAuthContext } from "../../../../context/auth";
 import ReCAPTCHA from "react-google-recaptcha";
 
 export default function LoginaPage() { 
   const { setAuthTkn } = useAuthContext();
-  const router = useRouter()
-  const callbackUrl = "/admsolspnl/dashboard"
+  const router = useRouter() 
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [otp, setOtp] = useState("")
@@ -49,10 +48,7 @@ export default function LoginaPage() {
         if (res.error == "CredentialsSignin") {
           toast.error("Google authentication failed.")
         } else {
-          router.push(process.env.ADMFLDR + '/dashboard')
-          // setTimeout(() => {
-          //   window.location.reload()
-          // }, 500);
+          router.push("/"+process.env.ADMFLDR  ) 
 
         }
       }
@@ -163,7 +159,7 @@ export default function LoginaPage() {
                   </div>
                   <div className="my-8">
                     <div className="d-flex justify-content-between">
-                      <span className="cursor-pointer" onClick={()=>  router.push(process.env.ADMFLDR + '/forgot-password')}>
+                      <span className="cursor-pointer" onClick={()=>  router.push('forgot-password')}>
                         <p className="mb-0">Forgot Password?</p>
                       </span>
                     </div>

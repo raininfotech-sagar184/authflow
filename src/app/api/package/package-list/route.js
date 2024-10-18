@@ -10,7 +10,7 @@ export async function GET(req, res) {
     try {
         let adm = await check_admin_login(req)
         if (!adm.status || !adm.data.id) {
-            return NextResponse.json({ message: "Logout" }, { status: 400 });
+            return NextResponse.json({ message: "Unauthorized" }, { status: 400 });
         }
         let query = "", filter = [], limit = process.env.PAGE
 

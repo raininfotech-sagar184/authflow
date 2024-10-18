@@ -28,6 +28,8 @@ export default function RootLayout({ children }) {
         <link rel="stylesheet" href="/assets/vendor/fonts/tabler-icons.css" />
 
         {/* Fonts */}
+        <link rel="stylesheet" href="/assets/vendor/fonts/fontawesome.css" />
+        <link rel="stylesheet" href="/assets/vendor/fonts/flag-icons.css" /> 
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link

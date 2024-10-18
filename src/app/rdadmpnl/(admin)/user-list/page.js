@@ -158,7 +158,7 @@ export default function UserList() {
             <Toaster position="top-right" />
             <div className="container-xxl flex-grow-1 container-p-y">
                 <div className="card">
-                    <h5 className="card-header" onClick={() => console.log(session)}>User List</h5>
+                    <h5 className="card-header" >User List</h5>
 
                     <div className={`row card-body`}>
                         <div className='col-xl-3 col-lg-4 col-md-6 col-12 custom'>
@@ -284,7 +284,7 @@ export default function UserList() {
 
                                 </tr>
                             </thead>
-                            <tbody className="table-border-bottom-0">
+                            <tbody >
                                 {(userList && userList.length > 0) && !searchLdr   ? userList.map((data, index) => {
                                     return (
                                         <tr key={index}>

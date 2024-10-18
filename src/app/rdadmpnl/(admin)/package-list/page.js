@@ -47,7 +47,7 @@ export default function PackageList() {
     const handleShow = () => setShow(true);
     const handleUpdate = (data) => {
         console.log(data)
-        setPackageData({ name: data.packageName, amount: data.price, rewarType: data.reward_type, id: data.id, isUpdate: true, imgUrlForUpdate: data.packageImg })
+        setPackageData({ name: data.packageName, amount: data.price, rewarType: data.reward_type, id: data.id, isUpdate: true, imgUrlForUpdate: data.packageImg,status:data.status })
         setImageUrl(`${process.env.IMG_URL}${data.packageImg}`)
         handleShow()
     }
@@ -99,18 +99,14 @@ export default function PackageList() {
             getPackageList()
         }
     }
-    const submitPackage = async () => {
-        console.log(imageUrl)
+    const submitPackage = async () => { 
         try {
             if (!submitLoader) {
                 try {
                     validate_string(packageData.name, 'Package name')
                     validate_input_number(packageData.amount, 'Package amount')
-                    validate_input_number_in_range(packageData.rewarType, 'Reward type')
-
-
-                    // validate_string(packageData.packageId, 'packageId') 
-
+                    validate_input_number_in_range(packageData.rewarType, 'Reward type') 
+                    validate_input_number_in_range(packageData.status, 'Status') 
                 } catch (e) {
                     toast.error(e)
                     return
@@ -299,7 +295,7 @@ export default function PackageList() {
                                     </th>
                                 </tr>
                             </thead>
-                            <tbody className="table-border-bottom-0">
+                            <tbody >
                                 {(packageList && packageList.length > 0) && !searchLdr ? packageList.map((data, index) => {
                                     return (
                                         <tr key={index}>
@@ -378,8 +374,8 @@ export default function PackageList() {
                             <div className="col-12">
                                 <label className="form-label">Status</label>
                                 <div className="statusRadioGroup">
-                                    <span> <input onClick={()=>packageList({...packageList, status: 1})} checked={packageData.status == 1} className="form-check-input mt-0" type="radio" value="" aria-label="Radio button for following text input" /> Active </span>
-                                    <span> <input onClick={()=>packageList({...packageList, status: 0})} checked={packageData.status == 0} className="form-check-input mt-0" type="radio" value="" aria-label="Radio button for following text input" /> Deactive </span>
+                                    <span> <input onClick={()=>setPackageData({...packageData, status: 1})} checked={packageData.status == 1} className="form-check-input mt-0" type="radio" value="" aria-label="Radio button for following text input" /> Active </span>
+                                    <span> <input onClick={()=>setPackageData({...packageData, status: 0})} checked={packageData.status == 0} className="form-check-input mt-0" type="radio" value="" aria-label="Radio button for following text input" /> Deactive </span>
                                 </div>
 
                             </div>

@@ -20,13 +20,13 @@ export async function POST(req, res) {
         if (!token.email) { 
             return NextResponse.json({ email: 'invalid'  }, { status: 400 })   
         } else {
-            const user = await sql_query("SELECT email, adminId, otpCode, otpExpireTime FROM tblAdmin WHERE email = ?", [token.email]);
+            const user = await sql_query("SELECT email, userId, otpCode, otpExpireTime FROM tbluser WHERE email = ?", [token.email]);
             if (user) {
                 let forgetCode = generateNumeric(6);
                 let currentTime = get_timestemp();
                 console.log('temporary mail functionality id off',{otp:forgetCode  })
                 await sql_query(
-                    `UPDATE tblAdmin SET otpCode = ?, otpExpireTime = ?, updatedOn = ? WHERE adminId = ?`,
+                    `UPDATE tbluser SET otpCode = ?, otpExpireTime = ?, updatedOn = ? WHERE userId = ?`,
                     [enc(forgetCode.toString(), encryption_key("otpKey")), parseInt(currentTime) + 1800, currentTime, user.adminId],
                     "Update"
                 );

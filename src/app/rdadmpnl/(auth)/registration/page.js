@@ -1,13 +1,13 @@
-'use client';
-import { signIn } from "next-auth/react"
+'use client'; 
 import { useRouter } from 'next/navigation'
 import { useRef, useState } from "react"
 import toast from 'react-hot-toast';
-import { chk_otp, validate_string, chk_email, chk_password, chk_confirm_password, chk_username, validateFile } from "../../../../utils/common";
+import {   validate_string, chk_email, chk_password, chk_confirm_password, chk_username, validateFile } from "../../../../utils/common";
 import { fetchApi_with_upload } from "../../../../utils/frondend"; 
 import { useAuthContext } from "../../../../context/auth";
 import ReCAPTCHA from "react-google-recaptcha";
 import $ from "jquery";
+import { setCookie } from 'cookies-next';
 
 export default function LoginaPage() {
   const { setAuthTkn } = useAuthContext();
@@ -30,50 +30,10 @@ export default function LoginaPage() {
     ...userFormField
   })
   const [validline, setvalidLine] = useState(false)
-  const [msg, setMsg] = useState("")
-  const [otp, setOtp] = useState("")
+  const [msg, setMsg] = useState("") 
   const [submitLoader, setSubmitLoader] = useState(false)
-  const [passwordType, setPasswordType] = useState("password")
-  const [isTwoOpen, setIstwoOpen] = useState(false)
-  const reRef = useRef()
-
-  const finalLogin = async (twoOpen) => {
-
-    try {
-      toast.dismiss()
-      if (!submitLoader) {
-        try {
-          if (twoOpen !== 0) {
-            chk_otp(otp)
-          }
-        } catch (e) {
-          toast.error(e)
-          return false
-        }
-        setSubmitLoader(true)
-        const repchaToken = await reRef.current.executeAsync();
-        const res = await signIn("credentials", {
-          redirect: false,
-          email: userData.email,
-          password: userData.password,
-          otp: otp,
-          repchaToken: repchaToken,
-          twoOpen
-        })
-        setSubmitLoader(false)
-        console.log({ res })
-        if (res.error == "CredentialsSignin") {
-          toast.error("Google authentication failed.")
-        } else {
-          router.push("/" + process.env.ADMFLDR)
-
-        }
-      }
-    } catch (e) {
-      console.log(e)
-      setSubmitLoader(false)
-    }
-  }
+  const [passwordType, setPasswordType] = useState("password") 
+  const reRef = useRef() 
   const chkPassword = (pass) => {
     setvalidLine(true);
     const v = pass;
@@ -156,12 +116,9 @@ export default function LoginaPage() {
       const response = await fetchApi_with_upload(`auth/ragistration`, formData)
       setSubmitLoader(false)
       if (response.statusCode === 200) {
-        if (response.data.data.twoOpen == 1) {
-          setIstwoOpen(true)
-          setUserData({})
-        } else {
-          finalLogin(0)
-        }
+        toast.success(response.data.message) 
+        setCookie("mltknauth", response.data.accessToken)
+        router.push("email-varification")
       } else {
         if (response.data.message == "Unauthorized") {
           setAuthTkn(response.data.message)
@@ -220,10 +177,9 @@ export default function LoginaPage() {
           {/* <!-- Login --> */}
           <div className="d-flex col-12 col-lg-4 align-items-center authentication-bg p-sm-12 p-6">
             <div className="w-px-400 mx-auto mt-12 pt-5">
-              <h4 className="mb-1">Welcome to Nft Store! 👋</h4>
-              <p className="mb-6">Please {!isTwoOpen ? `ragister to your account` : `varify google authentication and start the adventure`}</p>
-              {
-                !isTwoOpen ? <>
+              <h4 className="mb-1">Welcome to Nft Store!  🚀</h4>
+              <p className="mb-6">Please ragister to your account</p>
+              
                   <div className="mb-6">
                     <label htmlFor="username" className="form-label">User Name</label>
                     <input placeholder="Enter username" type="text" className="form-control" value={userData?.username} onChange={(e) => setUserData({ ...userData, username: e.target.value })} onKeyUp={(e) => e.keyCode == 13 && Submit()} />
@@ -304,16 +260,7 @@ export default function LoginaPage() {
                       <p className="mb-0 text-primary">Sign in instead</p>
                     </span>
                   </div>
-                </> : <>
-
-                  <div className="mb-6">
-                    <label className="mb-1"><strong>Google authenticator OTP</strong></label>
-                    <input placeholder="Enter google authenticator OTP" type="text" className="form-control" value={otp} onChange={(e) => { setOtp(e.target.value = e.target.value.replace(/[^0-9]/g, "").replace(/(\..*)\./g, "$1")) }} onKeyUp={(e) => e.keyCode == 13 && finalLogin()} maxLength={6} />
-                  </div>
-                  <div className="text-center">
-                    <button type="button" className="btn btn-primary w-100" onClick={() => finalLogin()}>{submitLoader && <i className="fa fa-refresh fa-spin me-2"></i>}Verify OTP</button>
-                  </div>
-                </>}
+                
             </div>
           </div>
           {/* <!-- /Login --> */}

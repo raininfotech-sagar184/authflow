@@ -8,6 +8,7 @@ import { fetchApi } from "../../../../utils/frondend";
 import { ButtonSpinner } from "../../../../components/include/Loader";
 import { useAuthContext } from "../../../../context/auth";
 import ReCAPTCHA from "react-google-recaptcha";
+import { setCookie } from "cookies-next";
 
 export default function LoginaPage() {
   const { setAuthTkn } = useAuthContext();
@@ -20,13 +21,13 @@ export default function LoginaPage() {
   const [isTwoOpen, setIstwoOpen] = useState(false)
   const reRef = useRef()
 
-  const finalLogin = async (twoOpen) => {
+  const finalLogin = async (twoFaOpen) => {
 
     try {
       toast.dismiss()
       if (!submitLoader) {
         try {
-          if (twoOpen !== 0) {
+          if (twoFaOpen !== 0) {
             chk_otp(otp)
           }
         } catch (e) {
@@ -41,7 +42,7 @@ export default function LoginaPage() {
           password: password,
           otp: otp,
           repchaToken: repchaToken,
-          twoOpen
+          twoFaOpen
         })
         setSubmitLoader(false)
         console.log({ res })
@@ -76,7 +77,7 @@ export default function LoginaPage() {
         const param = JSON.stringify({ email: email, password: password, repchaToken })
         const response = await fetchApi("auth/login", param, "POST")
         setSubmitLoader(false)
-        if (response.statusCode === 200) {
+        if (response.statusCode === 200) { 
           if (response.data.data.twoOpen == 1) {
             setIstwoOpen(true)
           } else {
@@ -87,6 +88,11 @@ export default function LoginaPage() {
             setAuthTkn(response.data.message)
           } else {
             toast.error(response.data.message)
+            if (response.data.isVarify == 0) {
+              setCookie("mltknauth", response.data.accessToken)
+              router.push("email-varification")
+            }
+            
           }
         }
       }

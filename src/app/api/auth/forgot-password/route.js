@@ -22,7 +22,7 @@ export async function POST(req, res) {
         } catch (e) { 
             return NextResponse.json({ message: e.message }, { status: 400 })
         } 
-        const getUser = await sql_query("SELECT email, adminId, isVerify FROM tblAdmin WHERE email = ?", [email]);  
+        const getUser = await sql_query("SELECT email, userId, isVerify FROM tbluser WHERE email = ?", [email]);  
         if (getUser) {
             const accessTokenMail =  enc(JSON.stringify({email:getUser.email}) , encryption_key('token'))
             if (getUser.isVerify == 0) { 
@@ -33,7 +33,7 @@ export async function POST(req, res) {
                 console.log('temporary mail functionality id off',{otp:forgetCode  })
                 await forgotPasswordMail(getUser.email, forgetCode); 
                 await sql_query(
-                    `UPDATE tblAdmin SET otpCode = ?, otpExpireTime = ?, updatedOn = ? WHERE adminId = ?`,
+                    `UPDATE tbluser SET otpCode = ?, otpExpireTime = ?, updatedOn = ? WHERE userId = ?`,
                     [enc(forgetCode.toString(), encryption_key('otpKey')), parseInt(currentTime) + 1800, currentTime, getUser.userId],
                     "Update"
                 ); 

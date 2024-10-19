@@ -16,60 +16,68 @@ export const authOptions = {
         email: {},
         password: {},
         otp: {},
-        twoOpen: {},
+        twoFaOpen: {},
         repchaToken: {}
       },
       async authorize(credentials) {
-        
-        if (!credentials?.email || !credentials.password || !(!credentials?.otp || credentials?.twoOpen !== 0) || !credentials?.repchaToken ) {   
+
+        if (!credentials?.email || !credentials.password || !(!credentials?.otp || credentials?.twoOpen !== 0) || !credentials?.repchaToken) {
+
           return null;
-        }   
-        let checkRepcha = await recaptcha(credentials?.repchaToken); 
+        }
+        let checkRepcha = await recaptcha(credentials?.repchaToken);
         if (!checkRepcha) {
+
           return null
         }
-        let user = await sql_query("select password,twoOpen,name, email,adminId,twoFaCode from tblAdmin where email = ?", [credentials?.email]) 
-      
-        if (user && credentials.password === passDec(user.password, encryption_key("passwordKey"))) { 
-            let speakeasy = require("speakeasy")
-           
-          let twofa = speakeasy.totp.verify({
-            secret: dec(user.twoFaCode, encryption_key("twofaKey")),
-            encoding: "base32",
-            token: credentials.otp,
-          })  
-          if (credentials?.twoOpen == 0 || twofa) {  
+        let user = await sql_query("select password,twoFaOpen,username, email,userId,twoFaCode from tbluser where email = ?", [credentials?.email])
+
+        if (user && credentials.password === passDec(user.password, encryption_key("passwordKey"))) {
+          let speakeasy = require("speakeasy")
+          console.log({ credentials, user })
+          let twofa = ""
+          try {
+            twofa = speakeasy.totp.verify({
+              secret: dec(user.twoFaCode, encryption_key("twofaKey")),
+              encoding: "base32",
+              token: credentials.twoFaCode,
+            })
+          }catch(e){  }
+       
+          console.log("---------ok", credentials?.twoFaOpen == 0 || twofa)
+          if (credentials?.twoFaOpen == 0 || twofa) {
             // await setLoginHistory(0, 0)
+
             return {
               id: user.adminId,
               email: user.email,
-              name: user.name,
+              name: user.username,
               twoOpen: user.twoOpen,
             }
-          } else {  
+          } else {
             return null
           }
         }
-        else {  
+        else {
           return null
         }
       },
     }),
   ],
   callbacks: {
-    session: ({ session, token }) => { 
+    session: ({ session, token }) => {
       return {
-        ...session, 
-        twoOpen: token.twoOpen, 
+        ...session,
+        twoOpen: token.twoFaOpen,
         user: {
           ...session.user
         },
       };
     },
-    jwt: ({ token, user }) => { 
-      if (user) { 
+    jwt: ({ token, user }) => {
+      if (user) {
         return {
-          ...token, id: user.id,twoOpen: user.twoOpen,twoOpen: user.twoOpen,name: user.name,
+          ...token, id: user.id, twoFaOpen: user.twoFaOpen, name: user.name,
         };
       }
       return token;

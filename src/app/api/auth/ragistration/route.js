@@ -1,6 +1,6 @@
 
 
-import { validate_string, validateFile, get_timestemp, validate_input_number, validate_input_number_in_range, dec, encryption_key, chk_password, chk_username, chk_email } from "@/utils/common"
+import { validate_string, validateFile, get_timestemp, validate_input_number, validate_input_number_in_range, dec, encryption_key, chk_password, chk_username, chk_email, generateNumeric, enc, passEnc } from "@/utils/common"
 import { sql_query } from "@/utils/dbconnect"
 import { NextResponse } from "next/server";
 import { check_admin_login } from "../../../../utils/backend"
@@ -59,10 +59,13 @@ export async function POST(request, response) {
             fs.existsSync(`${upload_path}upload/profile-image`) || fs.mkdirSync(`${upload_path}upload/profile-image`, { recursive: true })
             await writeFile(`${upload_path}upload/profile-image/` + newImageName, buffer)
         } 
-            await sql_query(`INSERT into tbluser (username,email,mobile,image,referralcode,password,createdOn) VALUES (?,?,?,?,?,?,?)`, [username, email, mobile, newImageName, referralcode,password, currentTime], "Insert")
-     
+            let forgetCode = generateNumeric(6);
+            // await forgotPasswordMail(email, forgetCode); 
+            const accessTokenMail =  enc(JSON.stringify({email:email}) , encryption_key('token')) 
+            await sql_query(`INSERT into tbluser (username,email,mobile,image,referralcode,password,otpCode,otpExpireTime,createdOn) VALUES (?,?,?,?,?,?,?,?,?)`, [username, email, mobile, newImageName, referralcode,passEnc(password, encryption_key("passwordKey")) ,enc(forgetCode.toString(), encryption_key('otpKey')), parseInt(currentTime) + 1800,currentTime], "Insert")
+            
 
-        return NextResponse.json({ message: `Ragistration successfully` }, { status: 200 })
+        return NextResponse.json({ message: `Ragistration successfully`,accessToken:accessTokenMail }, { status: 200 })
     } catch (e) {
         console.log("Error=>", e);
     }

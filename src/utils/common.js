@@ -41,9 +41,9 @@ export function validate_filter_strings(data) {
   return true
 }
 
-// export function chk_username(a) {
-//   return /^[a-zA-Z0-9]{5,15}$/.test(a);
-// }
+export function chk_username(a) {
+  return /^[a-zA-Z0-9]{5,15}$/.test(a);
+}
 
 // export function chk_voucher_username(a) {
 //   return /^[a-zA-Z0-9]{3,15}$/.test(a);

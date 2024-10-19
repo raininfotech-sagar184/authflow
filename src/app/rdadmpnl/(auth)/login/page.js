@@ -1,17 +1,17 @@
 'use client';
 import { signIn } from "next-auth/react"
 import { useRouter } from 'next/navigation'
-import { useRef, useState } from "react" 
+import { useRef, useState } from "react"
 import toast from 'react-hot-toast';
 import { chk_otp, validate_string, chk_email, chk_password } from "../../../../utils/common";
 import { fetchApi } from "../../../../utils/frondend";
-import  { ButtonSpinner } from "../../../../components/include/Loader";
+import { ButtonSpinner } from "../../../../components/include/Loader";
 import { useAuthContext } from "../../../../context/auth";
 import ReCAPTCHA from "react-google-recaptcha";
 
-export default function LoginaPage() { 
+export default function LoginaPage() {
   const { setAuthTkn } = useAuthContext();
-  const router = useRouter() 
+  const router = useRouter()
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [otp, setOtp] = useState("")
@@ -21,14 +21,14 @@ export default function LoginaPage() {
   const reRef = useRef()
 
   const finalLogin = async (twoOpen) => {
-   
-    try { 
+
+    try {
       toast.dismiss()
       if (!submitLoader) {
         try {
-          if (twoOpen !==0) {
-             chk_otp(otp)
-          } 
+          if (twoOpen !== 0) {
+            chk_otp(otp)
+          }
         } catch (e) {
           toast.error(e)
           return false
@@ -40,15 +40,15 @@ export default function LoginaPage() {
           email: email,
           password: password,
           otp: otp,
-          repchaToken: repchaToken, 
+          repchaToken: repchaToken,
           twoOpen
-        }) 
+        })
         setSubmitLoader(false)
-        console.log({res})
+        console.log({ res })
         if (res.error == "CredentialsSignin") {
           toast.error("Google authentication failed.")
         } else {
-          router.push("/"+process.env.ADMFLDR  ) 
+          router.push("/" + process.env.ADMFLDR)
 
         }
       }
@@ -58,7 +58,7 @@ export default function LoginaPage() {
     }
   }
 
-  const login = async () => { 
+  const login = async () => {
     try {
       toast.dismiss()
       if (!submitLoader) {
@@ -73,19 +73,19 @@ export default function LoginaPage() {
         }
         setSubmitLoader(true)
         const repchaToken = await reRef.current.executeAsync();
-        const param = JSON.stringify({ email: email, password: password,repchaToken })
+        const param = JSON.stringify({ email: email, password: password, repchaToken })
         const response = await fetchApi("auth/login", param, "POST")
         setSubmitLoader(false)
         if (response.statusCode === 200) {
           if (response.data.data.twoOpen == 1) {
             setIstwoOpen(true)
-          }else{
+          } else {
             finalLogin(0)
           }
         } else {
           if (response.data.message == "Unauthorized") {
             setAuthTkn(response.data.message)
-          } else { 
+          } else {
             toast.error(response.data.message)
           }
         }
@@ -99,13 +99,13 @@ export default function LoginaPage() {
 
   return (
     <>
-      <div className="authentication-wrapper authentication-cover"> 
+      <div className="authentication-wrapper authentication-cover">
         <span className="app-brand auth-cover-brand">
           <span className="app-brand-logo demo">
-             <img src="/assets/image/logo.svg" alt="logo" />
+            <img src="/assets/image/logo.svg" alt="logo" />
           </span>
           <span className="app-brand-text demo text-heading fw-bold">Nft Marketplace</span>
-        </span> 
+        </span>
         <div className="authentication-inner row m-0">
           {/* <!-- /Left Text --> */}
           <div className="d-none d-lg-flex col-lg-8 p-0">
@@ -154,18 +154,27 @@ export default function LoginaPage() {
 
                       />
                       <span className="input-group-text cursor-pointer" onClick={() => setPasswordType(passwordType === "password" ? "text" : "password")}><i className={`ti ti-eye${passwordType == "password" ? "-off" : ""}`}></i></span>
-                    </div> 
+                    </div>
 
                   </div>
                   <div className="my-8">
                     <div className="d-flex justify-content-between">
-                      <span className="cursor-pointer" onClick={()=>  router.push('forgot-password')}>
-                        <p className="mb-0">Forgot Password?</p>
+
+                      <span className="cursor-pointer" onClick={() => router.push('forgot-password')}>
+                        <p className="mb-0 text-primary">Forgot Password?</p>
                       </span>
                     </div>
                   </div>
-                  <button className="btn btn-primary w-100" onClick={() => login()}>{submitLoader && <i className="fa fa-refresh fa-spin me-2"></i>} <span className="ml-2">Sign in</span></button>
-                 
+                  <button className="btn btn-primary w-100" onClick={() => login()}>{submitLoader && <i className="fa fa-refresh fa-spin me-2"></i>} <span className="ml-2">Sign In</span></button>
+                  <div className="divider my-6">
+                    <div className="divider-text">or</div>
+                  </div>
+                  <div className="d-flex justify-content-center mt-4"> 
+                    <span className="cursor-pointer" onClick={() => router.push('registration')}>
+                      <p className="mb-0 text-primary">Sign Up</p>
+                    </span>
+                  </div>
+
                 </> : <>
 
                   <div className="mb-6">
@@ -175,7 +184,7 @@ export default function LoginaPage() {
                   <div className="text-center">
                     <button type="button" className="btn btn-primary w-100" onClick={() => finalLogin()}>{submitLoader && <i className="fa fa-refresh fa-spin me-2"></i>}Verify OTP</button>
                   </div>
-                </>}  
+                </>}
             </div>
           </div>
           {/* <!-- /Login --> */}
@@ -187,7 +196,7 @@ export default function LoginaPage() {
         size="invisible"
         ref={reRef}
         style={{ display: "none" }}
-      /> 
+      />
     </>
   );
 }

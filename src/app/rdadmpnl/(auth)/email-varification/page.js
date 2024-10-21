@@ -171,9 +171,10 @@ export default function LoginaPage() {
 
               </div>
               <div className="my-8">
-                <div className="d-flex justify-content-between">
+                {otpTimer.waiting == true?"": <div className="text-center mb-1 fs-18">Didn’t receive the OTP? </div>} 
+                <div className="d-flex justify-content-center"> 
                   <span className="cursor-pointer"  >
-                    <div className="text-end mb-10 text-primary fs-18">{loader.sendOtp ? <i className="fas fa-refresh fa-spin mx-1"></i> : ""}{otpTimer.waiting == true ? <span className="text-bold text-yellow">{`Resend after`}: {otpTimer.timer}</span> : <span className="cursor-pointer text-capitalize fs-18 text-yellow" onClick={() => sendOtp()}>{`Click here to Resend OTP Code`}</span>}</div>
+                    <div className="text-center mb-10 text-primary fs-18">{loader.sendOtp ? <i className="fas fa-refresh fa-spin mx-1"></i> : ""}{otpTimer.waiting == true ? <span className="text-bold text-yellow">{`Resend after`}: {otpTimer.timer}</span> : <span className="cursor-pointer text-capitalize fs-18 text-yellow" onClick={() => sendOtp()}>{`Click here to Resend OTP Code`}</span>}</div>
                   </span>
                 </div>
                 <div className="d-flex justify-content-between">

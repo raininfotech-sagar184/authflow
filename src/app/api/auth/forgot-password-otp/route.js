@@ -27,7 +27,7 @@ export async function POST(req, res) {
                 console.log('temporary mail functionality id off',{otp:forgetCode  })
                 await sql_query(
                     `UPDATE tbluser SET otpCode = ?, otpExpireTime = ?, updatedOn = ? WHERE userId = ?`,
-                    [enc(forgetCode.toString(), encryption_key("otpKey")), parseInt(currentTime) + 1800, currentTime, user.adminId],
+                    [enc(forgetCode.toString(), encryption_key("otpKey")), parseInt(currentTime) + 1800, currentTime, user.userId],
                     "Update"
                 );
                 // await resendOtpMail(user.email, forgetCode, "Forgot password");

@@ -42,9 +42,9 @@ export const authOptions = {
               encoding: "base32",
               token: credentials.twoFaCode,
             })
-          }catch(e){  }
-       
-          console.log("---------ok", credentials?.twoFaOpen == 0 || twofa)
+          }catch(e){  
+            console.log({nextAuth:e})
+          } 
           if (credentials?.twoFaOpen == 0 || twofa) {
             // await setLoginHistory(0, 0)
 

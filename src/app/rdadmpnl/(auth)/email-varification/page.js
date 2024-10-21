@@ -96,12 +96,7 @@ export default function LoginaPage() {
         }
       }
     }
-  }
-
-
-
-
-
+  } 
   const handleChange = (element, index) => { 
     if (isNaN(element.value)) return; 
     let newOtp = [...otp];

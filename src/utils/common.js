@@ -19,7 +19,15 @@ export function validate_filter_numbers(data) {
   }
   return true
 }
- 
+export function strGenerator(l = 10) {
+  var result = '';
+  var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  var charactersLength = characters.length;
+  for (var i = 0; i < l; i++) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+  }
+  return result;
+}
 
 // export function validate_numbers(data) {
 //   for (let dd in data) {
@@ -127,15 +135,7 @@ export function get_timestemp() {
 //   return false;
 // }
 
-// export function strGenerator(l = 10) {
-//   var result = '';
-//   var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-//   var charactersLength = characters.length;
-//   for (var i = 0; i < l; i++) {
-//     result += characters.charAt(Math.floor(Math.random() * charactersLength));
-//   }
-//   return result;
-// }
+ 
 
 // export function to_float(value, precision = 8) {
 //   return parseFloat(parseFloat(value.toString()).toFixed(precision))

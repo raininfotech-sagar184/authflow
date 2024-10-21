@@ -3,7 +3,7 @@
 import { validate_string, validateFile, get_timestemp, encryption_key, chk_password, chk_username, chk_email, generateNumeric, enc, passEnc } from "@/utils/common"
 import { sql_query } from "@/utils/dbconnect"
 import { NextResponse } from "next/server";
-import { check_admin_login } from "../../../../utils/backend"
+import { check_admin_login, genrate_reffral_code } from "../../../../utils/backend"
 const fs = require('fs');
 import { writeFile } from 'fs/promises'
 
@@ -39,11 +39,7 @@ const checkref_code = async (refCode) => {
 
 export async function POST(request, response) {
     try {
-        let adm = await check_admin_login(request)
-        console.log({adm})
-        if (!adm.status || !adm.data.id) {
-            return NextResponse.json({ message: "Unauthorized" }, { status: 400 })
-        }
+
         let requestBody = await request.formData(),
             body = Object.fromEntries(requestBody)
         body = JSON.parse(body.data)
@@ -79,45 +75,28 @@ export async function POST(request, response) {
             return NextResponse.json({ message: getUserData.email == email ? "Entered email already exist" : "Entered username already exist" }, { status: 400 })
         } else {
             let rd = [true, {}, ""]
-            if (referralcode) {
-                rd = await checkref_code(referralcode)
-                if (rd[0] == false) {
-                    return NextResponse.json({ message: rd[2] }, { status: 400 })
-                } else {
-                    if (rd[2] == 'S') {
-                        sponserId = rd[1].userId
-                    } else {
-                        sponserId = 0
-                    }
-                }
-            } 
-            if (id && isImage == 0) {
-                newImageName = imageUrl.split('/').pop()
-            } else {
-                const upload_path = `public/assets/`
-                let bytes = await image.arrayBuffer()
-                let buffer = Buffer.from(bytes)
-                newImageName = id ? imageUrl : (lockerName).toLowerCase() + '-' + currentTime + '.' + image.type.split('/')[1]
-                if (id) {
-                    try {
-                        fs.unlinkSync(`${upload_path}upload/profile-image/${imageUrl}`)
-                    } catch (error) {
-                        console.log("Error=>", error);
-                    }
-                }
-                fs.existsSync(`${upload_path}upload/profile-image`) || fs.mkdirSync(`${upload_path}upload/profile-image`, { recursive: true })
-                await writeFile(`${upload_path}upload/profile-image/` + newImageName, buffer)
-            }
+            console.log('first1111---')
+
+            const upload_path = `public/assets/`
+            let bytes = await image.arrayBuffer()
+            let buffer = Buffer.from(bytes)
+            newImageName = id ? imageUrl : (lockerName).toLowerCase() + '-' + currentTime + '.' + image.type.split('/')[1]  
+            fs.existsSync(`${upload_path}upload/profile-image`) || fs.mkdirSync(`${upload_path}upload/profile-image`, { recursive: true })
+            await writeFile(`${upload_path}upload/profile-image/` + newImageName, buffer)
+           
             let forgetCode = generateNumeric(6);
             // await forgotPasswordMail(email, forgetCode); 
             console.log('temporary mail functionality id off', { otp: forgetCode })
             const accessTokenMail = enc(JSON.stringify({ email: email }), encryption_key('token'))
-            await sql_query(`INSERT into tbluser (username,email,mobile,image,referralcode,password,otpCode,otpExpireTime,sponserId,createdOn) VALUES (?,?,?,?,?,?,?,?,?,?)`, [username, email, mobile, newImageName, referralcode, passEnc(password, encryption_key("passwordKey")), enc(forgetCode.toString(), encryption_key('otpKey')), parseInt(currentTime) + 1800, sponserId, currentTime], "Insert")
+          
+            const newReferralCode = await genrate_reffral_code() 
+            await sql_query(`INSERT into tbluser (username,email,mobile,image,referralcode,password,otpCode,otpExpireTime,sponserId,createdOn) VALUES (?,?,?,?,?,?,?,?,?,?)`, [username, email, mobile, newImageName, newReferralCode, passEnc(password, encryption_key("passwordKey")), enc(forgetCode.toString(), encryption_key('otpKey')), parseInt(currentTime) + 1800, sponserId, currentTime], "Insert")
+            console.log('first2222')
             return NextResponse.json({ message: `Ragistration successfully`, accessToken: accessTokenMail }, { status: 200 })
         }
     } catch (e) {
         console.log("Error=>", e);
-    } 
+    }
     return NextResponse.json({ message: "Session expired! Please refresh page" }, { status: 400 })
 }
 

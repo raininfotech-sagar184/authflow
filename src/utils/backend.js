@@ -4,6 +4,7 @@
 import { cookies, headers } from 'next/headers'
 import { sql_query } from './dbconnect'; 
 import { getToken } from 'next-auth/jwt';
+import { strGenerator } from './common';
 const speakeasy = require("speakeasy");
 
 // const Mailjet = require('node-mailjet')
@@ -523,7 +524,19 @@ export async function resendOtpMail(email, otp, title) {
 // 	}
 // 	return false
 // }
-
+export async function genrate_reffral_code() {
+	try {
+	let generatedStr = strGenerator(8)
+	const randIndex = Math.floor(Math.random() * 5);
+	let cnt = await sql_query(`SELECT userId FROM tbluser`, [], "Count");
+	cnt++;
+	let refcode = (generatedStr.substr(0, randIndex) + cnt.toString().slice(-3) + generatedStr.substr(randIndex + (cnt.toString().slice(-3)).length)).substr(-6)
+	return refcode
+	} catch (error) {
+		console.log({genrate_reffral_code:error})
+	}
+	
+}
 
 export async function forgotPasswordMail(email, otp) {
 	try {

@@ -1,5 +1,4 @@
-'use client';
-import { signIn } from "next-auth/react"
+'use client'; 
 import { useRouter } from 'next/navigation'
 import { useRef, useState } from "react"
 import toast from 'react-hot-toast';
@@ -33,24 +32,24 @@ export default function LoginaPage() {
           toast.error(e)
           return false
         }
-        setSubmitLoader(true)
-        const repchaToken = await reRef.current.executeAsync();
-        const res = await signIn("credentials", {
-          redirect: false,
-          email: email,
-          password: password,
-          otp: otp,
-          repchaToken: repchaToken,
-          twoFaOpen
-        })
-        setSubmitLoader(false)
-        console.log({ res })
-        if (res.error == "CredentialsSignin") {
-          toast.error("Google authentication failed.")
-        } else {
-          router.push("/" + process.env.ADMFLDR)
+        // setSubmitLoader(true)
+        // const repchaToken = await reRef.current.executeAsync();
+        // const res = await signIn("credentials", {
+        //   redirect: false,
+        //   email: email,
+        //   password: password,
+        //   otp: otp,
+        //   repchaToken: repchaToken,
+        //   twoFaOpen
+        // })
+        // setSubmitLoader(false)
+        // console.log({ res })
+        // if (res.error == "CredentialsSignin") {
+        //   toast.error("Google authentication failed.")
+        // } else {
+        //   router.push("/" + process.env.ADMFLDR)
 
-        }
+        // }
       }
     } catch (e) {
       console.log(e)

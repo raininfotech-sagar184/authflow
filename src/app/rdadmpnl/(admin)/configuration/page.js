@@ -4,8 +4,7 @@ import Swal from 'sweetalert2';
 import { fetchApi } from '../../../../utils/frondend'
 import { useAuthContext } from '../../../../context/auth'
 import { chk_otp, chk_password, validate_string } from '../../../../utils/common';
-import Loader, { ButtonSpinner } from '../../../../components/include/Loader';
-import { signOut } from "next-auth/react"
+import Loader, { ButtonSpinner } from '../../../../components/include/Loader'; 
 import { useRouter } from "next/navigation"
 import $ from "jquery";
 import CopyToClipboard from 'react-copy-to-clipboard';
@@ -36,7 +35,7 @@ const Dashboard = () => {
     });
     const router = useRouter()
     const logout = async () => {
-        const data = await signOut({ redirect: false, callbackUrl: '/' + process.env.ADMFLDR })
+        // const data = await signOut({ redirect: false, callbackUrl: '/' + process.env.ADMFLDR })
         router.push('/' + process.env.ADMFLDR)
     }
 

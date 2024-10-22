@@ -1,17 +1,15 @@
-'use client'
-import { SessionProvider, signOut, useSession } from "next-auth/react" 
+'use client' 
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 
  
 export default function Header() {
-  const [dropShow, setDropShow] = useState(false) 
-  const { data: session } = useSession();
+  const [dropShow, setDropShow] = useState(false)  
   const [loader,setLoader] = useState(false)
   const logout = async () => {
     setLoader(true)
-    const data = await signOut({ redirect: true, callbackUrl: '/' + process.env.ADMFLDR }) 
+    // const data = await signOut({ redirect: true, callbackUrl: '/' + process.env.ADMFLDR }) 
   }
   function toggleMenuClass() {
     const htmlTag = document.documentElement;  

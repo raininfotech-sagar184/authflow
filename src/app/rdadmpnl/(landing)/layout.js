@@ -1,8 +1,7 @@
 'use client' 
 import Header from '@/components/include/Header' 
 import Footer from "@/components/include/Footer";
-import { Toaster } from "react-hot-toast";
-import { SessionProvider } from "next-auth/react";
+import { Toaster } from "react-hot-toast"; 
 import { AppProgressBar as ProgressBar } from 'next-nprogress-bar';
 
 
@@ -70,14 +69,12 @@ export default function RootLayout({ children }) {
           <script src="/assets/js/front-config.js"></script>
         </head>
 
-        <body> 
-          <SessionProvider >
+        <body>  
             <Header />
             <Toaster position="top-right" />
             <ProgressBar height="3px" color="#ffffff" options={{ showSpinner: false }} shallowRouting />
             {children}
-            <Footer />
-          </SessionProvider> 
+            <Footer /> 
         </body>
       </html>
 

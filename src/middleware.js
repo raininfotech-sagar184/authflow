@@ -1,5 +1,4 @@
-import { NextResponse, NextRequest } from 'next/server'
-import { getToken } from "next-auth/jwt";
+import { NextResponse, NextRequest } from 'next/server' 
 
 export async function middleware(request) {   
   if (request.nextUrl.pathname == '/' + process.env.ADMFLDR + '/login') {

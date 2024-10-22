@@ -1,5 +1,4 @@
-'use client';
-import { signIn } from "next-auth/react"
+'use client'; 
 import { useRouter } from 'next/navigation'
 import { useRef, useState } from "react" 
 import toast from 'react-hot-toast';

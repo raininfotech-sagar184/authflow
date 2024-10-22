@@ -3,8 +3,7 @@ import Script from "next/script";
 import Header from '@/components/include/Header'
 import Sidebar from '@/components/include/Sidebar'
 import Footer from "@/components/include/Footer";
-import { Toaster } from "react-hot-toast";
-import { SessionProvider } from "next-auth/react";
+import { Toaster } from "react-hot-toast"; 
 import { AppProgressBar as ProgressBar } from 'next-nprogress-bar'; 
 
 
@@ -41,8 +40,7 @@ export default function RootLayout({ children }) {
 
       <body > */}
         <div className="layout-wrapper layout-content-navbar">
-          <div className="layout-container">
-            <SessionProvider >
+          <div className="layout-container"> 
               <Sidebar />
               <div className="layout-page">
                 <Header />
@@ -53,8 +51,7 @@ export default function RootLayout({ children }) {
                   <Footer />
                   <div className="content-backdrop fade"></div>
                 </div>
-              </div>
-            </SessionProvider>
+              </div> 
           </div>
           <div className="layout-overlay layout-menu-toggle"></div>
           <div className="drag-target"></div>

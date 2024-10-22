@@ -12,12 +12,11 @@ import { convert_date } from '../../../../utils/common'
 import Swal from 'sweetalert2';
 import Dropdown from 'react-bootstrap/Dropdown';
 import Select from 'react-select'
-import { useSession, signIn, signOut } from "next-auth/react";
+ 
 const moment = require('moment')
 moment.suppressDeprecationWarnings = true
 
-export default function UserList() {
-    const { data: session } = useSession();
+export default function UserList() { 
     const { setAuthTkn, setPageLoader } = useAuthContext()
     const [order, setOrder] = useState(1)
     const [orderClm, setOrderClm] = useState(0)

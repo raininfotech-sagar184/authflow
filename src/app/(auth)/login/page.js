@@ -97,7 +97,7 @@ export default function LoginaPage() {
             if (response.data.accessToken) {
               setCookie("vrfUsreuthTkN", response.data.accessToken)
             }
-            router.push("/rdadmpnl")
+            router.push("/")
           }
         } else {
           if (response.data.message == "Unauthorized") {

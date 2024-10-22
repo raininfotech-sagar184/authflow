@@ -1,3 +1,4 @@
+import { deleteCookie } from "cookies-next";
 import crypto from "crypto";
 import moment from 'moment';
 // var ethereum_address = require("ethereum-address");
@@ -140,7 +141,12 @@ export function get_timestemp() {
 // export function to_float(value, precision = 8) {
 //   return parseFloat(parseFloat(value.toString()).toFixed(precision))
 // }
-
+export const logout = async (setLoder) => {
+  setLoder(true)
+  deleteCookie("vrfUsreuthTkN");
+  window.location.href = "/login";
+  setLoder(false)
+};
 export function encryption_key(type) {
   let data = {
     ids: "d8sDuFrtSIWDS23fSDEtaG6BjHfjtcmG",

@@ -1,6 +1,6 @@
 'use client';
 import { fetchApi } from "@/utils/frondend";
-import { getCookie } from "cookies-next";
+import { deleteCookie, getCookie } from "cookies-next";
 import { createContext, useContext, useState, useEffect } from "react";
 const AuthContext = createContext({
   authTkn: 'init',
@@ -9,6 +9,7 @@ const AuthContext = createContext({
   setPageLoader: (pageLoader) => { },
   loginUserData: {},
   setLoginUserdata: (loginUserData) => { },
+
 }) 
 
 export const AuthContextProvider = ({ children }) => {
@@ -16,9 +17,9 @@ export const AuthContextProvider = ({ children }) => {
   const [pageLoader, setPageLoader] = useState(true);
   const [loginUserData, setLoginUserdata] = useState({});
   const getAuthData = async () => {
-    console.log("first2055")
-    const response = await fetchApi("user-details", '')
-    if (response.statusCode === 200) {
+   
+    const response = await fetchApi("/user-details", JSON.stringify({ a: 0 }))
+    if (response.statusCode === 200) { 
       setLoginUserdata(response.data.data)
     } else {
       if (response.data.message == "Unauthorized") {
@@ -34,13 +35,13 @@ export const AuthContextProvider = ({ children }) => {
   }, [])
   useEffect(() => {
     if (authTkn == 'Unauthorized') {
-      deleteCookie("vrfUsreuthTkN")
-      window.location.href = "/login"
+      // deleteCookie("vrfUsreuthTkN")
+      // window.location.href = "/login"
 
     }
   }, [authTkn])
   return (
-    <AuthContext.Provider value={{ authTkn, setAuthTkn, pageLoader, setPageLoader }}>
+    <AuthContext.Provider value={{ authTkn, setAuthTkn, pageLoader, setPageLoader, loginUserData, setLoginUserdata }}>
       {children}
     </AuthContext.Provider>
   )

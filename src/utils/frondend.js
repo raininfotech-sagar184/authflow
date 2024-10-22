@@ -1,3 +1,4 @@
+import { getCookie } from "cookies-next";
 
 
 
@@ -5,12 +6,16 @@
 export async function fetchApi(url, data, method = "POST") {
   try {
     let param = JSON.parse(data)
+    console.log({param})
     let queryString = method === "GET" ? Object.keys(param).map(key => key + '=' + param[key]).join('&') : '';
     let apiUrl = process.env.API_ENDPOINT + url + (queryString ? '?' + queryString : '');
+    console.log({apiUrl})
     let resData = await fetch(apiUrl, {
       method: method,
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer ' + getCookie('vrfUsreuthTkN') || ""
       },
       body: method === "POST" ? JSON.parse(JSON.stringify(data)) : undefined
     })

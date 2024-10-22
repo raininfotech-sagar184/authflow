@@ -1,6 +1,6 @@
 'use client'; 
 import { useRouter } from 'next/navigation'
-import { useRef, useState } from "react" 
+import { useEffect, useRef, useState } from "react" 
 import toast from 'react-hot-toast';
 import { chk_otp, validate_string, chk_email, chk_password } from "../../utils/common";
 import { fetchApi } from "../../utils/frondend";
@@ -9,8 +9,10 @@ import { useAuthContext } from "../../context/auth";
 import ReCAPTCHA from "react-google-recaptcha";
 
 export default function LandingPage() { 
-  
-
+  const { setAuthTkn,setPageLoader } = useAuthContext();
+  useEffect(() => {
+    setPageLoader(false)
+  }, [])
   return (
     <>
        <div data-bs-spy="scroll" className="scrollspy-example">

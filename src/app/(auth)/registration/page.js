@@ -1,6 +1,6 @@
 'use client'; 
 import { useRouter } from 'next/navigation'
-import { useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import toast from 'react-hot-toast';
 import {   validate_string, chk_email, chk_password, chk_confirm_password, chk_username, validateFile } from "../../../utils/common";
 import { fetchApi } from "../../../utils/frondend"; 
@@ -10,7 +10,7 @@ import $ from "jquery";
 import { setCookie } from 'cookies-next';
 
 export default function LoginaPage() {
-  const { setAuthTkn } = useAuthContext();
+  const { setAuthTkn ,setPageLoader} = useAuthContext();
   const router = useRouter() 
   const [image, setImage] = useState("")
   const [imageUrl, setImageUrl] = useState("")
@@ -146,7 +146,9 @@ export default function LoginaPage() {
       setImageUrl(URL.createObjectURL(file))
     }
   }
-
+  useEffect(() => {
+    setPageLoader(false)
+  }, [])
   return (
     <>
       <div className="authentication-wrapper authentication-cover">

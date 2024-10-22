@@ -1,6 +1,6 @@
 'use client';
 import { useRouter } from 'next/navigation'
-import { useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import toast from 'react-hot-toast';
 import { validate_string,   chk_confirm_password, chk_otp } from "@/utils/common";
 import ReCAPTCHA from "react-google-recaptcha"; 
@@ -156,6 +156,10 @@ export default function LoginaPage() {
       }
     }
   }
+
+  useEffect(() => {
+    setPageLoader(false)
+  }, [])
   return (
     <>
       <div className="authentication-wrapper authentication-cover"> 

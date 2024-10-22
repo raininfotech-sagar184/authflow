@@ -1,24 +1,44 @@
 'use client';
+import { fetchApi } from "@/utils/frondend";
+import { getCookie } from "cookies-next";
 import { createContext, useContext, useState, useEffect } from "react";
 const AuthContext = createContext({
   authTkn: 'init',
   setAuthTkn: (authTkn) => { },
   pageLoader: true,
-  setPageLoader: (pageLoader) => { }
+  setPageLoader: (pageLoader) => { },
+  loginUserData: {},
+  setLoginUserdata: (loginUserData) => { },
 }) 
 
 export const AuthContextProvider = ({ children }) => {
   const [authTkn, setAuthTkn] = useState('init');
   const [pageLoader, setPageLoader] = useState(true);
+  const [loginUserData, setLoginUserdata] = useState({});
+  const getAuthData = async () => {
+    console.log("first2055")
+    const response = await fetchApi("user-details", '')
+    if (response.statusCode === 200) {
+      setLoginUserdata(response.data.data)
+    } else {
+      if (response.data.message == "Unauthorized") {
+        setAuthTkn(response.data.message)
+      }
+    }
+  }
+  useEffect(() => {
+    console.log("first20551")
+    if (getCookie('vrfUsreuthTkN')) {
+      getAuthData()
+    }
+  }, [])
+  useEffect(() => {
+    if (authTkn == 'Unauthorized') {
+      deleteCookie("vrfUsreuthTkN")
+      window.location.href = "/login"
 
-  // useEffect(() => {
-  //   async function fn() {
-  //     await signOut({ redirect: false, callbackUrl: '/' + process.env.ADMFLDR })
-  //   }
-  //   if (authTkn == 'Unauthorized') {
-  //     fn() 
-  //   }
-  // }, [authTkn])
+    }
+  }, [authTkn])
   return (
     <AuthContext.Provider value={{ authTkn, setAuthTkn, pageLoader, setPageLoader }}>
       {children}

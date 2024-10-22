@@ -1,13 +1,15 @@
-'use client' 
-import Header from '@/components/include/Header' 
+'use client'
+import Header from '@/components/include/Header'
 import Footer from "@/components/include/Footer";
-import { Toaster } from "react-hot-toast"; 
-import { AppProgressBar as ProgressBar } from 'next-nprogress-bar';
+import { Toaster } from "react-hot-toast";
+import { AppProgressBar as ProgressBar } from 'next-nprogress-bar'; 
+import { AuthContextProvider } from '@/context/auth'; 
+import { PreLoader } from '@/components/include/PageLoader';
 
 
 export default function RootLayout({ children }) {
   return (
-    <> 
+    <>
       <html
         lang="en"
         className="dark-style layout-navbar-fixed layout-wide"
@@ -69,14 +71,19 @@ export default function RootLayout({ children }) {
           <script src="/assets/js/front-config.js"></script>
         </head>
 
-        <body>  
+        <body>
+
+          <AuthContextProvider>
             <Header />
             <Toaster position="top-right" />
             <ProgressBar height="3px" color="#ffffff" options={{ showSpinner: false }} shallowRouting />
+            <PreLoader />
             {children}
-            <Footer /> 
+            <Footer />
+          </AuthContextProvider>
+
         </body>
-      </html> 
+      </html>
     </>
   );
 }

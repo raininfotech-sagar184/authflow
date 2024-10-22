@@ -1,10 +1,12 @@
 'use client' 
+import { useAuthContext } from "@/context/auth"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 
  
 export default function Header() {
+  const { pageLoader } = useAuthContext()
   const [dropShow, setDropShow] = useState(false)  
   const [loader,setLoader] = useState(false)
   const logout = async () => {
@@ -20,7 +22,7 @@ export default function Header() {
   return (
     <> 
     {/* <!-- Navbar: Start --> */}
-    <nav className="layout-navbar shadow-none py-0"  onMouseLeave={() => setDropShow(false)}>
+    <nav className={`layout-navbar shadow-none py-0 ${pageLoader ? 'd-none' : ''}`} onClick={()=>console.log(first)}  onMouseLeave={() => setDropShow(false)}>
             <div className="container">
               <div className="navbar navbar-expand-lg landing-navbar px-3 px-md-8">
                 {/* <!-- Menu logo wrapper: Start --> */}

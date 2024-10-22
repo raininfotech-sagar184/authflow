@@ -383,4 +383,53 @@
   display: flex;
   gap: 10px; 
  }
- 
+ .page-loader .spinner-container{
+  height: 100vh;
+ }
+ .page-loader .spinner{
+  position: absolute;
+  top: 45%;
+  left: 47%;
+ }
+@media screen and (max-width: 768px) {
+  .page-loader .spinner{  
+    left: 45%;
+   }
+}
+@media screen and (max-width: 550px) {
+  .page-loader .spinner{  
+    left: 41%;
+   }
+}
+@media screen and (max-width: 400px) {
+  .page-loader .spinner{  
+    left: 36%;
+   }
+}
+ /* Loader */
+
+ /* From Uiverse.io by aadium */ 
+.page-loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.page-loader-spinner {
+  width: 80px; 
+  position: relative;
+  animation: rotation 0.75s linear infinite;
+  border-radius: 100em;
+}
+
+.spinner-path {
+  stroke-dasharray: 100;
+  stroke-dashoffset: 20;
+  stroke-linecap: round;
+}
+
+@keyframes rotation {
+  to {
+    transform: rotate(360deg);
+  }
+}

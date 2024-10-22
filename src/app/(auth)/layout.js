@@ -1,5 +1,6 @@
 import { Toaster } from "react-hot-toast";
-import { AuthContextProvider } from "@/context/auth"; 
+import { AuthContextProvider } from "@/context/auth";  
+import { PreLoader } from "@/components/include/PageLoader";
 
 export const metadata = {
   title: "Vuexy - Bootstrap Admin Template",
@@ -57,6 +58,7 @@ export default function RootLayout({ children }) {
       <body suppressHydrationWarning>
         <Toaster position="top-right" />
         <AuthContextProvider>
+        <PreLoader />
           {children}
         </AuthContextProvider> 
       </body>

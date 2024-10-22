@@ -1,6 +1,6 @@
 'use client'; 
 import { useRouter } from 'next/navigation'
-import { useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import toast from 'react-hot-toast';
 import { chk_otp, validate_string, chk_email, chk_password } from "../../../utils/common";
 import { fetchApi } from "../../../utils/frondend"; 
@@ -9,7 +9,7 @@ import ReCAPTCHA from "react-google-recaptcha";
 import { setCookie } from "cookies-next";
 
 export default function LoginaPage() {
-  const { setAuthTkn } = useAuthContext();
+  const { setAuthTkn,setPageLoader } = useAuthContext();
   const router = useRouter()
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
@@ -117,6 +117,9 @@ export default function LoginaPage() {
     }
   }
 
+  useEffect(() => {
+    setPageLoader(false)
+  }, [])
 
 
   return (

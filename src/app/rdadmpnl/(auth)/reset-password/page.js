@@ -7,7 +7,7 @@ import ReCAPTCHA from "react-google-recaptcha";
 import { fetchApi } from "@/utils/frondend";
 // import { useAuthContext } from "@/context/auth";
 import $ from "jquery";
-import { getCookie } from 'cookies-next';
+import { deleteCookie, getCookie } from 'cookies-next';
 import { useAuthContext } from '@/context/auth';
 export default function LoginaPage() {
   const { setAuthTkn, setPageLoader, lang, langData,pageLoader } = useAuthContext()
@@ -19,7 +19,7 @@ export default function LoginaPage() {
   const [msg, setMsg] = useState("")
   const [otpTimer, setOtpTimer] = useState({ waiting: false, timer: '00:00' })
   const reRef = useRef(null);
-  const mlTkn = getCookie("mltknauth") || ""
+    const mlTkn = getCookie("passfgTkn") || ""
   // useEffect(() => {
   //   setPageLoader(false)
   // }, [])
@@ -49,19 +49,18 @@ export default function LoginaPage() {
       setLoader({ ...loader, sendOtp: true }) 
       const repchaToken = await reRef.current.executeAsync(); 
      
-      const param = JSON.stringify({ repchaToken: repchaToken, email: `admin@solares.com`,mlTkn:mlTkn })
-      const response = await fetchApi("auth/forgot-password-otp", param)
+      const param = JSON.stringify({ repchaToken: repchaToken,mlTkn:mlTkn })
+      const response = await fetchApi("/send-otp", param)
       setLoader({ ...loader, sendOtp: false })
       if (response.statusCode === 200) {
         startTimer(5 * 60)
         toast.success(response.data.message)
-      } else {
-        console.log(response.data)
+      } else { 
         if (response.data.message == "Unauthorized") {
           // setAuthTkn(response.data.message)
         } else {
           if (response.data.email == 'invalid') {
-            router.push("/forgot-password")
+            // router.push("forgot-password")
           } else {
             toast.error(response.data.message)
           }
@@ -129,15 +128,17 @@ export default function LoginaPage() {
         toast.error(e)
         return
       }
+      
       setLoader({ ...loader, resetpwd: true }) 
+      let tkn = getCookie("passfgTkn") || ""
       const repchaToken = await reRef.current.executeAsync(); 
-      const param = JSON.stringify({ password: data.password,mlTkn:mlTkn, repassword: data.rePassword, otp: data.otp, repchaToken: repchaToken  })
-      const response = await fetchApi("auth/reset-password",param)
+      console.log({repchaToken})
+      const param = JSON.stringify({ password: data.password,tkn:tkn, repassword: data.rePassword, otp: data.otp, repchaToken: repchaToken  })
+      const response = await fetchApi("/reset-password",param) 
       setLoader({ ...loader, resetpwd: false })
       if (response.statusCode === 200) {
         toast.success(response.data.message)
-        deleteCookie("mlTkn")
-        console.log("first")
+        deleteCookie("passfgTkn") 
         setTimeout(() => {
           router.push("login")
         }, 1000)
@@ -270,10 +271,11 @@ export default function LoginaPage() {
                   </span>
                 </div>
               </div>
-              <div className="my-8">
-                <div className="d-flex justify-content-between">
+              <div className="my-8"> 
+                  {otpTimer.waiting == true?"": <div className="text-center mb-1 fs-18" onClick={()=>console.log(otpTimer)}>Didn’t receive the OTP? </div>} 
+                <div className="d-flex justify-content-center"> 
                   <span className="cursor-pointer"  >
-                  <div className="text-end mb-10 text-primary fs-18">{loader.sendOtp ? <i className="fas fa-refresh fa-spin mx-1"></i> : ""}{otpTimer.waiting == true ? <span className="text-bold text-yellow">{`Resend after`}: {otpTimer.timer}</span> : <span className="cursor-pointer text-capitalize fs-18 text-yellow" onClick={() => sendOtp()}>{`Didn’t receive the OTP? Click here to Resend OTP Code`}</span>}</div>
+                    <div className="text-center mb-10 text-primary fs-18">{loader.sendOtp ? <i className="fas fa-refresh fa-spin mx-1"></i> : ""}{otpTimer.waiting == true ? <span className="text-bold text-yellow">{`Resend after`}: {otpTimer.timer}</span> : <span className="cursor-pointer text-capitalize fs-18 text-yellow" onClick={() => sendOtp()}>{`Click here to Resend OTP Code`}</span>}</div>
                   </span>
                 </div>
                 <div className="d-flex justify-content-between">

@@ -1,6 +1,5 @@
 import { Toaster } from "react-hot-toast";
-import { AuthContextProvider } from "@/context/auth";
-import Script from "next/script";
+import { AuthContextProvider } from "@/context/auth"; 
 
 export const metadata = {
   title: "Vuexy - Bootstrap Admin Template",

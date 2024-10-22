@@ -17,7 +17,7 @@ export default function LoginaPage() {
   const [otpTimer, setOtpTimer] = useState({ waiting: false, timer: '00:00' })
   const [otp, setOtp] = useState(new Array(6).fill(""));
   const reRef = useRef(null);
-  const mlTkn = getCookie("mltknauth") || ""
+  const mlTkn = getCookie("vrfMlTknAth") || ""
   // useEffect(() => {
   //   setPageLoader(false)
   // }, [])
@@ -47,13 +47,12 @@ export default function LoginaPage() {
       setLoader({ ...loader, sendOtp: true })
       const repchaToken = await reRef.current.executeAsync();
       const param = JSON.stringify({ repchaToken: repchaToken, email: `admin@solares.com`, mlTkn: mlTkn })
-      const response = await fetchApi("auth/forgot-password-otp", param)
+      const response = await fetchApi("/send-otp", param)
       setLoader({ ...loader, sendOtp: false })
       if (response.statusCode === 200) {
         startTimer(5 * 60)
         toast.success(response.data.message)
-      } else {
-        console.log(response.data)
+      } else { 
         if (response.data.message == "Unauthorized") {
           // setAuthTkn(response.data.message)
         } 
@@ -74,12 +73,13 @@ export default function LoginaPage() {
       }
       setLoader({ ...loader, resetpwd: true })
       const repchaToken = await reRef.current.executeAsync();
-      const param = JSON.stringify({   mlTkn: mlTkn, otp: otp.join(""), repchaToken: repchaToken })
-      const response = await fetchApi("auth/email-varification", param)
+      const param = JSON.stringify({   cokTkn: mlTkn, otp: otp.join(""), repchaToken: repchaToken })
+      const response = await fetchApi("/verify-mail", param)
       setLoader({ ...loader, resetpwd: false })
       if (response.statusCode === 200) {
         toast.success(response.data.message)
-        deleteCookie("mltknauth") 
+        deleteCookie("vrfMlTknAth")
+        deleteCookie("refCode")
         setTimeout(() => {
           router.push("login")
         }, 1000)
@@ -88,7 +88,8 @@ export default function LoginaPage() {
           // setAuthTkn(response.data.message)
         } else {
           if (response.data.email == 'invalid') {
-            router.push("forgot-password")
+            router.push("login")
+            toast.error(response.data.message)
           }
           else {
             toast.error(response.data.message)

@@ -4,8 +4,7 @@ import { useRouter } from 'next/navigation'
 import { useRef, useState } from "react"
 import toast from 'react-hot-toast';
 import { chk_otp, validate_string, chk_email, chk_password } from "../../../../utils/common";
-import { fetchApi } from "../../../../utils/frondend";
-import { ButtonSpinner } from "../../../../components/include/Loader";
+import { fetchApi } from "../../../../utils/frondend"; 
 import { useAuthContext } from "../../../../context/auth";
 import ReCAPTCHA from "react-google-recaptcha";
 import { setCookie } from "cookies-next";
@@ -75,13 +74,31 @@ export default function LoginaPage() {
         setSubmitLoader(true)
         const repchaToken = await reRef.current.executeAsync();
         const param = JSON.stringify({ email: email, password: password, repchaToken })
-        const response = await fetchApi("auth/login", param, "POST")
+        const response = await fetchApi("/login", param, "POST")
         setSubmitLoader(false)
-        if (response.statusCode === 200) { 
-          if (response.data.data.twoOpen == 1) {
+        if (response.statusCode === 200) {
+          // if (response.data.data.twoOpen == 1) {
+          //   setIstwoOpen(true)
+          // } else {
+          //   finalLogin(0)
+          // }
+
+
+          if (response.data.isVerify == 0) {
+            console.log('first1')
+            router.push("email-verification")
+            setCookie("vrfMlTknAth", response.data.accessToken)
+          } else if (response.data.isTwoFa == 1) {
+            console.log('first2')
+            setCookie("fctrSolsVrftKn", response.data.accessToken)
             setIstwoOpen(true)
           } else {
-            finalLogin(0)
+            console.log('first3')
+            toast.success(response.data.message)
+            if (response.data.accessToken) {
+              setCookie("vrfUsreuthTkN", response.data.accessToken)
+            }
+            router.push("/rdadmpnl")
           }
         } else {
           if (response.data.message == "Unauthorized") {
@@ -92,7 +109,7 @@ export default function LoginaPage() {
               setCookie("mltknauth", response.data.accessToken)
               router.push("email-varification")
             }
-            
+
           }
         }
       }
@@ -175,9 +192,9 @@ export default function LoginaPage() {
                   <div className="divider my-6">
                     <div className="divider-text">or</div>
                   </div>
-                  <div className="d-flex justify-content-center mt-4"> 
+                  <div className="d-flex justify-content-center mt-4">
                     <span className="cursor-pointer" onClick={() => router.push('registration')}>
-                      <p className="mb-0 text-primary">Sign Up</p>
+                      <p className="mb-0 text-primary">Sign up instead</p>
                     </span>
                   </div>
 

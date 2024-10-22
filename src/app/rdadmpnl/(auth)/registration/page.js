@@ -3,7 +3,7 @@ import { useRouter } from 'next/navigation'
 import { useRef, useState } from "react"
 import toast from 'react-hot-toast';
 import {   validate_string, chk_email, chk_password, chk_confirm_password, chk_username, validateFile } from "../../../../utils/common";
-import { fetchApi_with_upload } from "../../../../utils/frondend"; 
+import { fetchApi } from "../../../../utils/frondend"; 
 import { useAuthContext } from "../../../../context/auth";
 import ReCAPTCHA from "react-google-recaptcha";
 import $ from "jquery";
@@ -96,11 +96,11 @@ export default function LoginaPage() {
         chk_password(userData.password)
         validate_string(userData.confirm_password, "Confirm password")
         chk_confirm_password(userData.password, userData.confirm_password)
-        if (!imageUrl) {
-          toast.error("Upload image")
-          return
-        }
-        validateFile(image, "Images")
+        // if (!imageUrl) {
+        //   toast.error("Upload image")
+        //   return
+        // }
+        // validateFile(image, "Images")
       } catch (e) {
         toast.error(e)
         return false
@@ -110,14 +110,17 @@ export default function LoginaPage() {
       const bodyData = JSON.stringify({
         username: userData.username, email: userData.email, mobile: userData.mobile, referralcode: userData.referralcode, password: userData.password, repchaToken
       })
-      const formData = new FormData()
-      formData.append('image', image)
-      formData.append('data', bodyData)
-      const response = await fetchApi_with_upload(`auth/ragistration`, formData)
+      // const formData = new FormData()
+      // formData.append('image', image)
+      // formData.append('data', bodyData)
+      const response = await fetchApi(`/register`, bodyData, "POST")
       setSubmitLoader(false)
       if (response.statusCode === 200) {
-        toast.success(response.data.message) 
-        setCookie("mltknauth", response.data.accessToken)
+        toast.success(response.data.message)  
+        setCookie('vrfMlTknAth', response.data.accessToken)
+        setCookie("refCode", userData.refCode ? userData.refCode : '')
+        setUserData({...userFormField})
+        setvalidLine(false)
         router.push("email-varification")
       } else {
         if (response.data.message == "Unauthorized") {

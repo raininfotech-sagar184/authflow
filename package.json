@@ -30,6 +30,7 @@
     "react-select": "^5.7.5",
     "serverless-mysql": "^1.5.5",
     "speakeasy": "^2.0.0",
-    "sweetalert2": "^11.12.2"
+    "sweetalert2": "^11.12.2",
+    "swiper": "^10.0.0"
   }
 }

@@ -103,10 +103,10 @@ export default function Header() {
               </button>
               <ul className="navbar-nav me-auto">
                 <li className="nav-item">
-                  <a className="nav-link fw-medium" aria-current="page" href="landing-page.html#landingHero">Home</a>
+                  <Link className="nav-link fw-medium" aria-current="page" href="/">Home</Link>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link fw-medium" href="landing-page.html#landingFeatures">Features</a>
+                  <Link className="nav-link fw-medium" href="package-list">Packages</Link>
                 </li>
                 <li className="nav-item">
                   <a className="nav-link fw-medium" href="landing-page.html#landingTeam">Team</a>

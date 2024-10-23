@@ -10,7 +10,7 @@ export function validate_string(data, prefix, type = 0) {
   } else if (typeof data !== "string") {
     throw prefix + " is not valid";
   }
-} 
+}
 export function validate_filter_numbers(data) {
   for (let dd in data) {
     let d = data[dd]
@@ -25,7 +25,7 @@ export function strGenerator(l = 10) {
   var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
   var charactersLength = characters.length;
   for (var i = 0; i < l; i++) {
-      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    result += characters.charAt(Math.floor(Math.random() * charactersLength));
   }
   return result;
 }
@@ -136,16 +136,19 @@ export function get_timestemp() {
 //   return false;
 // }
 
- 
+
 
 // export function to_float(value, precision = 8) {
 //   return parseFloat(parseFloat(value.toString()).toFixed(precision))
 // }
 export const logout = async (setLoder) => {
   setLoder(true)
-  deleteCookie("vrfUsreuthTkN");
-  window.location.href = "/login";
-  setLoder(false)
+  setTimeout(() => {
+    deleteCookie("vrfUsreuthTkN");
+    window.location.href = "/login";
+    setLoder(false)
+  }, 2000)
+
 };
 export function encryption_key(type) {
   let data = {
@@ -226,19 +229,19 @@ export function validateFile(file, type) {
 }
 
 export function validate_input_number(data, prefix, type = 0) {
-  const parsedValue = parseFloat(data); 
+  const parsedValue = parseFloat(data);
   if (!data) {
     let pre = type == 0 ? 'Enter ' : ' Select'
     throw pre + prefix;
   } else if (isNaN(parsedValue)) {
     throw prefix + " must be number";
-  }  
+  }
 }
- 
-export function validate_input_number_in_range(data, prefix) { 
-  if (![0,1].includes(parseInt(data))  ) {
+
+export function validate_input_number_in_range(data, prefix) {
+  if (![0, 1].includes(parseInt(data))) {
     throw prefix + " must be 0 or 1";
-  }  
+  }
 }
 
 // export function chk_per(num, prefix) {

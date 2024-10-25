@@ -35,9 +35,11 @@
 .layout-navbar-fixed .layout-wrapper:not(.layout-without-menu) .layout-page {
   padding-top: 64px !important;
 }
+
 .layout-navbar-fixed .layout-wrapper:not(.layout-horizontal):not(.layout-without-menu) .layout-page {
   padding-top: 72px !important;
 }
+
 /* Navbar page z-index issue solution */
 .content-wrapper .navbar {
   z-index: auto;
@@ -47,36 +49,39 @@
 * Content
 ******************************************************************************/
 
-.demo-blocks > * {
+.demo-blocks>* {
   display: block !important;
 }
 
-.demo-inline-spacing > * {
+.demo-inline-spacing>* {
   margin: 1rem 0.375rem 0 0 !important;
 }
 
 /* ? .demo-vertical-spacing class is used to have vertical margins between elements. To remove margin-top from the first-child, use .demo-only-element class with .demo-vertical-spacing class. For example, we have used this class in forms-input-groups.html file. */
-.demo-vertical-spacing > * {
+.demo-vertical-spacing>* {
   margin-top: 1rem !important;
   margin-bottom: 0 !important;
 }
-.demo-vertical-spacing.demo-only-element > :first-child {
+
+.demo-vertical-spacing.demo-only-element> :first-child {
   margin-top: 0 !important;
 }
 
-.demo-vertical-spacing-lg > * {
+.demo-vertical-spacing-lg>* {
   margin-top: 1.875rem !important;
   margin-bottom: 0 !important;
 }
-.demo-vertical-spacing-lg.demo-only-element > :first-child {
+
+.demo-vertical-spacing-lg.demo-only-element> :first-child {
   margin-top: 0 !important;
 }
 
-.demo-vertical-spacing-xl > * {
+.demo-vertical-spacing-xl>* {
   margin-top: 5rem !important;
   margin-bottom: 0 !important;
 }
-.demo-vertical-spacing-xl.demo-only-element > :first-child {
+
+.demo-vertical-spacing-xl.demo-only-element> :first-child {
   margin-top: 0 !important;
 }
 
@@ -96,6 +101,7 @@
     width: 254px;
     position: relative;
   }
+
   #dropdown-variation-demo .btn-group .text-truncate::after {
     position: absolute;
     top: 45%;
@@ -120,14 +126,17 @@
   flex-direction: column;
   margin-top: 1rem;
 }
+
 .layout-demo-placeholder img {
   width: 900px;
 }
+
 .layout-demo-info {
   text-align: center;
   margin-top: 1rem;
 }
-.cust-form-control .flatpickr-input{
+
+.cust-form-control .flatpickr-input {
   display: none !important;
 }
 
@@ -186,97 +195,112 @@
   padding-top: 2px;
 }
 
-.actionBox{
+.actionBox {
   display: flex;
   justify-content: start;
   gap: 10px;
   width: min-content;
 }
+
 /* React select*/
 
 .css-t3ipsp-control,
-.css-1nmdiq5-menu {  
+.css-1nmdiq5-menu {
   border-color: #00000000 !important;
 }
 
 .css-t3ipsp-control {
   box-shadow: 0 0 0 1px #56596f !important;
   border: var(--bs-border-width) solid #56596f !important;
-} 
-.css-13cymwt-control{
+}
+
+.css-13cymwt-control {
   border: var(--bs-border-width) solid #56596f !important;
 }
+
 .css-t3ipsp-control:focus-within {
   box-shadow: none !important;
-   border: solid 2px #7367f0 !important;
+  border: solid 2px #7367f0 !important;
 }
-.css-tr4s17-option { 
-  background-color: #00000000; 
+
+.css-tr4s17-option {
+  background-color: #00000000;
 }
-.css-qr46ko{
+
+.css-qr46ko {
   background: #2f3349 !important;
 }
 
-.css-d7l1ni-option { 
-  background-color: #7367f059 !important; 
+.css-d7l1ni-option {
+  background-color: #7367f059 !important;
 }
+
 .css-1dimb5e-singleValue,
-.css-19bb58m, 
+.css-19bb58m,
 .css-t3ipsp-control,
-.css-13cymwt-control{
-  color:#cfcde4 !important;
+.css-13cymwt-control {
+  color: #cfcde4 !important;
   background-color: #00000000 !important;
 }
-.css-13cymwt-control:hover{
-  border-color:#9a9ab0 !important; 
-} 
 
- .upload-image{
+.css-13cymwt-control:hover {
+  border-color: #9a9ab0 !important;
+}
+
+.upload-image {
   width: 40% !important;
- }
+}
 
- .modalForm{
-  gap:10px !important;
- }
- .packageImage img{
+.modalForm {
+  gap: 10px !important;
+}
+
+.packageImage img {
   width: 45px;
   height: 45px;
- }
+}
 
- /* loader */
- .sr-only{
+/* loader */
+.sr-only {
   color: #7fffd400;
- }
- .spinner-border{
+}
+
+.spinner-border {
   margin-right: 3px;
- }
- .btn{
+}
+
+.btn {
   text-wrap: nowrap !important;
- }
- .buttonsGroup{
+}
+
+.buttonsGroup {
   display: flex;
   justify-content: center;
   gap: 10px;
- }
- .pass-valid{
+}
+
+.pass-valid {
   font-size: 12px;
   letter-spacing: 1px;
- }
- .validPassText {
+}
+
+.validPassText {
   font-family: fangsong !important;
 }
 
 .validationBox {
   flex-wrap: wrap !important;
 }
+
 .password-validation-span {
   display: grid;
-  grid-template-columns: 1fr 1fr; 
+  grid-template-columns: 1fr 1fr;
   font-size: 13px;
 }
+
 @media screen and (max-width: 375px) {
-  .password-validation-span { 
-    grid-template-columns: 1fr;  
+  .password-validation-span {
+    grid-template-columns: 1fr;
   }
 }
 
@@ -332,6 +356,7 @@
   left: 4px !important;
   transition: background-color 0.4s, left 0.2s !important;
 }
+
 .twoFaStatusOff {
   color: red;
 }
@@ -342,14 +367,17 @@
   top: 10px;
   font-size: 14px;
 }
-.twofaSection{
+
+.twofaSection {
   position: relative;
   top: 10px;
 }
-.configuration-card-body{
+
+.configuration-card-body {
   padding: 45px !important;
 }
-.configuration-card-body p{
+
+.configuration-card-body p {
   text-wrap: wrap !important;
 }
 
@@ -371,44 +399,51 @@
     background-color: #ffffff00;
   }
 }
- 
-.custom-dropdown #dropdown-basic{
+
+.custom-dropdown #dropdown-basic {
   padding: 3px 5px !important;
 }
-.nodata-found{
+
+.nodata-found {
   width: 20% !important;
 }
 
- .statusRadioGroup{
+.statusRadioGroup {
   display: flex;
-  gap: 10px; 
- }
- .page-loader .spinner-container{
+  gap: 10px;
+}
+
+.page-loader .spinner-container {
   height: 100vh;
- }
- .page-loader .spinner{
+}
+
+.page-loader .spinner {
   position: absolute;
   top: 45%;
   left: 47%;
- }
-@media screen and (max-width: 768px) {
-  .page-loader .spinner{  
-    left: 45%;
-   }
 }
-@media screen and (max-width: 550px) {
-  .page-loader .spinner{  
-    left: 41%;
-   }
-}
-@media screen and (max-width: 400px) {
-  .page-loader .spinner{  
-    left: 36%;
-   }
-}
- /* Loader */
 
- /* From Uiverse.io by aadium */ 
+@media screen and (max-width: 768px) {
+  .page-loader .spinner {
+    left: 45%;
+  }
+}
+
+@media screen and (max-width: 550px) {
+  .page-loader .spinner {
+    left: 41%;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .page-loader .spinner {
+    left: 36%;
+  }
+}
+
+/* Loader */
+
+/* From Uiverse.io by aadium */
 .page-loader {
   display: flex;
   justify-content: center;
@@ -416,7 +451,7 @@
 }
 
 .page-loader-spinner {
-  width: 80px; 
+  width: 80px;
   position: relative;
   animation: rotation 0.75s linear infinite;
   border-radius: 100em;
@@ -437,74 +472,38 @@
 
 /* swiper */
 
+
 .swiper {
   width: 100%;
-  height: 100%;
+  padding-top: 50px;
+  padding-bottom: 50px;
 }
 
 .swiper-slide {
-  text-align: center;
-  font-size: 18px;
-  background: #ffffff00;
-
-  /* Center slide text vertically */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.swiper-slide img {
-  display: block;
-  width: 100%;
-  aspect-ratio: 2;
-  object-fit: cover;
-  border-radius: 5px;
+  background-position: center;
+  background-size: cover;
+  width: 300px;
+  height: 300px;
 }
 
  
-
-.swiper {
-  width: 100%;
-  height: 300px;
-  margin-left: auto;
-  margin-right: auto;
+.package-info {
+  position: absolute;
+  top: 10%;
+  left: 50%;
 }
-
 .swiper-slide {
-  background-size: cover;
-  background-position: center;
+  flex-shrink: 0;
+  width: 44% !important;
+  height: auto !important; 
 }
-
-.mySwiper2 {
-  height: 80%;
-  width: 100%;
+.swiper-package-card{
+  width: 75%;
+  margin: 0px auto;
 }
-
-.mySwiper {
-  height: 20%;
-  box-sizing: border-box;
-  padding: 10px 0;
+.swiper-3d .swiper-slide-shadow-right {
+  background-image: linear-gradient(to right, rgb(0 0 0 / 0%), rgba(0, 0, 0, 0)) !important;
 }
-
-.mySwiper .swiper-slide {
-  width: 25%;
-  height: 100%;
-  opacity: 0.4;
-}
-
-.mySwiper .swiper-slide-thumb-active {
-  opacity: 1;
-}
-
-.swiper-slide img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-.swiper-free-mode > .swiper-wrapper {
-  padding-top: 10px !important;
-}
-.SwiperCorouselContent{
-  padding: 0px 130px;
+.swiper-3d .swiper-slide-shadow-left {
+  background-image: linear-gradient(to left, rgb(0 0 0 / 0%), rgba(0, 0, 0, 0)) !important;
 }

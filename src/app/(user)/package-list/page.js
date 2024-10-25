@@ -24,7 +24,7 @@ export default function LandingPage() {
         setPageLoader(false)
         if (response.statusCode == 200) {
             setSearchLdr(false)
-            setPackageList(response.data.data)
+            setPackageList(response.data.list)
             setRecordCount(response.data.total)
         } else {
             setSearchLdr(false)
@@ -40,6 +40,7 @@ export default function LandingPage() {
   useEffect(() => {
     getPackageList()
   }, [page])
+
 
   const test = (e) => {
     console.log(packageList)
@@ -109,7 +110,7 @@ export default function LandingPage() {
               Not just a set of tools, the package includes ready-to-deploy conceptual application.
             </p>
             <div className='SwiperCorouselContent'>
-              <SwiperCorousel/>
+              <SwiperCorousel packageList={packageList}/>
             </div>
           </div>
         </section>
